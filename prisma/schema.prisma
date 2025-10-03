@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Media {
+	id                  Int @id @default(autoincrement())
+  name                String?
+  url                 String?
+
+  stayId              Int? @unique
+  stay                Stay @relation(fields: [stayId], references: [id], onDelete: Cascade)
+  correspondenceId    Int? @unique
+  correspondence      Correspondence @relation(fields: [correspondenceId], references: [id], onDelete: Cascade)
+  publicationId       Int? @unique
+  publication         Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+}
+
+model Point {
+	id                  Int @id @default(autoincrement())
+  placename           String?
+  geometry            Unsupported("geometry(Point, 4326)")?
+  custom_map_x        Float?
+  custom_map_y        Float?
+  stayId              Int? @unique
+  stay                Stay @relation(fields: [stayId], references: [id], onDelete: Cascade)
+  correspondenceId    Int? @unique
+  correspondence      Correspondence @relation(fields: [correspondenceId], references: [id], onDelete: Cascade)
+  publicationId       Int? @unique
+  publication         Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+}
+
+model Source {
+	id                  Int @id @default(autoincrement())
+  source              String?
+  stay                Stay?
+}
+
+model Stay {
+	id                  Int @id @default(autoincrement())
+	summary             String?
+  description         String?
+  sources             Source[]
+
+  startYear           Int?
+  startMonth          Int?
+  startDay            Int?
+  endYear             Int?
+  endMonth            Int?
+  endDay              Int?
+
+  isResidence         Boolean @default(true)
+
+  pointId             Int
+  point               Point @relation(fields: [pointId], references: [id], onDelete: Cascade)
+  media               Media[]
+}
+
+model Person {
+	id                  Int @id @default(autoincrement())
+  name                String
+  correspondenceId    Int @unique
+  correspondence      Correspondence @relation(fields: [correspondenceId], references: [id])
+}
+
+model Correspondence {
+	id                  Int @id @default(autoincrement())
+  reference           Int
+
+  fromId              Int 
+  from                Person @relation(fields: [fromId], references: [id])
+  toId                Int 
+  to                  Person @relation(fields: [toId], references: [id])
+
+  year                Int 
+  month               Int 
+  day                 Int
+
+  pointFromId         Int
+  pointFrom           Point @relation(fields: [pointFromId], references: [id], onDelete: Cascade)
+  pointToId           Int
+  pointTo             Point @relation(fields: [pointToId], references: [id], onDelete: Cascade)
+  media               Media[]
+}
+
+
+mode Title {
+	id                  Int @id @default(autoincrement())
+  name                String
+  publicationId       Int
+  publication         Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+}
+
+model Publication {
+	id                  Int @id @default(autoincrement())
+  titles              Title[]
+  description         String?
+  language            String?
+  year                Int 
+  month               Int 
+  day                 Int
+
+  isAbridged          Boolean @default(false)
+  isReprint           Boolean @default(false)
+  isTranslation       Boolean @default(false)
+  translator          String?
+
+  parentPubId         Int?
+  parentPub           Publication? @relation(fields: [parentPubId], references: [id], onDelete: Cascade)
+
+  pointId             Int
+  point               Point @relation(fields: [pointId], references: [id], onDelete: Cascade)
+  media               Media[]
+}

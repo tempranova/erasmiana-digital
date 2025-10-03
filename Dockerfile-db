@@ -1,0 +1,18 @@
+#
+# NOTE: THIS DOCKERFILE IS GENERATED VIA "make update"! PLEASE DO NOT EDIT IT DIRECTLY.
+#
+
+# Use the official PostGIS image with PostgreSQL 16 and PostGIS 3.5
+FROM postgres:16
+
+# Optional: Labels for metadata
+LABEL maintainer="Victor Temprano <tempranova@gmail.com.com>" \
+      description="PostgreSQL 16 with PostGIS 3.5"
+
+RUN apt-get update && apt-get install -y \
+  postgresql-16-postgis-3 \
+  postgresql-16-postgis-3-scripts \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY ./db/initdb-postgis.sh /docker-entrypoint-initdb.d/10_postgis.sh
+COPY ./db/update-postgis.sh /usr/local/bin

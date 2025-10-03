@@ -1,0 +1,19 @@
+services:
+  erasmus_db:
+    container_name: erasmus_db
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    restart: always
+    environment:
+      POSTGRES_USER: erasmus_db_user
+      POSTGRES_PASSWORD: erasmus_db_pass
+      POSTGRES_DB: erasmus_dev_db
+    ports:
+      - 6543:5432
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+      - database_volume:/var/lib/postgresql/data
+
+volumes:
+  database_volume:
