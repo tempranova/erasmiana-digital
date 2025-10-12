@@ -1,1 +1,56 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#erasmus-chatbot .react-chatbot-kit-chat-container input[type="text"], .react-chatbot-kit-chat-container .react-chatbot-kit-chat-input {
+  font-size: 16px;
+}
+
+#erasmus-chatbot .react-chatbot-kit-chat-container {
+  @apply w-full;
+  @apply shadow-lg;
+  @apply border;
+  @apply rounded-md;
+  @apply border-slate-200;
+}
+
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message {
+  @apply ml-5;
+  @apply w-full;
+}
+
+#erasmus-chatbot .react-chatbot-kit-chat-input {
+  @apply text-black;
+}
+
+#erasmus-chatbot .ai-geocoder .mapboxgl-ctrl-geocoder {
+  @apply m-auto;
+  @apply border;
+  @apply border-black;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container h3 {
+  @apply text-lg;
+  @apply font-bold;
+  @apply mb-2.5;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container ol {
+  @apply pl-5;
+  @apply mb-2.5;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container ol li {
+  @apply list-decimal;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container ul {
+  @apply pl-5;
+  @apply mb-2.5;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container ul li {
+  @apply list-disc;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container p {
+  @apply mb-2.5;
+}
+#erasmus-chatbot .react-chatbot-kit-chat-bot-message-container a {
+  @apply underline;
+}
