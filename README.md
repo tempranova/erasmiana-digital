@@ -1,6 +1,12 @@
 # Erasmus Web Map
 
-## Notes
+## DEv setup
+- Run docker compose and npm install
+- Migrate DB, prisma generate
+- Run seed file (`npx prisma db seed`)
+
+## To Do:
+- Index the vector fields
 
 ### Data Visualization
 
@@ -69,3 +75,13 @@
 - Any museums about Erasmus I can visit?
 - Any DH sites or displays that you find particularly interesting?
 - Who are the users? What's the point of this website? Where is it going to be used? How well are things already digitized?
+
+
+
+NOTE ON DB STRUCTURE
+
+- Entry is meant either for chunks of text -- like paragraphs within a larger work, parts of letters, generally not exceeding 500 words
+  - OR for small independent pieces of work that are part of a larger work but well-defined -- like adages
+- Summary and metadata are only really useful for letters -- for huge long works the chunks will do the lifting
+
+- May add more in terms of published dates and so on

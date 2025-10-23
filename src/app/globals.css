@@ -1,8 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Fonts */
+.cardo-regular {
+  font-family: "Cardo", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.cardo-bold {
+  font-family: "Cardo", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.cardo-regular-italic {
+  font-family: "Cardo", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Chatbot testing */
 #erasmus-chatbot .react-chatbot-kit-chat-container input[type="text"], .react-chatbot-kit-chat-container .react-chatbot-kit-chat-input {
   font-size: 16px;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "erasmus-map",
+  "name": "erasmiana",
   "version": "0.1.0",
   "private": true,
   "prisma": {
@@ -17,11 +17,14 @@
     "@prisma/extension-accelerate": "^2.0.1",
     "@turf/turf": "^7.2.0",
     "ai": "^4.2.2",
-    "kysely": "^0.28.2",
+    "kysely": "^0.28.8",
     "maplibre-gl": "^5.6.1",
     "next": "15.3.4",
+    "openai": "^6.6.0",
     "openseadragon": "^5.0.1",
+    "pg": "^8.16.3",
     "postcss": "^8.5.6",
+    "prisma-kysely": "^2.2.1",
     "react": "^19.0.0",
     "react-chatbot-kit": "^2.2.2",
     "react-dom": "^19.0.0",

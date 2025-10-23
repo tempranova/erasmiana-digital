@@ -9,10 +9,16 @@ FROM postgres:16
 LABEL maintainer="Victor Temprano <tempranova@gmail.com.com>" \
       description="PostgreSQL 16 with PostGIS 3.5"
 
+# Install pgvector
+RUN apt-get update && \
+    apt-get install -y postgresql-16-pgvector && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN apt-get update && apt-get install -y \
   postgresql-16-postgis-3 \
   postgresql-16-postgis-3-scripts \
   && rm -rf /var/lib/apt/lists/*
 
 COPY ./db/initdb-postgis.sh /docker-entrypoint-initdb.d/10_postgis.sh
+COPY ./db/initdb-vector.sh /docker-entrypoint-initdb.d/20_vector.sh
 COPY ./db/update-postgis.sh /usr/local/bin
