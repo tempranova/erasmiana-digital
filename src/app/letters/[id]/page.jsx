@@ -59,7 +59,7 @@ export default async function Page({ params : { id }}) {
 
   return (
     <div>
-      <div className="fixed inset-0 -z-10 bg-right bg-cover bg-no-repeat bg-[url('/assets/erasmus-bg.png')]" />
+      <div className="fixed inset-0 -z-10 bg-right bg-cover bg-no-repeat bg-[url('/assets/erasmus-bg.jpg')]" />
       <TopNav />
       <div className="w-full m-auto max-w-7xl pb-16">
         <Work work={work} />

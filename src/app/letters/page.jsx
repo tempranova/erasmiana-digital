@@ -21,7 +21,7 @@ export default async function Page() {
 
   return (
     <div>
-      <div className="fixed inset-0 -z-10 bg-right bg-cover bg-no-repeat bg-[url('/assets/erasmus-bg.png')]" />
+      <div className="fixed inset-0 -z-10 bg-right bg-cover bg-no-repeat bg-[url('/assets/erasmus-bg.jpg')]" />
       <TopNav />
       <div className="m-auto max-w-7xl -mt-[50px]">
         <div className="w-2/3 ml-auto bg-gray-200 p-4">

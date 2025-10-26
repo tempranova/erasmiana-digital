@@ -15,7 +15,7 @@ export default function Page() {
   ]
 
   return (
-    <div className="min-h-screen bg-cover bg-right bg-[url('/assets/erasmus-bg.png')]">
+    <div className="min-h-screen bg-cover bg-right bg-[url('/assets/erasmus-bg.jpg')]">
       <TopNav />
       <div className="w-full m-auto max-w-7xl -mt-20 pt-28 h-screen p-8">
         <div className="text-black cardo-regular text-xl">

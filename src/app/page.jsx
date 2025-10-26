@@ -25,7 +25,7 @@ export default function Home() {
           <FakeWaveform />
         </div>
       </div>
-      <div className="w-full bg-cover bg-right bg-[url('/assets/erasmus-bg.png')]">
+      <div className="w-full bg-cover bg-right bg-[url('/assets/erasmus-bg.jpg')]">
 
       </div>
     </div>
