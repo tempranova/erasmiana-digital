@@ -15,12 +15,8 @@ async function main() {
       let newWork = await prisma.work.create({
         data : {
           title : thisLetter.work.title,
-          secondary_title : thisLetter.work.secondary_title,
-          reference : thisLetter.work.reference,
-          notes : thisLetter.work.notes,
-          pages : thisLetter.work.pages,
-          date_text : thisLetter.work.date_text,
-          placename : thisLetter.work.placename,
+          type : "letter",
+          alt_title : thisLetter.work.alt_title,
           entries : {
             createMany : {
               data : thisLetter.entries.map(entry => {
@@ -29,6 +25,47 @@ async function main() {
                   position : entry.position
                 }
               })
+            }
+          },
+          commentaries : {
+            createMany : {
+              data : thisLetter.commentary.map(commentary => {
+                return {
+                  text : commentary.text,
+                  commentator : commentary.commentator
+                }
+              })
+            }
+          },
+          translations : {
+            createMany : {
+              data : thisLetter.translations.map(translation => {
+                return {
+                  text : translation.text,
+                  translator : translation.translator,
+                  language : translation.language,
+                }
+              })
+            }
+          },
+          entries : {
+            createMany : {
+              data : thisLetter.entries.map(entry => {
+                return {
+                  text : entry.text,
+                  position : entry.position
+                }
+              })
+            }
+          },
+          metadata : {
+            create : {
+              volume : thisLetter.metadata.volume.toString(),
+              reference : thisLetter.metadata.reference,
+              placename : thisLetter.metadata.placename,
+              pages : thisLetter.metadata.pages,
+              date_text : thisLetter.metadata.date_text,
+              related_to : thisLetter.metadata.related_to,
             }
           },
           summary : {
@@ -54,21 +91,21 @@ async function main() {
           themes : true
         }
       });
-      
+
       const summaryVector = `[${thisLetter.summary.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`
         UPDATE "Summary"
         SET vector_small = '${summaryVector}'::vector
         WHERE id = ${newWork.summary.id};
       `)
-      
+
       const themeVector = `[${thisLetter.themes.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`
         UPDATE "Themes"
         SET vector_small = '${themeVector}'::vector
         WHERE id = ${newWork.themes.id};
       `)
-      
+
       const keywordVector = `[${thisLetter.keywords.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`
         UPDATE "Keywords"

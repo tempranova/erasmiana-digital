@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
-export default function Search() {
+export default function Search({ setResults }) {
 
   const [ searchText, setSearchText ] = useState("")
-  const [ results, setResults ] = useState([])
 
   const doSearch = async () => {
     const searchResults = await fetch('/api/search', {
@@ -14,27 +14,29 @@ export default function Search() {
       })
     }).then(resp => resp.json())
 
-    setResults(searchResults)
+    if(searchResults.error) {
+      toast(searchResults.error)
+    } else if(searchResults.length === 0) {
+      toast("No results found.")
+    } else {
+      setResults(searchResults)
+    }
   }
 
   return (
     <div>
-      <div className="mb-4 flex gap-4">
-        <input className="w-3/4 p-4 bg-white border-1 border-slate-200 rounded-md" type="text" value={searchText} onChange={(e) => setSearchText(e.target.value)} />
-        <button className="w-1/4 p-4 bg-green-950 rounded-md text-white text-xl" onClick={() => doSearch()}>Search</button>
-      </div>
-
-      <div>
-        {results.map((result, i) => {
-          return (
-            <div key={`search-result-${i}`} className="mb-4 bg-white rounded-md p-4">
-              {result.text}
-              <div className="mt-4 text-sm">
-                Result confidence: {result.distance}
-              </div>
-            </div>
-          )
-        })}
+      <div className="mb-4">
+        <textarea
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="p-4 bg-white border border-black text-black w-full rounded-md"
+          placeholder="Type (in natural language) whatever you'd like to learn from Erasmus's letters."
+        />
+        <div
+          onClick={() => doSearch()}
+          className="-mt-1 w-[100px] bg-black border border-gray-500 text-white text-xl text-center px-4 py-2 rounded-md w-full cursor-pointer hover:bg-gray-900">
+          Search
+        </div>
       </div>
     </div>
   )

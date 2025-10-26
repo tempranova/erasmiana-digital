@@ -26,7 +26,7 @@ model Entry {
   vector_large        Unsupported("vector(3072)")?
   text                String
   position            Int?
-  workId              Int 
+  workId              Int
   work                Work @relation(fields: [workId], references: [id], onDelete: Cascade)
   translations        Translation[]
   commentaries        Commentary[]
@@ -64,9 +64,10 @@ model Translation {
   translator          String?
   text                String
   language            String
-  workId              Int? 
+  url                 String?
+  workId              Int?
   work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
-  entryId             Int? 
+  entryId             Int?
   entry               Entry? @relation(fields: [entryId], references: [id], onDelete: Cascade)
 }
 
@@ -75,19 +76,18 @@ model Commentary {
   commentator         String?
   text                String
   url                 String?
-  workId              Int? 
+  workId              Int?
   work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
-  entryId             Int? 
+  entryId             Int?
   entry               Entry? @relation(fields: [entryId], references: [id], onDelete: Cascade)
 }
 
-model Work {
+model Metadata {
 	id                  Int @id @default(autoincrement())
-  title               String
-  secondary_title     String?
   reference           String?
+  volume              String?
   pages               Int[]
-  notes               String?
+  related_to          String?
   year                Int?
   season              Int?
   month               Int?
@@ -95,8 +95,19 @@ model Work {
   date_text           String?
   placename           String?
   geometry            Unsupported("geometry(Point, 4326)")?
+  workId              Int? @unique
+  work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
+}
+
+model Work {
+	id                  Int @id @default(autoincrement())
+  title               String
+  type                String?
+  alt_title           String?
+  notes               String?
   entries             Entry[]
-  summary             Summary? 
+  metadata            Metadata?
+  summary             Summary?
   keywords            Keywords?
   themes              Themes?
   translations        Translation[]
@@ -108,6 +119,6 @@ model Source {
 	id                  Int @id @default(autoincrement())
   name                String?
   url                 String?
-  workId              Int? 
+  workId              Int?
   work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
 }

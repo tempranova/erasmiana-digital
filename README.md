@@ -6,7 +6,21 @@
 - Run seed file (`npx prisma db seed`)
 
 ## To Do:
+- Sorting letters by dates, people, etc
+- Adding a direct match text search
+- Creating comprehensive search page
+- Adding disclaimer for errors, Greek, etc
+- Searching also update query params for going back
+
+- The design should incorporate more backgrounds, etc? But needs to still be solid and very easy to navigate and link
+- Trying to figure out the Greek shit??
+- Possibly parsing apart https://www.dbnl.org/tekst/eras001corr01_01/ to get Dutch translations to link in
 - Index the vector fields
+
+Considerations:
+- URLs for pages, should they be the letter number instead? Is it reliable enough?
+- Links don't work on right-clicking
+- Letters page should have a list of letters as well, just be able to go through them in a simple list
 
 ### Data Visualization
 
@@ -42,7 +56,7 @@
   - Ohterwise really nicely ilustrated in a gothic kind of style, with straightforward pins on it
   - Almost the idea of switching between a high-level world map and individual city maps
   - Kind of a cool straightforward map: https://oyster.ignimgs.com/mediawiki/apis.ign.com/assassins-creed-vikings/f/f5/AllianceMapFull.jpg
-  - 
+  -
 
 - Possibilities
   - Might be worth creating a kind of relief map with general sense of European geographic features in Northwestern Europe
@@ -65,12 +79,12 @@
 - What do people find most fascinating or interesting about Erasmus? General public vs academic inquiries? Yourself?
 - What do people not know about Erasmus that's interesting?
 - What are Erasmus's biggest impacts on European life and thought?
-- What value do you think a timeline-style look at Erasmus's life might have? 
+- What value do you think a timeline-style look at Erasmus's life might have?
 - What kind of view of time did Erasmus or people in his era have? What cycles defined his life on a yearly or more-than-yearly basis?
   - Were there patterns of publication or letters at certain times of year, did he get sick regularly, was he at schools and seminaries, etc?
 - How might Erasmus have divided up and looked at his own life? By place, by book, by particular concept, by outside historical events?
-- What's most undervalued about Erasmus? 
-- How connected was he? 
+- What's most undervalued about Erasmus?
+- How connected was he?
 - When people ask "and why did Erasmus matter" what is a good answer?
 - Any museums about Erasmus I can visit?
 - Any DH sites or displays that you find particularly interesting?

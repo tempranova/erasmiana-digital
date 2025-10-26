@@ -23,6 +23,20 @@ export type Keywords = {
     keywords: string[];
     workId: number;
 };
+export type Metadata = {
+    id: Generated<number>;
+    reference: string | null;
+    volume: string | null;
+    pages: number[];
+    related_to: string | null;
+    year: number | null;
+    season: number | null;
+    month: number | null;
+    day: number | null;
+    date_text: string | null;
+    placename: string | null;
+    workId: number | null;
+};
 export type Source = {
     id: Generated<number>;
     name: string | null;
@@ -44,27 +58,22 @@ export type Translation = {
     translator: string | null;
     text: string;
     language: string;
+    url: string | null;
     workId: number | null;
     entryId: number | null;
 };
 export type Work = {
     id: Generated<number>;
     title: string;
-    secondary_title: string | null;
-    reference: string | null;
-    pages: number[];
+    type: string | null;
+    alt_title: string | null;
     notes: string | null;
-    year: number | null;
-    season: number | null;
-    month: number | null;
-    day: number | null;
-    date_text: string | null;
-    placename: string | null;
 };
 export type DB = {
     Commentary: Commentary;
     Entry: Entry;
     Keywords: Keywords;
+    Metadata: Metadata;
     Source: Source;
     Summary: Summary;
     Themes: Themes;

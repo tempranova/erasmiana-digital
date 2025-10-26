@@ -17,6 +17,7 @@
     "@prisma/extension-accelerate": "^2.0.1",
     "@turf/turf": "^7.2.0",
     "ai": "^4.2.2",
+    "framer-motion": "^12.23.24",
     "kysely": "^0.28.8",
     "maplibre-gl": "^5.6.1",
     "next": "15.3.4",
@@ -28,7 +29,8 @@
     "react": "^19.0.0",
     "react-chatbot-kit": "^2.2.2",
     "react-dom": "^19.0.0",
-    "react-markdown": "^10.1.0"
+    "react-markdown": "^10.1.0",
+    "react-toastify": "^11.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.11",

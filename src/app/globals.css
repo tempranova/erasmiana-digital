@@ -1,11 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-black;
+  height: 100%;
+}
+
+/* Animation */
+.animator-fader {
+  transition: 0.7s;
+  opacity: 1;
+}
+.animator-fader.fade {
+  opacity: 0;
+}
+
+#erasmiana-logo {
+  transition: 0.7s ease-in-out;
+}
+#erasmiana-logo-fixed {
+  display: none;
+}
+
 /* Fonts */
+.im-fell-dw-pica-regular {
+  font-family: "IM Fell DW Pica", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.im-fell-dw-pica-regular-italic {
+  font-family: "IM Fell DW Pica", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
 .cardo-regular {
   font-family: "Cardo", serif;
   font-weight: 400;
