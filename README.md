@@ -6,6 +6,10 @@
 - Run seed file (`npx prisma db seed`)
 
 ## To Do:
+- Figuring out deployment before going to library, seed remote DB
+
+- Playing with dates and places and mapping
+
 - Sorting letters by dates, people, etc
 - Adding a direct match text search
 - Creating comprehensive search page
