@@ -34,6 +34,7 @@ export type Metadata = {
     month: number | null;
     day: number | null;
     date_text: string | null;
+    place_text: string | null;
     placename: string | null;
     workId: number | null;
 };

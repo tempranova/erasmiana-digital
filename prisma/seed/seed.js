@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 import importJSON from '../data/seed-1.json' with { type: "json" };
+import placenames from '../data/placenames.json' with { type: "json" };
 
 const prisma = new PrismaClient();
 
@@ -11,6 +12,8 @@ async function main() {
     for(let i=0; i < importJSON.letters.length; i++) {
 
       let thisLetter = importJSON.letters[i];
+
+      const thisPlacename = placenames.find(place => thisLetter.metadata.place_text.indexOf(place.place_raw) > -1);
 
       let newWork = await prisma.work.create({
         data : {
@@ -62,7 +65,12 @@ async function main() {
             create : {
               volume : thisLetter.metadata.volume.toString(),
               reference : thisLetter.metadata.reference,
-              placename : thisLetter.metadata.placename,
+              placename : thisPlacename ? thisPlacename.normalized_name : "",
+              place_text : thisLetter.metadata.place_text,
+              year : parseInt(thisLetter.metadata.year),
+              month : parseInt(thisLetter.metadata.month),
+              season : parseInt(thisLetter.metadata.season),
+              day : parseInt(thisLetter.metadata.day),
               pages : thisLetter.metadata.pages,
               date_text : thisLetter.metadata.date_text,
               related_to : thisLetter.metadata.related_to,
@@ -91,6 +99,15 @@ async function main() {
           themes : true
         }
       });
+
+      if(thisPlacename) {
+        const geometry = { type : "Point", coordinates : [parseFloat(thisPlacename.lng), parseFloat(thisPlacename.lat)] }
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Metadata"
+          SET geometry = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
+          WHERE id = ${newWork.summary.id};
+        `)
+      }
 
       const summaryVector = `[${thisLetter.summary.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`

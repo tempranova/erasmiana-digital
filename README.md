@@ -11,33 +11,31 @@
 - `npx prisma db seed`
 
 ## To Do:
-- Playing with dates and places and mapping
 - Improving further the OCR, going through looking for issues
-  - Numbers (remove via regex probably)
   - Sometimes random characters on lines
-  - Splitting doesn't split properly (60 or so?)
-  - Translation cut off (letter 61)
+  - Translation cut off (letter 61) - means chunking, plus chunking the translation
+  - In the Metadata, I could include a "from" and "to" field, it's not a bad idea
 
 
-- Removing fade links from secondary pages
 - Sorting letters by dates, people, etc
 - Adding a direct match text search
 - Creating comprehensive search page
 - Adding disclaimer for errors, Greek, etc
-- Searching also update query params for going back
-- Maybe removing line counts since there's no many text errors
-- Too much back button presses needed when in letters due to tab switching (remove from history)
+- Searching also update query params for going back (save result IDs?)
+- Building in a way to send/submit fixes is probably reasonably important
+- review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
 
-- The design should incorporate more backgrounds, etc? But needs to still be solid and very easy to navigate and link
+- Improving mapping of who wrote TO him and FROM him
+
 - Trying to figure out the Greek shit??
 - Possibly parsing apart https://www.dbnl.org/tekst/eras001corr01_01/ to get Dutch translations to link in
 - Index the vector fields
 - Setting up static page generation
 
+- Nicer background transition into pages
+
 Considerations:
 - URLs for pages, should they be the letter number instead? Is it reliable enough?
-- Links don't work on right-clicking
-- Letters page should have a list of letters as well, just be able to go through them in a simple list
 - Doing a second pass on letters to improve the Latin text...
 
 ### Data Visualization

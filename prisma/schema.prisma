@@ -93,6 +93,7 @@ model Metadata {
   month               Int?
   day                 Int?
   date_text           String?
+  place_text          String?
   placename           String?
   geometry            Unsupported("geometry(Point, 4326)")?
   workId              Int? @unique
