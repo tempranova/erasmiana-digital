@@ -1,7 +1,7 @@
 import Script from 'next/script'
 import { ToastContainer } from 'react-toastify';
 
-import Logo from '@/components/nav/logo'
+import SideNav from '@/components/nav/side-nav'
 
 import "./globals.css";
 
@@ -21,17 +21,18 @@ export default function RootLayout({ children }) {
       <body
         className={`im-fell-dw-pica-regular antialiased`}
       >
-        <ToastContainer />
-        <Logo margin={true} id="erasmiana-logo-fixed" />
-        <div id="animator" className="animator-fader fade h-full">
-          {children}
+        <div className="min-h-screen">
+          <SideNav />
+          <div className="ml-[170px]">
+            {children}
+          </div>
         </div>
+        <ToastContainer />
         <audio id="erasmusAudio" loop>
           <source src="/audio/ave-maria.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
       </body>
-      <Script src="/scripts/animate.js" />
     </html>
   );
 }

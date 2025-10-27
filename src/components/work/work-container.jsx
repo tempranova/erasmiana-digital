@@ -21,7 +21,7 @@ export default function TextContainer({ work }) {
   useEffect(() => {
     const url = new URL(window.location)
     url.searchParams.set("tab", currentTab)
-    history.pushState(null, '', url);
+    window.history.replaceState({}, "", url);
   }, [currentTab])
 
   return (

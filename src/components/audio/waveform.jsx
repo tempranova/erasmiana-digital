@@ -13,7 +13,7 @@ export default function FakeWaveform() {
   }, [bars]);
 
   return (
-    <div className="mb-4 ml-[100px] absolute bottom-0 flex items-center justify-center">
+    <div className="flex items-center justify-center">
       {audioOn ? 
         <svg className="cursor-pointer" onClick={() => {
           document.getElementById('erasmusAudio').pause();
@@ -29,7 +29,7 @@ export default function FakeWaveform() {
           <path d="M1129.433 113v1694.15H903.547l-451.774-451.773V564.773L903.547 113h225.886ZM338.83 564.773v790.604H169.415c-92.806 0-167.9-74.166-169.392-166.609L0 1185.962V734.188c0-92.805 74.166-167.9 166.608-169.392l2.807-.023H338.83ZM1789.951 635 1920 764.926 1724.988 959.94 1920 1154.95 1789.951 1285l-194.89-195.012L1400.05 1285 1270 1154.951l195.012-195.012L1270 764.926 1400.049 635l195.012 195.012L1789.951 635Z" fillRule="evenodd"/>
         </svg>
       }
-      <div className="ml-4 flex items-end gap-[2px] h-6 w-32">
+      <div className="ml-4 flex items-end gap-[2px] h-6">
         {bars.map((h, i) => (
           <div
             key={i}

@@ -1,7 +1,6 @@
 import { db } from '@/lib/db/kysely'
-import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
+import { jsonObjectFrom } from 'kysely/helpers/postgres'
 
-import TopNav from '@/components/nav/top-nav'
 import SearchContainer from '@/components/search/search-container'
 import LetterIndex from '@/components/letters/letter-index';
 
@@ -20,23 +19,22 @@ export default async function Page() {
       .execute()
 
   return (
-    <div>
-      <div className="fixed inset-0 -z-10 bg-right bg-cover bg-no-repeat bg-[url('/assets/erasmus-bg.jpg')]" />
-      <TopNav />
-      <div className="m-auto max-w-7xl -mt-[50px]">
-        <div className="w-2/3 ml-auto bg-gray-200 p-4">
+    <div className="w-full min-h-screen h-full bg-[url('/assets/erasmus-bg-2.png')] bg-cover bg-center bg-no-repeat bg-[#1d1f1b] bg-blend-overlay p-16">
+      <div className="max-w-7xl bg-white/90 relative p-8">
+        <div className="text-xl cardo-regular">
+          <h1 className="im-fell-dw-pica-regular text-4xl mb-4">The Letters of Erasmus</h1>
           <p>Erasmus wrote and published thousands of letters during his lifetime. They touch on many subjects, from his struggles with money to jokes with friends; also included are exchanges with future kings, discussions of travel, and trading of praise and questions.</p>
           <p className="mt-4">Search these letters using natural language to find more related to any subject you might be interested in.</p>
         </div>
-      </div>
-      <div className="w-full m-auto max-w-7xl pb-16">
-        <div className="grid grid-cols-2 gap-8">
-          <SearchContainer
-            searchTitle="Search Erasmus's Letters:"
-            placeholder="Type (in natural language) whatever you'd like to learn from Erasmus's letters."
-          />
-          <div className="mt-9">
-            <LetterIndex allLetters={allLetters} />
+
+        <div className="w-full m-auto max-w-7xl pb-16">
+          <div className="grid grid-cols-1 gap-8">
+            <SearchContainer
+              placeholder="Type (in natural language) whatever you'd like to learn from Erasmus's letters."
+            />
+            <div className="mt-4">
+              <LetterIndex allLetters={allLetters} />
+            </div>
           </div>
         </div>
       </div>

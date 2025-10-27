@@ -1,14 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import Link from '@/components/nav/link';
+import Link from 'next/link'
 
 export default function SearchResults({ results }) {
 
-  console.log(results)
-
   return (
-    <div className="grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-3 gap-8">
       {results.map((result, i) => {
         return (
           <div key={`result-${i}`} className="bg-white rounded-md p-4 relative pb-18">

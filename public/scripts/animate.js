@@ -1,2 +1,2 @@
 /* Super simple CSS animation */
-document.getElementById('animator').classList.remove("fade")
+// document.getElementById('animator').classList.remove("fade")

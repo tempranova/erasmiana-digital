@@ -1,11 +1,9 @@
 'use client';
 import { useState } from 'react';
 
-import Link from '@/components/nav/link';
+import Link from 'next/link'
 
 export default function LetterIndex({ allLetters }) {
-
-  console.log(allLetters)
 
   const groupedArray = Object.values(
     allLetters.reduce((acc, letter) => {
@@ -20,12 +18,10 @@ export default function LetterIndex({ allLetters }) {
     return av > bv ? 1 : av < bv ? -1 : 0
   })
 
-  console.log(groupedArray)
-
   return (
     <div className="bg-white w-full rounded-md p-4">
       <h3 className="text-2xl">All Letters</h3>
-      <div>
+      <div className="grid grid-cols-2 gap-8">
         {groupedArray.map((letterGroup, i) => {
           return (
             <details key={`letter-group-${i}`} className="mt-4">
