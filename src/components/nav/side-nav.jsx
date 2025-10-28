@@ -40,6 +40,9 @@ export default function SideNav({}) {
           </div>
           <div className="mt-22 w-full text-white text-3xl im-fell-dw-pica-regular flex flex-col gap-4 items-center">
             <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
+              <div onClick={() => animateLink("/debate")}>Debate</div>
+            </div>
+            <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
               <div onClick={() => animateLink("/search")}>Search</div>
             </div>
             <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">

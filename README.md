@@ -1,5 +1,21 @@
 # Erasmus Web Map
 
+## Some guiding principles
+
+Hopefully, these principles are at least related to and draw from Erasmus himself in the way we're creating and opening up this site.
+- Offering something to the value of public debate
+- Encouraging people to go look at the original sources themselves and learn more
+- Encouraging open education and self-learning
+- Opening debate as the method to learn more and improve oneself and find the beautiful (debate AI)
+- Allowing input from all parties, corrections and group effort to improve the resource
+- Linking out to others, giving credit to others
+- Having a strong, well-branded and marketed presence that is appealing
+- Using humour and some fun?
+- Encouraging a reflective tone that opens up a deeper sense of time and thought
+
+- Having exhibitions and central repository of great questions about Erasmus
+- Spot for collections of articles and books on Erasmus
+
 ## DEv setup
 - Run docker compose and npm install
 - Migrate DB, prisma generate
@@ -11,32 +27,40 @@
 - `npx prisma db seed`
 
 ## To Do:
-- Improving further the OCR, going through looking for issues
-  - Sometimes random characters on lines
-  - Translation cut off (letter 61) - means chunking, plus chunking the translation
-  - In the Metadata, I could include a "from" and "to" field, it's not a bad idea
 
+Major
+- Checking out building the AI to "talk and debate" with Erasmus
+- Chunking the letters and redoing translation
+- Adding "from" and "to" to letter metadata
+- Trying to parse and add Dutch translation links (also add to sources)
+- Adding major translations (English one to sources)
+- Testing a first text (Praise of Folly) -- working with scripts on this to chunk, translate, draw out meanings, insert into DB, display
+- A way to submit tickets for fixes (new section in DB for fixes)
+- Index the vector fields
 
+Interface
+- Multilingualize
 - Sorting letters by dates, people, etc
 - Adding a direct match text search
 - Creating comprehensive search page
-- Adding disclaimer for errors, Greek, etc
+- Adding disclaimers:
+  - Errors, missing Greek, letters duplicated on some pages due to Allen not separating them, AI translation inadequate
+  - Linking to the values of the project so that it's clear what we're trying to do
 - Searching also update query params for going back (save result IDs?)
-- Building in a way to send/submit fixes is probably reasonably important
 - review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
-
-- Improving mapping of who wrote TO him and FROM him
-
-- Trying to figure out the Greek shit??
-- Possibly parsing apart https://www.dbnl.org/tekst/eras001corr01_01/ to get Dutch translations to link in
-- Index the vector fields
 - Setting up static page generation
-
 - Nicer background transition into pages
+- A first basic "exhibition" page for images of Erasmus over time
+  - Another one might be pictures of the cities he lived in
+  - Letter delivery in Erasmus's time
+- Central page for Bibliography, finding more out about Erasmus, Erasmus articles etc
 
-Considerations:
-- URLs for pages, should they be the letter number instead? Is it reliable enough?
-- Doing a second pass on letters to improve the Latin text...
+Data visualization
+- Improving mapping of who wrote TO him and FROM him
+- Experimenting with other basemaps
+- Adding timeline to see how many letters written in certain times
+- Timeline journeys around Europe like a video game (moving character of Erasmus with images beside of the cities he moves in, animated weather effects, language noises)
+
 
 ### Data Visualization
 
