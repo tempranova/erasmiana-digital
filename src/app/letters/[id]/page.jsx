@@ -1,7 +1,7 @@
 import { db } from '@/lib/db/kysely'
 import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 
-import Work from '@/components/work/work-container';
+import LetterContainer from '@/components/letter/letter-container';
 
 export const dynamic = 'force-static';
 export const revalidate = false;
@@ -48,7 +48,7 @@ export default async function Page({ params : { id }}) {
   return (
     <div className="w-full min-h-screen h-full bg-[url('/assets/erasmus-bg-2.png')] bg-cover bg-center bg-no-repeat bg-[#1d1f1b] bg-blend-overlay p-16">
       <div className="w-full m-auto max-w-7xl pb-16">
-        <Work work={letter} />
+        <LetterContainer letter={letter} />
       </div>
     </div>
   );

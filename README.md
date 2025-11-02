@@ -29,16 +29,19 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 ## To Do:
 
 Major
-- Testing search across all entries / works etc and linking correctly
-- Cleaning up book display and separating letters from books
-- Adding years to books, some basic publication data 
-- Cleaning up data section and improve layout
+- Have John prepare a list for me of all Erasmus's publications and their published dates/places of publication
+
 - Integrating Bodleian into seed file for letters
-- A way to submit tickets for fixes (new section in DB for fixes)
+- Adding search filters (semantic / text, letters / books / specific books)
+- Sorting letters and books
+- Adding more data visualizations
+- Adding more books
+- Multilingualize
+- Disclaimers and beta notices
 - Index the vector fields
 
-- Have John prepare a list for me of all Erasmus's publications and their published dates/places of publication
-- Adding more books
+
+- A way to submit tickets for fixes (new section in DB for fixes)
 - Testing OCRing the English translation that's out of copyright
 - Considering doing the semantic embedding using the Dutch translations instead
 

@@ -31,15 +31,22 @@ export const POST = async (req, route) => {
       .select((eb) => [
         sql`vector_small <=> ${vectorLiteral}::vector`.as('distance'),
         jsonObjectFrom(
-          eb.selectFrom('Work')
-            .select(['id', 'title', 'alt_title', 'type'])
-            .whereRef('Work.id', '=', 'Summary.workId')
-        ).as('work'),
+          eb.selectFrom('Letter')
+            .select(['id', 'title', 'alt_title', 'reference', 'year', 'month', 'day', 'date_text', 'placename', 'place_text'])
+            .whereRef('Letter.id', '=', 'Summary.letterId')
+        ).as('letter'),
         jsonObjectFrom(
-          eb.selectFrom('Metadata')
-            .select(['id', 'date_text', 'placename', 'reference'])
-            .whereRef('Metadata.workId', '=', 'Summary.workId')
-        ).as('metadata'),
+          eb.selectFrom('Section')
+            .select((eb) => [
+              'id', 'title',
+              jsonObjectFrom(
+                eb.selectFrom('Book')
+                  .select(['id', 'title', 'alt_title', 'year', 'month', 'day', 'placename'])
+                  .whereRef('Section.bookId', '=', 'Book.id')
+              ).as('book')
+            ])
+            .whereRef('Section.id', '=', 'Summary.sectionId')
+        ).as('section')
       ])
       .orderBy('summary')
       .orderBy('distance')

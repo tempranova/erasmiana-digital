@@ -1,8 +1,6 @@
 import { db } from '@/lib/db/kysely'
-import { jsonObjectFrom } from 'kysely/helpers/postgres'
 
-import SearchContainer from '@/components/search/search-container'
-import LetterIndex from '@/components/letters/letter-index';
+import LetterIndex from '@/components/letter/letter-index';
 
 export default async function Page() {
 
@@ -18,14 +16,10 @@ export default async function Page() {
         <div className="text-xl cardo-regular">
           <h1 className="im-fell-dw-pica-regular text-4xl mb-4">The Letters of Erasmus</h1>
           <p>Erasmus wrote and published thousands of letters during his lifetime. They touch on many subjects, from his struggles with money to jokes with friends; also included are exchanges with future kings, discussions of travel, and trading of praise and questions.</p>
-          <p className="mt-4">Search these letters using natural language to find more related to any subject you might be interested in.</p>
         </div>
 
         <div className="w-full m-auto max-w-7xl pb-16">
           <div className="grid grid-cols-1 gap-8">
-            <SearchContainer
-              placeholder="Type (in natural language) whatever you'd like to learn from Erasmus's letters."
-            />
             <div className="mt-4">
               <LetterIndex allLetters={allLetters} />
             </div>

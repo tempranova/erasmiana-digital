@@ -11,10 +11,27 @@ export default async function Page({ params : { id }}) {
   const book = await db.selectFrom('Book')
     .where('id', '=', id)
     .select((eb) => [
-      'id', 'title', 'alt_title', 
+      'id', 'title', 'alt_title', 'placename', 'month', 'year',
       jsonArrayFrom(
         eb.selectFrom('Section')
-          .select(['id', 'title', 'position', 'text'])
+          .select((eb) => [
+            'id', 'title', 'position', 'text',
+            jsonObjectFrom(
+              eb.selectFrom('Summary')
+                .select(['id', 'text'])
+                .whereRef('Summary.sectionId', '=', 'Section.id')
+            ).as('summary'),
+            jsonObjectFrom(
+              eb.selectFrom('Themes')
+                .select(['id', 'themes'])
+                .whereRef('Themes.sectionId', '=', 'Section.id')
+            ).as('themes'),
+            jsonObjectFrom(
+              eb.selectFrom('Keywords')
+                .select(['id', 'keywords'])
+                .whereRef('Keywords.sectionId', '=', 'Section.id')
+            ).as('keywords'),
+          ])
           .whereRef('Section.bookId', '=', 'Book.id')
       ).as('sections'),
       jsonArrayFrom(

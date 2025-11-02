@@ -2,17 +2,17 @@
 
 import React, { useEffect, useState } from 'react';
 
-export default function Sources({ work }) {
+export default function Sources({ letter }) {
 
   return (
     <div>
       <div className="p-8">
         Here are some sources to find out more about this letter.
         <div className="mt-4 pt-4 border-t border-gray-300">
-          {work.sources.map((source, i) => {
+          {letter.sources.map((source, i) => {
             return (
               <div key={`source-${i}`}>
-                <div className="text-xl">{i + 1}. {source.book}, {source.author}</div>
+                <div className="text-xl">{i + 1}. {source.publication}, {source.author}</div>
                 <a className="ml-5 text-green-800 text-lg italic flex items-center" href={source.url} target="_blank">
                   {source.title}
                   <svg className="ml-2" width="15" height="15" viewBox="0 0 20 20" fill="#2E7D32" stroke="#2E7D32" xmlns="http://www.w3.org/2000/svg">

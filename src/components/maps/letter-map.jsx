@@ -75,7 +75,7 @@ export default function MapContainer({ letter_points }) {
   return (
     <div 
       id="erasmus-map"
-      className="w-full h-screen" 
+      className="w-full h-[50vh]" 
     />
   )
 }
