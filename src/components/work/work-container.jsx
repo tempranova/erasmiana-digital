@@ -29,8 +29,8 @@ export default function TextContainer({ work }) {
       <div className="text-md">
         <div className="py-4">
           <h1 className="capitalize text-white text-4xl text-white text-shadow-md text-shadow-black">{work.title.toLowerCase()}</h1>
-          <h5 className="mt-2 text-2xl text-white text-shadow-md text-shadow-black">{work.metadata.reference}. {work.alt_title}</h5>
-          <h4 className="text-right text-xl text-white italic text-shadow-md text-shadow-black">{work.metadata.date_text}, {work.metadata.placename}</h4>
+          <h5 className="mt-2 text-2xl text-white text-shadow-md text-shadow-black">{work.reference}. {work.alt_title}</h5>
+          <h4 className="text-right text-xl text-white italic text-shadow-md text-shadow-black">{work.date_text}, {work.placename}</h4>
         </div>
         <div className="bg-white rounded-lg shadow-md cardo-regular min-h-[800px]">
           <ul className="flex justify-center text-xl flex-wrap">

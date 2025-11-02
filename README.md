@@ -29,17 +29,40 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 ## To Do:
 
 Major
-- Checking out building the AI to "talk and debate" with Erasmus
-- Chunking the letters and redoing translation
-- Adding "from" and "to" to letter metadata
-- Trying to parse and add Dutch translation links (also add to sources)
-- Adding major translations (English one to sources)
-- Testing a first text (Praise of Folly) -- working with scripts on this to chunk, translate, draw out meanings, insert into DB, display
+- Testing search across all entries / works etc and linking correctly
+- Cleaning up book display and separating letters from books
+- Adding years to books, some basic publication data 
+- Cleaning up data section and improve layout
+- Integrating Bodleian into seed file for letters
 - A way to submit tickets for fixes (new section in DB for fixes)
 - Index the vector fields
 
+- Have John prepare a list for me of all Erasmus's publications and their published dates/places of publication
+- Adding more books
+- Testing OCRing the English translation that's out of copyright
+- Considering doing the semantic embedding using the Dutch translations instead
+
+Sources:
+- Some English translations (out of copyright!) (https://archive.org/details/epistlesoferasm01eras/page/n91/mode/2up?utm_source=chatgpt.com) - by dates
+  - https://archive.org/details/01919866.1690.emory.edu/page/41/mode/2up
+  - https://archive.org/details/01919866.1692.emory.edu/page/453/mode/2up
+  - https://archive.org/details/epistlesoferasmu03eras/page/376/mode/2up
+
+- French (https://www.gallimard.fr/catalogue/correspondance-1-1484-1514/9782070269778) - by dates
+- Major Toronto publications (https://utppublishing.com/action/doSearch?AllField=Correspondence+of+Erasmus) - can split up by letters
+- https://emlo.bodleian.ox.ac.uk/forms/advanced?col_cat=Erasmus%2C+Desiderius&start=0 SUPER good source listing the different publications!!
+  - Also has origin and destination... fantastic!
+
+- "who's who" in the letters : https://utppublishing.com/doi/book/10.3138/9780802085771
+- Sort of generally about the lettrs :https://www.brepols.net/products/IS-9782503530307-1
+- Ambiguity and problems in letter data : https://speakerdeck.com/culturesofknowledge/christoph-kudella-erasmus-and-the-sixteenth-century-respublica-litteraria?slide=9 (https://www.culturesofknowledge.org/?page_id=4472) actually very cool, very in-depth for 2013
+
+- Nice review about the collected works (https://bmcr.brynmawr.edu/1992/1992.05.12/?utm_source=chatgpt.com)
+
+
 Interface
 - Multilingualize
+- Adding general sources to letter front page and note about how assembled/created
 - Sorting letters by dates, people, etc
 - Adding a direct match text search
 - Creating comprehensive search page

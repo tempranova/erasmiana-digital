@@ -46,13 +46,13 @@ export default function SideNav({}) {
               <div onClick={() => animateLink("/search")}>Search</div>
             </div>
             <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-              <div onClick={() => animateLink("/letters")}>Books</div>
+              <div onClick={() => animateLink("/books")}>Books</div>
             </div>
             <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
               <div onClick={() => animateLink("/letters")}>Letters</div>
             </div>
             <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-              <div onClick={() => animateLink("/letters")}>Data</div>
+              <div onClick={() => animateLink("/data")}>Data</div>
             </div>
             <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
               <div onClick={() => animateLink("/about")}>About</div>

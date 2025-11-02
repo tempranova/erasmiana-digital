@@ -6,15 +6,9 @@ import LetterIndex from '@/components/letters/letter-index';
 
 export default async function Page() {
 
-  const allLetters = await db.selectFrom('Work')
-      .where('type', '=', 'letter')
+  const allLetters = await db.selectFrom('Letter')
       .select((eb) => [
-        'Work.id', 'Work.title', 'Work.alt_title',
-        jsonObjectFrom(
-          eb.selectFrom('Metadata')
-            .select(['id', 'reference', 'date_text', 'placename', 'volume', 'related_to'])
-            .whereRef('Metadata.workId', '=', 'Work.id')
-        ).as('metadata')
+        'id', 'title', 'alt_title', 'reference', 'date_text', 'placename', 'volume', 'related_to',
       ])
       .execute()
 

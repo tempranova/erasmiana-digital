@@ -1,41 +1,154 @@
 import { PrismaClient } from '@prisma/client'
 
-import importJSON from '../data/seed-1.json' with { type: "json" };
+import letterJSON from '../data/seed-1.json' with { type: "json" };
+import bookJSON from '../data/book-seed.json' with { type: "json" };
 import placenames from '../data/placenames.json' with { type: "json" };
 
 const prisma = new PrismaClient();
 
 async function main() {
 
-  if(importJSON) {
+  if(bookJSON) {
 
-    for(let i=0; i < importJSON.letters.length; i++) {
+    for(let i=0; i < bookJSON.length; i++) {
 
-      let thisLetter = importJSON.letters[i];
+      let thisBook = bookJSON[i];
 
-      const thisPlacename = placenames.find(place => thisLetter.metadata.place_text.indexOf(place.place_raw) > -1);
+      const thisPlacename = placenames.find(place => thisBook.placename.indexOf(place.place_raw) > -1);
 
-      let newWork = await prisma.work.create({
+      let newBook = await prisma.book.create({
         data : {
-          title : thisLetter.work.title,
-          type : "letter",
-          alt_title : thisLetter.work.alt_title,
-          entries : {
+          title : thisBook.title,
+          type : thisBook.type,
+          alt_title : thisBook.alt_title,
+          excerpt : thisBook.excerpt,
+          year : parseInt(thisBook.year),
+          month : parseInt(thisBook.month),
+          day : parseInt(thisBook.day),
+          placename : thisPlacename ? thisPlacename.normalized_name : "",
+          translations : {
             createMany : {
-              data : thisLetter.entries.map(entry => {
+              data : thisBook.translations.map(translation => {
                 return {
-                  text : entry.text,
-                  position : entry.position
+                  text : translation.text ? translation.text : "",
+                  translator : translation.translator,
+                  language : translation.language,
+                  title : translation.title ? translation.title : "",
+                  url : translation.url ? translation.url : ""
                 }
               })
             }
           },
+        },
+        select : {
+          id : true
+        }
+      });
+
+      if(thisPlacename) {
+        const geometry = { type : "Point", coordinates : [parseFloat(thisPlacename.lng), parseFloat(thisPlacename.lat)] }
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Book"
+          SET geometry = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
+          WHERE id = ${newBook.id};
+        `)
+      }
+
+      for(let ii=0; ii < thisBook.sections.length; ii++) {
+        
+        let thisSection = thisBook.sections[ii];
+
+        let newSection = await prisma.section.create({
+          data : {
+            text : thisSection.text,
+            title : thisSection.title,
+            position : thisSection.position,
+            bookId : newBook.id,
+            keywords : {
+              create : {
+                keywords : thisSection.keywords
+              }
+            },
+            themes : {
+              create : {
+                themes : thisSection.themes
+              }
+            },
+            summary : {
+              create : {
+                text : thisSection.summary
+              }
+            }
+          },
+          select : {
+            id : true,
+            themes : true,
+            keywords : true,
+            summary : true
+          }
+        });
+
+        const summaryVector = `[${thisSection.summary_embed.join(', ')}]`;
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Summary"
+          SET vector_small = '${summaryVector}'::vector
+          WHERE id = ${newSection.summary.id};
+        `)
+
+        const themeVector = `[${thisSection.themes_embed.join(', ')}]`;
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Themes"
+          SET vector_small = '${themeVector}'::vector
+          WHERE id = ${newSection.themes.id};
+        `)
+
+        const keywordVector = `[${thisSection.keyword_embed.join(', ')}]`;
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Keywords"
+          SET vector_small = '${keywordVector}'::vector
+          WHERE id = ${newSection.keywords.id};
+        `)
+
+      }
+
+      console.log(`created book id: ${newBook.id}`)
+
+    }
+
+  }
+
+  if(letterJSON) {
+
+    for(let i=0; i < letterJSON.letters.length; i++) {
+
+      let thisLetter = letterJSON.letters[i];
+
+      const thisPlacename = placenames.find(place => thisLetter.place_text.indexOf(place.place_raw) > -1);
+
+      let newLetter = await prisma.letter.create({
+        data : {
+          title : thisLetter.title,
+          alt_title : thisLetter.alt_title,
+          text : thisLetter.text,
+          volume : thisLetter.volume.toString(),
+          reference : thisLetter.reference,
+          placename : thisPlacename ? thisPlacename.normalized_name : "",
+          place_text : thisLetter.place_text,
+          year : parseInt(thisLetter.year),
+          month : parseInt(thisLetter.month),
+          season : parseInt(thisLetter.season),
+          day : parseInt(thisLetter.day),
+          pages : thisLetter.pages,
+          date_text : thisLetter.date_text,
+          related_to : thisLetter.related_to,
           commentaries : {
             createMany : {
               data : thisLetter.commentary.map(commentary => {
                 return {
-                  text : commentary.text,
-                  commentator : commentary.commentator
+                  text : commentary.text ? commentary.text : "",
+                  commentator : commentary.commentator,
+                  title : commentary.title ? commentary.title : "",
+                  url : commentary.url ? commentary.url : ""
                 }
               })
             }
@@ -44,36 +157,25 @@ async function main() {
             createMany : {
               data : thisLetter.translations.map(translation => {
                 return {
-                  text : translation.text,
+                  text : translation.text ? translation.text : "",
                   translator : translation.translator,
                   language : translation.language,
+                  title : translation.title ? translation.title : "",
+                  url : translation.url ? translation.url : ""
                 }
               })
             }
           },
-          entries : {
+          sources : {
             createMany : {
-              data : thisLetter.entries.map(entry => {
+              data : thisLetter.sources.map(source => {
                 return {
-                  text : entry.text,
-                  position : entry.position
+                  publication : source.book,
+                  author : source.author,
+                  title : source.title,
+                  url : source.url
                 }
               })
-            }
-          },
-          metadata : {
-            create : {
-              volume : thisLetter.metadata.volume.toString(),
-              reference : thisLetter.metadata.reference,
-              placename : thisPlacename ? thisPlacename.normalized_name : "",
-              place_text : thisLetter.metadata.place_text,
-              year : parseInt(thisLetter.metadata.year),
-              month : parseInt(thisLetter.metadata.month),
-              season : parseInt(thisLetter.metadata.season),
-              day : parseInt(thisLetter.metadata.day),
-              pages : thisLetter.metadata.pages,
-              date_text : thisLetter.metadata.date_text,
-              related_to : thisLetter.metadata.related_to,
             }
           },
           summary : {
@@ -103,9 +205,9 @@ async function main() {
       if(thisPlacename) {
         const geometry = { type : "Point", coordinates : [parseFloat(thisPlacename.lng), parseFloat(thisPlacename.lat)] }
         await prisma.$executeRawUnsafe(`
-          UPDATE "Metadata"
+          UPDATE "Letter"
           SET geometry = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
-          WHERE id = ${newWork.summary.id};
+          WHERE id = ${newLetter.id};
         `)
       }
 
@@ -113,24 +215,24 @@ async function main() {
       await prisma.$executeRawUnsafe(`
         UPDATE "Summary"
         SET vector_small = '${summaryVector}'::vector
-        WHERE id = ${newWork.summary.id};
+        WHERE id = ${newLetter.summary.id};
       `)
 
       const themeVector = `[${thisLetter.themes.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`
         UPDATE "Themes"
         SET vector_small = '${themeVector}'::vector
-        WHERE id = ${newWork.themes.id};
+        WHERE id = ${newLetter.themes.id};
       `)
 
       const keywordVector = `[${thisLetter.keywords.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`
         UPDATE "Keywords"
         SET vector_small = '${keywordVector}'::vector
-        WHERE id = ${newWork.keywords.id};
+        WHERE id = ${newLetter.keywords.id};
       `)
 
-      console.log(`created work id: ${newWork.id}`)
+      console.log(`created letter id: ${newLetter.id}`)
 
     }
 

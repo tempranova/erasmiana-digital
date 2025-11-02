@@ -4,31 +4,38 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
+export type Book = {
+    id: Generated<number>;
+    title: string;
+    alt_title: string | null;
+    excerpt: string | null;
+    year: number | null;
+    month: number | null;
+    day: number | null;
+    placename: string | null;
+};
 export type Commentary = {
     id: Generated<number>;
     commentator: string | null;
     text: string;
     url: string | null;
-    workId: number | null;
-    entryId: number | null;
-};
-export type Entry = {
-    id: Generated<number>;
-    text: string;
-    position: number | null;
-    workId: number;
+    title: string | null;
+    bookId: number | null;
+    letterId: number | null;
 };
 export type Keywords = {
     id: Generated<number>;
     keywords: string[];
-    workId: number;
+    sectionId: number | null;
+    letterId: number | null;
 };
-export type Metadata = {
+export type Letter = {
     id: Generated<number>;
+    title: string;
+    alt_title: string | null;
     reference: string | null;
     volume: string | null;
     pages: number[];
-    related_to: string | null;
     year: number | null;
     season: number | null;
     month: number | null;
@@ -36,23 +43,47 @@ export type Metadata = {
     date_text: string | null;
     place_text: string | null;
     placename: string | null;
-    workId: number | null;
+    related_to: string | null;
+    text: string;
+};
+export type Publication = {
+    id: Generated<number>;
+    title: string;
+    publisher: string | null;
+    language: string | null;
+    year: number | null;
+    month: number | null;
+    day: number | null;
+    placename: string | null;
+    bookId: number | null;
+};
+export type Section = {
+    id: Generated<number>;
+    title: string | null;
+    text: string;
+    position: number | null;
+    bookId: number;
 };
 export type Source = {
     id: Generated<number>;
-    name: string | null;
+    publication: string | null;
+    author: string | null;
+    title: string | null;
     url: string | null;
-    workId: number | null;
+    letterId: number | null;
+    bookId: number | null;
 };
 export type Summary = {
     id: Generated<number>;
     text: string;
-    workId: number;
+    sectionId: number | null;
+    letterId: number | null;
 };
 export type Themes = {
     id: Generated<number>;
     themes: string[];
-    workId: number;
+    sectionId: number | null;
+    letterId: number | null;
 };
 export type Translation = {
     id: Generated<number>;
@@ -60,24 +91,19 @@ export type Translation = {
     text: string;
     language: string;
     url: string | null;
-    workId: number | null;
-    entryId: number | null;
-};
-export type Work = {
-    id: Generated<number>;
-    title: string;
-    type: string | null;
-    alt_title: string | null;
-    notes: string | null;
+    title: string | null;
+    bookId: number | null;
+    letterId: number | null;
 };
 export type DB = {
+    Book: Book;
     Commentary: Commentary;
-    Entry: Entry;
     Keywords: Keywords;
-    Metadata: Metadata;
+    Letter: Letter;
+    Publication: Publication;
+    Section: Section;
     Source: Source;
     Summary: Summary;
     Themes: Themes;
     Translation: Translation;
-    Work: Work;
 };

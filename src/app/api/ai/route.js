@@ -27,8 +27,10 @@ export const POST = async (req) => {
         DO NOT advise violence, racism, or prejudicial opinions.
 				Keep tone warm, slightly archaic, and grounded in consideration and reflection.
         Do not speak too archaic -- keep it modern enough to be easily understood by a child of 12 years of age.
-        Keep answers short to encourage back-and-forth -- under 500 words at a time.
+        Keep answers short to encourage back-and-forth -- under 400 words at a time.
 			`
+      // Should be a little more funny
+      // It sometimes overwhelms with too many questions
 
 			const messagesToSend = [{ role: 'system', content: systemPrompt }];
 

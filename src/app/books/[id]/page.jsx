@@ -1,54 +1,46 @@
 import { db } from '@/lib/db/kysely'
 import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 
-import Work from '@/components/work/work-container';
+import Book from '@/components/book/book-container';
 
 export const dynamic = 'force-static';
 export const revalidate = false;
 
 export default async function Page({ params : { id }}) {
   
-  const letter = await db.selectFrom('Letter')
+  const book = await db.selectFrom('Book')
     .where('id', '=', id)
     .select((eb) => [
-      'id', 'title', 'alt_title', 'reference', 'pages', 'date_text', 'placename', 'volume', 'related_to', 'text',
+      'id', 'title', 'alt_title', 
+      jsonArrayFrom(
+        eb.selectFrom('Section')
+          .select(['id', 'title', 'position', 'text'])
+          .whereRef('Section.bookId', '=', 'Book.id')
+      ).as('sections'),
       jsonArrayFrom(
         eb.selectFrom('Commentary')
           .select(['id', 'commentator', 'text', 'url', 'title'])
-          .whereRef('Commentary.letterId', '=', 'Letter.id')
+          .whereRef('Commentary.bookId', '=', 'Book.id')
       ).as('commentary'),
       jsonArrayFrom(
         eb.selectFrom('Translation')
           .select(['id', 'translator', 'text', 'language', 'url', 'title'])
-          .whereRef('Translation.letterId', '=', 'Letter.id')
+          .whereRef('Translation.bookId', '=', 'Book.id')
       ).as('translations'),
       jsonArrayFrom(
         eb.selectFrom('Source')
           .select(['id', 'title', 'url', 'author', 'publication'])
-          .whereRef('Source.letterId', '=', 'Letter.id')
+          .whereRef('Source.bookId', '=', 'Book.id')
       ).as('sources'),
-      jsonObjectFrom(
-        eb.selectFrom('Summary')
-          .select(['id', 'text'])
-          .whereRef('Summary.letterId', '=', 'Letter.id')
-      ).as('summary'),
-      jsonObjectFrom(
-        eb.selectFrom('Themes')
-          .select(['id', 'themes'])
-          .whereRef('Themes.letterId', '=', 'Letter.id')
-      ).as('themes'),
-      jsonObjectFrom(
-        eb.selectFrom('Keywords')
-          .select(['id', 'keywords'])
-          .whereRef('Keywords.letterId', '=', 'Letter.id')
-      ).as('keywords'),
   ])
   .executeTakeFirst()
+
+  book.sections.sort((a, b) => a.position > b.position ? 1 : -1);
 
   return (
     <div className="w-full min-h-screen h-full bg-[url('/assets/erasmus-bg-2.png')] bg-cover bg-center bg-no-repeat bg-[#1d1f1b] bg-blend-overlay p-16">
       <div className="w-full m-auto max-w-7xl pb-16">
-        <Work work={letter} />
+        <Book book={book} />
       </div>
     </div>
   );
