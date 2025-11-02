@@ -109,6 +109,8 @@ async function main() {
           WHERE id = ${newSection.keywords.id};
         `)
 
+        console.log(`created section id: ${newSection.id}`)
+
       }
 
       console.log(`created book id: ${newBook.id}`)
