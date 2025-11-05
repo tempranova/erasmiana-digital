@@ -40,9 +40,12 @@ export type Letter = {
     season: number | null;
     month: number | null;
     day: number | null;
+    author: string | null;
+    recipient: string | null;
     date_text: string | null;
     place_text: string | null;
-    placename: string | null;
+    origin: string | null;
+    destination: string | null;
     related_to: string | null;
     text: string;
 };

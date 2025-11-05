@@ -11,7 +11,7 @@ export default async function Page({ params : { id }}) {
   const letter = await db.selectFrom('Letter')
     .where('id', '=', id)
     .select((eb) => [
-      'id', 'title', 'alt_title', 'reference', 'pages', 'date_text', 'placename', 'volume', 'related_to', 'text',
+      'id', 'title', 'alt_title', 'reference', 'pages', 'date_text', 'place_text', 'volume', 'related_to', 'text',
       jsonArrayFrom(
         eb.selectFrom('Commentary')
           .select(['id', 'commentator', 'text', 'url', 'title'])

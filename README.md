@@ -29,18 +29,18 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 ## To Do:
 
 Major
-- Have John prepare a list for me of all Erasmus's publications and their published dates/places of publication
-
-- Integrating Bodleian into seed file for letters
-- Adding search filters (semantic / text, letters / books / specific books)
-- Sorting letters and books
 - Adding more data visualizations
-- Adding more books
-- Multilingualize
 - Disclaimers and beta notices
 - Index the vector fields
+- Multilingualize
+- Adding a general "sources" page to collate Erasmus resources
+- Adding "exhibition" page about Erasmus images over time for fun
+- Reviewing overall interface, polishing and cleaning up 
 
+- Doing the rest of the letters
+- Adding more books, more book translations
 
+- Sorting by date, alphabetical, place, book, letter
 - A way to submit tickets for fixes (new section in DB for fixes)
 - Testing OCRing the English translation that's out of copyright
 - Considering doing the semantic embedding using the Dutch translations instead
@@ -61,10 +61,11 @@ Sources:
 - Ambiguity and problems in letter data : https://speakerdeck.com/culturesofknowledge/christoph-kudella-erasmus-and-the-sixteenth-century-respublica-litteraria?slide=9 (https://www.culturesofknowledge.org/?page_id=4472) actually very cool, very in-depth for 2013
 
 - Nice review about the collected works (https://bmcr.brynmawr.edu/1992/1992.05.12/?utm_source=chatgpt.com)
+- Good link https://www.erasmushouse.museum/en/publications/
+- Thank you to Bodleian guy for cleaning and prepping data years ago
 
 
 Interface
-- Multilingualize
 - Adding general sources to letter front page and note about how assembled/created
 - Sorting letters by dates, people, etc
 - Adding a direct match text search
@@ -86,6 +87,9 @@ Data visualization
 - Experimenting with other basemaps
 - Adding timeline to see how many letters written in certain times
 - Timeline journeys around Europe like a video game (moving character of Erasmus with images beside of the cities he moves in, animated weather effects, language noises)
+
+Issues
+- Data is not flawless; some letters are missing Bodleian stuff, etc
 
 
 ### Data Visualization

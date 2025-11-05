@@ -101,11 +101,15 @@ model Letter {
   season              Int?
   month               Int?
   day                 Int?
+  author              String?
+  recipient           String?
   date_text           String?
   place_text          String?
-  placename           String?
+  origin              String?
+  origin_geo          Unsupported("geometry(Point, 4326)")?
+  destination         String?
+  destination_geo     Unsupported("geometry(Point, 4326)")?
   related_to          String?
-  geometry            Unsupported("geometry(Point, 4326)")?
   text                String
   summary             Summary?
   keywords            Keywords?

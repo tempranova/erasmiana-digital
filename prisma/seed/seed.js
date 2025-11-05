@@ -134,7 +134,10 @@ async function main() {
           text : thisLetter.text,
           volume : thisLetter.volume.toString(),
           reference : thisLetter.reference,
-          placename : thisPlacename ? thisPlacename.normalized_name : "",
+          author : thisLetter.author ? thisLetter.author : null,
+          recipient : thisLetter.recipient ? thisLetter.recipient : null,
+          origin : thisLetter.origin ? thisLetter.origin : thisPlacename ? thisPlacename.normalized_name : null,
+          destination : thisLetter.destination ? thisLetter.destination : null,
           place_text : thisLetter.place_text,
           year : parseInt(thisLetter.year),
           month : parseInt(thisLetter.month),
@@ -204,14 +207,29 @@ async function main() {
         }
       });
 
-      if(thisPlacename) {
+      if(thisLetter.origin_geo) {
+        const geometry = { type : "Point", coordinates : thisLetter.origin_geo }
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Letter"
+          SET origin_geo = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
+          WHERE id = ${newLetter.id};
+        `)
+      } else if(thisPlacename) {
         const geometry = { type : "Point", coordinates : [parseFloat(thisPlacename.lng), parseFloat(thisPlacename.lat)] }
         await prisma.$executeRawUnsafe(`
           UPDATE "Letter"
-          SET geometry = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
+          SET origin_geo = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
           WHERE id = ${newLetter.id};
         `)
       }
+      if(thisLetter.destination_geo) {
+        const geometry = { type : "Point", coordinates : thisLetter.destination_geo }
+        await prisma.$executeRawUnsafe(`
+          UPDATE "Letter"
+          SET destination_geo = ST_Force2D(ST_GeomFromGeoJSON('${JSON.stringify(geometry)}'))
+          WHERE id = ${newLetter.id};
+        `)
+      } 
 
       const summaryVector = `[${thisLetter.summary.vector_small.join(', ')}]`;
       await prisma.$executeRawUnsafe(`

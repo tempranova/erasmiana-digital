@@ -30,7 +30,7 @@ export default function LetterContainer({ letter }) {
         <div className="py-4">
           <h1 className="capitalize text-white text-4xl text-white text-shadow-md text-shadow-black">{letter.title.toLowerCase()}</h1>
           <h5 className="mt-2 text-2xl text-white text-shadow-md text-shadow-black">{letter.reference}. {letter.alt_title}</h5>
-          <h4 className="text-left text-xl text-white italic text-shadow-md text-shadow-black">{letter.date_text}, {letter.placename}</h4>
+          <h4 className="text-left text-xl text-white italic text-shadow-md text-shadow-black">{letter.date_text}, {letter.place_text}</h4>
         </div>
         <div className="bg-white rounded-lg shadow-md cardo-regular min-h-[800px]">
           <ul className="flex justify-center text-xl flex-wrap">
