@@ -29,7 +29,7 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 ## To Do:
 
 Major
-- Adding more data visualizations
+- Sorting by year, place in letters/books
 - Disclaimers and beta notices
 - Index the vector fields
 - Multilingualize
@@ -39,6 +39,7 @@ Major
 
 - Doing the rest of the letters
 - Adding more books, more book translations
+- Adding more edition variations and publications
 
 - Sorting by date, alphabetical, place, book, letter
 - A way to submit tickets for fixes (new section in DB for fixes)
@@ -83,10 +84,13 @@ Interface
 - Central page for Bibliography, finding more out about Erasmus, Erasmus articles etc
 
 Data visualization
+- Copy buddy's visualizations (mind maps, etc)
+- Add a journey of Erasmus around Europe with a timeline
 - Improving mapping of who wrote TO him and FROM him
 - Experimenting with other basemaps
 - Adding timeline to see how many letters written in certain times
 - Timeline journeys around Europe like a video game (moving character of Erasmus with images beside of the cities he moves in, animated weather effects, language noises)
+- Could even improve to do "ideas" charting, since I have keywords and themes -- a further enhancement
 
 Issues
 - Data is not flawless; some letters are missing Bodleian stuff, etc

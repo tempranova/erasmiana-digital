@@ -6,13 +6,13 @@ import bbox from '@turf/bbox';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { formatDate } from '@/lib/utils/dates';
-import { darkMatterStyle } from '@/lib/map/constants';
 
 export default function MapContainer({ letters }) {
 
   const [map, setMap] = useState(false);
   const [popup, setPopup] = useState(false)
-  const [currentVis, setCurrentVis] = useState('from-origin');
+  const [currentYear, setCurrentYear] = useState(false)
+  const [currentVis, setCurrentVis] = useState('year');
   const [currentLetterSet, setCurrentLetterSet] = useState([])
   const [currentTableRefs, setCurrentTableRefs] = useState([])
   const [clickedLetterSetFeature, setClickedLetterSetFeature] = useState(false)
@@ -31,20 +31,22 @@ export default function MapContainer({ letters }) {
 
     newMap.on('load', () => {
       setMap(newMap);
-      groupLettersByFromOrigin();
+      lettersByYearAndLocation();
     })
   }, [])
 
-  const groupLettersByFromOrigin = () => {
+  const lettersByYearAndLocation = () => {
     const places = [];
     const letterGroup = [];
+    letters.sort((a, b) => a.year > b.year ? 1 : -1);
     letters.forEach(letter => {
-      if(letter.author && letter.author.indexOf("Erasmus") > -1) {
-        const thisIndex = places.indexOf(letter.origin);
+      if(letter.origin_geo) {
+        const thisIndex = places.indexOf(`${letter.origin} - ${letter.year}`);
         if(thisIndex === -1) {
-          places.push(letter.origin);
+          places.push(`${letter.origin} - ${letter.year}`);
           letterGroup.push({
-            groupId : letter.origin,
+            groupId : `${letter.origin} - ${letter.year}`,
+            year : letter.year,
             location : letter.origin_geo,
             totalLetters : 1,
             letters : [letter.id]
@@ -55,80 +57,11 @@ export default function MapContainer({ letters }) {
         }
       }
     })
-    setCurrentVis('from-origin')
+    letterGroup.sort((a, b) => a.year > b.year ? 1 : -1);
+    setCurrentYear(letterGroup[0].year);
+    setCurrentVis('year')
     setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
-  }
-
-  const groupLettersByToOrigin = () => {
-    const places = [];
-    const letterGroup = [];
-    letters.forEach(letter => {
-      if(letter.recipient && letter.recipient.indexOf("Erasmus") > -1) {
-        const thisIndex = places.indexOf(letter.origin);
-        if(thisIndex === -1) {
-          places.push(letter.origin);
-          letterGroup.push({
-            groupId : letter.origin,
-            location : letter.origin_geo,
-            totalLetters : 1,
-            letters : [letter.id]
-          })
-        } else {
-          letterGroup[thisIndex].letters.push(letter.id)
-          letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
-        }
-      }
-    })
-    setCurrentVis('to-origin')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
-  }
-
-  const groupLettersByOrigin = () => {
-    const places = [];
-    const letterGroup = [];
-    letters.forEach(letter => {
-      const thisIndex = places.indexOf(letter.origin);
-      if(thisIndex === -1) {
-        places.push(letter.origin);
-        letterGroup.push({
-          groupId : letter.origin,
-          location : letter.origin_geo,
-          totalLetters : 1,
-          letters : [letter.id]
-        })
-      } else {
-        letterGroup[thisIndex].letters.push(letter.id)
-        letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
-      }
-    })
-    setCurrentVis('by-origin')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
-  }
-
-  const groupLettersByDestination = () => {
-    const places = [];
-    const letterGroup = [];
-    letters.forEach(letter => {
-      const thisIndex = places.indexOf(letter.destination);
-      if(thisIndex === -1) {
-        places.push(letter.destination);
-        letterGroup.push({
-          groupId : letter.destination,
-          location : letter.destination_geo,
-          totalLetters : 1,
-          letters : [letter.id]
-        })
-      } else {
-        letterGroup[thisIndex].letters.push(letter.id)
-        letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
-      }
-    })
-    setCurrentVis('by-destination')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Destination", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
+    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Year", ref : 'year' }, { label : "Total", ref : 'totalLetters'} ]);
   }
 
   useEffect(() => {
@@ -140,6 +73,7 @@ export default function MapContainer({ letters }) {
             type : "Feature",
             properties : {
               groupId : letterGroup.groupId,
+              year : letterGroup.year,
               letter_count : letterGroup.letters.length
             },
             geometry : JSON.parse(letterGroup.location)
@@ -164,14 +98,18 @@ export default function MapContainer({ letters }) {
           paint : {
             'circle-color' : 'black',
             'circle-opacity' : 0.5,
-            'circle-stroke-width' : 2,
             'circle-stroke-color' : '#FFF',
             'circle-radius' : [
-              'interpolate',
-              ['linear'],
-              ['get', 'letter_count'],
-              minLetterCount, 5,
-              maxLetterCount, 25
+              'case',
+              ['==', ['get', 'year'], currentYear], 
+              5,
+              0
+            ],
+            'circle-stroke-width' : [
+              'case',
+              ['==', ['get', 'year'], currentYear], 
+              2,
+              0
             ]
           }
         })
@@ -213,13 +151,38 @@ export default function MapContainer({ letters }) {
     }
   }, [clickedLetterSetFeature])
 
+  useEffect(() => {
+    if(currentYear && map) {
+      if(map.getLayer('letters-points')) {
+        map.setPaintProperty('letters-points', 'circle-radius', [
+          'case',
+          ['==', ['get', 'year'], currentYear], 
+          5,
+          0
+        ])
+        map.setPaintProperty('letters-points', 'circle-stroke-width', [
+          'case',
+          ['==', ['get', 'year'], currentYear], 
+          2,
+          0
+        ])
+      }
+    }
+  }, [currentYear])
+
   return (
     <div>
       <div className="flex gap-4">
-        <div onClick={() => groupLettersByFromOrigin()} className={`${currentVis === 'from-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters from Erasmus (by origin)</div>
-        <div onClick={() => groupLettersByToOrigin()} className={`${currentVis === 'to-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters to Erasmus (by origin)</div>
-        <div onClick={() => groupLettersByOrigin()} className={`${currentVis === 'by-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Origins</div>
-        <div onClick={() => groupLettersByDestination()} className={`${currentVis === 'by-destination' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Destinations</div>
+        <div onClick={() => lettersByYearAndLocation()} className={`${currentVis === 'year' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>By Year</div>
+      </div>
+      <div>
+        {currentLetterSet && currentLetterSet.length > 0 ? 
+          <div>
+            <div>Current Year : {currentYear}</div>
+            <input type="range" id="volume" onChange={(e) => setCurrentYear(parseInt(e.target.value))} value={currentYear} min={currentLetterSet[0].year} max={currentLetterSet[currentLetterSet.length - 1].year} />
+            <div>{currentLetterSet[0].year} - {currentLetterSet[currentLetterSet.length - 1].year}</div>
+          </div>
+        : false}
       </div>
       <div className="relative">
         <div 
@@ -256,7 +219,7 @@ export default function MapContainer({ letters }) {
                 </tr>
               </thead>
               <tbody>
-                {currentLetterSet.sort((a, b) => a.totalLetters < b.totalLetters ? 1 : -1).map((letters, i) => {
+                {currentLetterSet.sort((a, b) => a.year > b.year ? 1 : -1).map((letters, i) => {
                   return (
                     <tr key={`row-${i}`}>
                       {currentTableRefs.map((tableRef, ii) => {

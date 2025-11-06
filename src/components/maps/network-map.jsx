@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import bbox from '@turf/bbox';
+import greatCircle from "@turf/great-circle";
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { formatDate } from '@/lib/utils/dates';
@@ -12,7 +13,7 @@ export default function MapContainer({ letters }) {
 
   const [map, setMap] = useState(false);
   const [popup, setPopup] = useState(false)
-  const [currentVis, setCurrentVis] = useState('from-origin');
+  const [currentVis, setCurrentVis] = useState('network');
   const [currentLetterSet, setCurrentLetterSet] = useState([])
   const [currentTableRefs, setCurrentTableRefs] = useState([])
   const [clickedLetterSetFeature, setClickedLetterSetFeature] = useState(false)
@@ -31,21 +32,22 @@ export default function MapContainer({ letters }) {
 
     newMap.on('load', () => {
       setMap(newMap);
-      groupLettersByFromOrigin();
+      groupLettersByNetwork();
     })
   }, [])
 
-  const groupLettersByFromOrigin = () => {
+  const groupLettersByNetwork = () => {
     const places = [];
     const letterGroup = [];
     letters.forEach(letter => {
-      if(letter.author && letter.author.indexOf("Erasmus") > -1) {
-        const thisIndex = places.indexOf(letter.origin);
+      if(letter.origin_geo && letter.destination_geo) {
+        const thisIndex = places.indexOf(`${letter.origin} - ${letter.destination}`);
         if(thisIndex === -1) {
-          places.push(letter.origin);
+          places.push(`${letter.origin} - ${letter.destination}`);
           letterGroup.push({
-            groupId : letter.origin,
-            location : letter.origin_geo,
+            groupId : `${letter.origin} - ${letter.destination}`,
+            origin : letter.origin_geo,
+            destination : letter.destination_geo,
             totalLetters : 1,
             letters : [letter.id]
           })
@@ -55,80 +57,9 @@ export default function MapContainer({ letters }) {
         }
       }
     })
-    setCurrentVis('from-origin')
+    setCurrentVis('network')
     setCurrentLetterSet(letterGroup);
     setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
-  }
-
-  const groupLettersByToOrigin = () => {
-    const places = [];
-    const letterGroup = [];
-    letters.forEach(letter => {
-      if(letter.recipient && letter.recipient.indexOf("Erasmus") > -1) {
-        const thisIndex = places.indexOf(letter.origin);
-        if(thisIndex === -1) {
-          places.push(letter.origin);
-          letterGroup.push({
-            groupId : letter.origin,
-            location : letter.origin_geo,
-            totalLetters : 1,
-            letters : [letter.id]
-          })
-        } else {
-          letterGroup[thisIndex].letters.push(letter.id)
-          letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
-        }
-      }
-    })
-    setCurrentVis('to-origin')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
-  }
-
-  const groupLettersByOrigin = () => {
-    const places = [];
-    const letterGroup = [];
-    letters.forEach(letter => {
-      const thisIndex = places.indexOf(letter.origin);
-      if(thisIndex === -1) {
-        places.push(letter.origin);
-        letterGroup.push({
-          groupId : letter.origin,
-          location : letter.origin_geo,
-          totalLetters : 1,
-          letters : [letter.id]
-        })
-      } else {
-        letterGroup[thisIndex].letters.push(letter.id)
-        letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
-      }
-    })
-    setCurrentVis('by-origin')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
-  }
-
-  const groupLettersByDestination = () => {
-    const places = [];
-    const letterGroup = [];
-    letters.forEach(letter => {
-      const thisIndex = places.indexOf(letter.destination);
-      if(thisIndex === -1) {
-        places.push(letter.destination);
-        letterGroup.push({
-          groupId : letter.destination,
-          location : letter.destination_geo,
-          totalLetters : 1,
-          letters : [letter.id]
-        })
-      } else {
-        letterGroup[thisIndex].letters.push(letter.id)
-        letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
-      }
-    })
-    setCurrentVis('by-destination')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Destination", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
   }
 
   useEffect(() => {
@@ -142,42 +73,46 @@ export default function MapContainer({ letters }) {
               groupId : letterGroup.groupId,
               letter_count : letterGroup.letters.length
             },
-            geometry : JSON.parse(letterGroup.location)
+            geometry : greatCircle(JSON.parse(letterGroup.origin), JSON.parse(letterGroup.destination)).geometry
           }
         })
       }
 
-      if(!map.getSource('letters-points')) {
+      if(!map.getSource('letters-lines')) {
 
         const counts = letters_geojson.features.map(f => f.properties.letter_count);
         const minLetterCount = Math.min(...counts);
         const maxLetterCount = Math.max(...counts);
 
-        map.addSource('letters-points', {
+        map.addSource('letters-lines', {
           type : "geojson",
           data  : letters_geojson
         })
         map.addLayer({
-          id : "letters-points",
-          source : "letters-points",
-          type : "circle",
+          id : "letters-lines",
+          source : "letters-lines",
+          type : "line",
           paint : {
-            'circle-color' : 'black',
-            'circle-opacity' : 0.5,
-            'circle-stroke-width' : 2,
-            'circle-stroke-color' : '#FFF',
-            'circle-radius' : [
+            'line-color' : '#090',
+            'line-opacity' : [
               'interpolate',
               ['linear'],
               ['get', 'letter_count'],
-              minLetterCount, 5,
-              maxLetterCount, 25
+              minLetterCount, 0.2,
+              maxLetterCount, 0.8
+            ],
+            'line-width' : [
+              'interpolate',
+              ['linear'],
+              ['get', 'letter_count'],
+              minLetterCount, 2,
+              maxLetterCount, 5
             ]
           }
         })
 
-        map.on('mousemove', 'letters-points', (e) => {
-          const features = map.queryRenderedFeatures(e.point, { layers : ['letters-points']});
+        map.on('mousemove', 'letters-lines', (e) => {
+          const features = map.queryRenderedFeatures(e.point, { layers : ['letters-lines']});
           if(features.length > 0) {
             let html = "";
             for(let prop in features[0].properties) {
@@ -187,20 +122,21 @@ export default function MapContainer({ letters }) {
           }
         })
 
-        map.on('mouseleave', 'letters-points', (e) => {
+        map.on('mouseleave', 'letters-lines', (e) => {
           popup.remove();
         })
 
-        map.on('click', 'letters-points', (e) => {
-          const features = map.queryRenderedFeatures(e.point, { layers : ['letters-points']});
+        map.on('click', 'letters-lines', (e) => {
+          const features = map.queryRenderedFeatures(e.point, { layers : ['letters-lines']});
           if(features.length > 0) {
             setClickedLetterSetFeature(features[0])
           }
         })
 
+        console.log(letters_geojson)
         map.fitBounds(bbox(letters_geojson), { padding : 100, duration : 0 })
       } else {
-        map.getSource('letters-points').setData(letters_geojson)
+        map.getSource('letters-lines').setData(letters_geojson)
       }
     }
 
@@ -216,10 +152,7 @@ export default function MapContainer({ letters }) {
   return (
     <div>
       <div className="flex gap-4">
-        <div onClick={() => groupLettersByFromOrigin()} className={`${currentVis === 'from-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters from Erasmus (by origin)</div>
-        <div onClick={() => groupLettersByToOrigin()} className={`${currentVis === 'to-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters to Erasmus (by origin)</div>
-        <div onClick={() => groupLettersByOrigin()} className={`${currentVis === 'by-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Origins</div>
-        <div onClick={() => groupLettersByDestination()} className={`${currentVis === 'by-destination' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Destinations</div>
+        <div onClick={() => groupLettersByNetwork()} className={`${currentVis === 'network' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>By Network</div>
       </div>
       <div className="relative">
         <div 
