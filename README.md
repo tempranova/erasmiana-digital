@@ -86,9 +86,7 @@ Interface
 Data visualization
 - Copy buddy's visualizations (mind maps, etc)
 - Add a journey of Erasmus around Europe with a timeline
-- Improving mapping of who wrote TO him and FROM him
 - Experimenting with other basemaps
-- Adding timeline to see how many letters written in certain times
 - Timeline journeys around Europe like a video game (moving character of Erasmus with images beside of the cities he moves in, animated weather effects, language noises)
 - Could even improve to do "ideas" charting, since I have keywords and themes -- a further enhancement
 

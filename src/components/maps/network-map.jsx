@@ -133,7 +133,6 @@ export default function MapContainer({ letters }) {
           }
         })
 
-        console.log(letters_geojson)
         map.fitBounds(bbox(letters_geojson), { padding : 100, duration : 0 })
       } else {
         map.getSource('letters-lines').setData(letters_geojson)

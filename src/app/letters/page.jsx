@@ -6,7 +6,7 @@ export default async function Page() {
 
   const allLetters = await db.selectFrom('Letter')
       .select((eb) => [
-        'id', 'title', 'alt_title', 'reference', 'date_text', 'placename', 'volume', 'related_to',
+        'id', 'title', 'alt_title', 'reference', 'date_text', 'place_text', 'volume', 'related_to',
       ])
       .execute()
 

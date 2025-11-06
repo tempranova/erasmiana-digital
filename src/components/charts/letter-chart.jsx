@@ -121,7 +121,6 @@ export default function LetterChart({ letters }) {
       borderColor: 'rgba(227, 239, 49)',
       backgroundColor: 'rgba(227, 239, 49, 0.5)',
     })
-    console.log(newDatasets)
     let newLabels = years1;
     setLabels(newLabels)
     setDatasets(newDatasets)

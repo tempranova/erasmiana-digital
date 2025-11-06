@@ -41,8 +41,6 @@ export default function LetterChart({ letters, books }) {
     },
   };
 
-  console.log(letters, books)
-
   useEffect(() => {
     const years1 = [];
     const wordsByYear = [];
