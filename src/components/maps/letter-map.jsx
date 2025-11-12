@@ -216,10 +216,10 @@ export default function MapContainer({ letters }) {
   return (
     <div>
       <div className="flex gap-4">
-        <div onClick={() => groupLettersByFromOrigin()} className={`${currentVis === 'from-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters from Erasmus (by origin)</div>
+        {/* <div onClick={() => groupLettersByFromOrigin()} className={`${currentVis === 'from-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters from Erasmus (by origin)</div>
         <div onClick={() => groupLettersByToOrigin()} className={`${currentVis === 'to-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters to Erasmus (by origin)</div>
         <div onClick={() => groupLettersByOrigin()} className={`${currentVis === 'by-origin' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Origins</div>
-        <div onClick={() => groupLettersByDestination()} className={`${currentVis === 'by-destination' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Destinations</div>
+        <div onClick={() => groupLettersByDestination()} className={`${currentVis === 'by-destination' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letter Destinations</div> */}
       </div>
       <div className="relative">
         <div 

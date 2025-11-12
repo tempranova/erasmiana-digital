@@ -1,18 +1,32 @@
 import AIContainer from '@/components/ai/ai-container'
 
+import { systemPrompt } from '@/lib/utils/ai';
+
 export default async function Page() {
 
   return (
-    <div className="w-full min-h-screen h-full bg-[url('/assets/erasmus-bg-2.png')] bg-cover bg-center bg-no-repeat bg-[#1d1f1b] bg-blend-overlay p-16">
-      <div className="max-w-7xl bg-white/90 relative p-8">
-        <div className="text-xl cardo-regular">
-          <h1 className="im-fell-dw-pica-regular text-4xl mb-4">Debate with ErasmusAI</h1>
-          <p>For Erasmus, the ability to discuss things respectfully yet thoroughly was a very worthwhile activity. A good mind should never be afraid of a good debate. Here, pick a topic or create one to start a discussion with our Erasmus AI.</p>
-        </div>
-
-        <div className="w-full m-auto max-w-7xl pb-16">
-          <div className="grid grid-cols-1 gap-8">
+    <div className="m-auto flex-1 mt-8 w-full h-[720px] max-h-[720px] pb-10 bg-no-repeat bg-contain bg-center bg-[url('/assets/main-paper-bg.png')]">
+      <div className="w-[110vh] m-auto">
+        <div className="grid grid-cols-2 gap-4 flex-1 text-left">
+          <div className="p-4">
             <AIContainer />
+          </div>
+          <div className="p-4 mt-4 mb-4 pl-8 max-h-[700px] overflow-y-scroll cardo-regular">
+            <h2 className="text-xl font-semibold">Associated Sources</h2>
+            <p className="mt-2">As you start chatting, the ErasmusAI bot will try to find some passages by Erasmus that might relate in some way to your conversation. Check them out for more about what Erasmus himself might have thought!</p>
+            <div className="mt-2 border rounded-md">
+              <div className="italic p-2.5">Start chatting to see sources.</div>
+            </div>
+            <hr className="m-auto my-4 w-1/3 border-[#3b2d2b]" />
+            <details className="mt-2 pb-8">
+              <summary className="cursor-pointer hover:underline underline-offset-2 italic">How ErasmusAI Works</summary>
+              <div className="mt-2">
+                <p>This "ErasmusAI" is an experiment in creating a tool to help chatters think more critically about their opinions. Just what might be considered an "Erasmian method" isn't entirely defined, but here is the system prompt:</p>
+                <div className="code text-[10px] whitespace-pre-line">
+                  {systemPrompt}
+                </div>
+              </div>
+            </details>
           </div>
         </div>
       </div>

@@ -29,13 +29,18 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 ## To Do:
 
 Major
-- Sorting by year, place in letters/books
+- Adding metadata to a sample so I can see how it all looks and feels (and the work for metadata...)
+- Laying out the in-section with a search in works (or, rather, link to main search with that pre-selected)
+- Allowing selection of a specific work in search
+
+- Improving the search to incorporate a LLM in-between to interpret the search (Batavians)
+- Improving the AI to pull out some references that might be related
+
 - Disclaimers and beta notices
 - Index the vector fields
 - Multilingualize
 - Adding a general "sources" page to collate Erasmus resources
 - Adding "exhibition" page about Erasmus images over time for fun
-- Reviewing overall interface, polishing and cleaning up 
 
 - Doing the rest of the letters
 - Adding more books, more book translations
@@ -67,6 +72,7 @@ Sources:
 
 
 Interface
+- Nice layout to consider that feels more SOLID: https://archivum.org/
 - Adding general sources to letter front page and note about how assembled/created
 - Sorting letters by dates, people, etc
 - Adding a direct match text search

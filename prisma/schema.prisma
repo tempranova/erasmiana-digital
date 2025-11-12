@@ -24,38 +24,17 @@ model Section {
 	id                  Int @id @default(autoincrement())
   title               String?
   text                String
+  pages               Int[]
   position            Int?
-  bookId              Int
-  book                Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  summary             Summary?
-  keywords            Keywords?
-  themes              Themes?
+  workId              Int
+  work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
+  metadata            Metadata?
 }
 
-model Summary {
+model Metadata {
 	id                  Int @id @default(autoincrement())
-  text                String
-  vector_small        Unsupported("vector(1536)")?
-  vector_large        Unsupported("vector(3072)")?
-  sectionId           Int? @unique
-  section             Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  letterId            Int? @unique
-  letter              Letter? @relation(fields: [letterId], references: [id], onDelete: Cascade)
-}
-
-model Keywords {
-	id                  Int @id @default(autoincrement())
+  summary             String
   keywords            String[]
-  vector_small        Unsupported("vector(1536)")?
-  vector_large        Unsupported("vector(3072)")?
-  sectionId           Int? @unique
-  section             Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  letterId            Int? @unique
-  letter              Letter? @relation(fields: [letterId], references: [id], onDelete: Cascade)
-}
-
-model Themes {
-	id                  Int @id @default(autoincrement())
   themes              String[]
   vector_small        Unsupported("vector(1536)")?
   vector_large        Unsupported("vector(3072)")?
@@ -72,8 +51,8 @@ model Translation {
   language            String
   url                 String?
   title               String?
-  bookId              Int?
-  book                Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  workId              Int?
+  work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
   letterId            Int?
   letter              Letter? @relation(fields: [letterId], references: [id], onDelete: Cascade)
 }
@@ -84,8 +63,8 @@ model Commentary {
   text                String
   url                 String?
   title               String?
-  bookId              Int?
-  book                Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  workId              Int?
+  work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
   letterId            Int?
   letter              Letter? @relation(fields: [letterId], references: [id], onDelete: Cascade)
 }
@@ -111,19 +90,17 @@ model Letter {
   destination_geo     Unsupported("geometry(Point, 4326)")?
   related_to          String?
   text                String
-  summary             Summary?
-  keywords            Keywords?
-  themes              Themes?
+  metadata            Metadata?
   translations        Translation[]
   commentaries        Commentary[]
   sources             Source[]
 }
 
-model Book {
+model Work {
 	id                  Int @id @default(autoincrement())
   title               String
   alt_title           String?
-  excerpt             String?
+  blurb               String?
   year                Int?
   month               Int?
   day                 Int?
@@ -146,8 +123,8 @@ model Publication {
   day                 Int?
   placename           String?
   geometry            Unsupported("geometry(Point, 4326)")?
-  bookId              Int?
-  book                Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  workId              Int?
+  work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
 }
 
 model Source {
@@ -158,6 +135,6 @@ model Source {
   url                 String?
   letterId            Int?
   letter              Letter? @relation(fields: [letterId], references: [id], onDelete: Cascade)
-  bookId              Int?
-  book                Book? @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  workId              Int?
+  work                Work? @relation(fields: [workId], references: [id], onDelete: Cascade)
 }

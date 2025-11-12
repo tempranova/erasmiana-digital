@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import Pagination from '@/components/common/pagination';
 
-export default function LetterIndex({ page, orderBy, allLetters, totalCount, itemsPerPage, search = "" }) {
+export default function WorkIndex({ page, orderBy, allWorks, totalCount, itemsPerPage, search = "" }) {
 
   const pathname = usePathname();
   const router = useRouter();
@@ -13,19 +13,6 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
 
   const [ searchText, setSearchText ] = useState(search)
   const [ orderBySelect, setOrderBySelect ] = useState(orderBy ? orderBy : "year-asc")
-
-  const groupedArray = Object.values(
-    allLetters.reduce((acc, letter) => {
-      const volume = letter.volume ?? 'unknown'
-      if (!acc[volume]) acc[volume] = { volume, letters: [] }
-      acc[volume].letters.push(letter)
-      return acc
-    }, {})
-  ).sort((a, b) => {
-    const av = a.volume === 'unknown' ? Infinity : parseInt(a.volume, 10) || a.volume
-    const bv = b.volume === 'unknown' ? Infinity : parseInt(b.volume, 10) || b.volume
-    return av > bv ? 1 : av < bv ? -1 : 0
-  })
 
   const changePage = (newPage) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -74,16 +61,6 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
                 <select value={orderBySelect} onChange={(e) => setOrder(e.target.value)} >
                   <option value="year-asc">Year (asc)</option>
                   <option value="year-desc">Year (desc)</option>
-                  <option value="reference-asc">Letter # (asc)</option>
-                  <option value="reference-desc">Letter # (desc)</option>
-                  <option value="author-asc">Author (asc)</option>
-                  <option value="author-desc">Author (desc)</option>
-                  <option value="recipient-asc">Recipient (asc)</option>
-                  <option value="recipient-desc">Recipient (desc)</option>
-                  <option value="origin-asc">Origin (asc)</option>
-                  <option value="origin-desc">Origin (desc)</option>
-                  <option value="destination-asc">Destination (asc)</option>
-                  <option value="destination-desc">Destination (desc)</option>
                 </select>
               </div>
             </div>
@@ -101,27 +78,21 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
         <table className="w-full text-sm text-left table-fixed">
           <thead className="text-xs text-black uppercase">
             <tr>
-              <th className="w-[80px] px-3 py-1"># / Vol.</th>
-              <th className="hidden md:table-cell px-3 py-1">Title</th>
-              <th className="px-3 py-1">Alt. Title</th>
-              <th className="px-3 py-1">Origin</th>
-              <th className="px-3 py-1">Destination</th>
+              <th className="table-cell px-3 py-1">Title</th>
+              <th className="w-[80px] px-3 py-1">Blurb</th>
               <th className="w-[80px] px-3 py-1">Year</th>
               <th className="w-[20px] px-3 py-1"></th>
             </tr>
           </thead>
           <tbody>
-            {allLetters.map((letter, i) => {
+            {allWorks.map((work, i) => {
               return (
-                <tr onClick={() => router.push(`/letters/${letter.id}`)} key={`letter-${i}`} className={`${i%2 ? 'bg-white/30' : ''} hover:bg-white/20 cursor-pointer`}>
-                  <td className="w-[80px] px-3 py-1 font-medium break-words">{letter.reference} / {letter.volume}</td>
-                  <td className="hidden md:table-cell px-3 py-1 font-medium capitalize break-words">{letter.title.toLowerCase()}</td>
-                  <td className="px-3 py-1 font-medium capitalize break-words">{letter.alt_title.toLowerCase()}</td>
-                  <td className="px-3 py-1 font-medium capitalize break-words">{letter.origin ? letter.origin.split(',')[0] : ''}</td>
-                  <td className="px-3 py-1 font-medium capitalize break-words">{letter.destination ? letter.destination.split(',')[0] : ''}</td>
-                  <td className="w-[80px] px-3 py-1 font-medium capitalize whitespace-nowrap">{letter.year}</td>
+                <tr onClick={() => router.push(`/works/${work.id}`)} key={`work-${i}`} className={`${i%2 ? 'bg-white/30' : ''} hover:bg-white/20 cursor-pointer`}>
+                  <td className="table-cell px-3 py-1 font-medium capitalize break-words">{work.title.toLowerCase()}</td>
+                  <td className="table-cell px-3 py-1 font-medium capitalize break-words">{work.blurb.toLowerCase()}</td>
+                  <td className="w-[80px] px-3 py-1 font-medium capitalize whitespace-nowrap">{work.year}</td>
                   <td>
-                    <Link href={`/letters/${letter.id}`}>
+                    <Link href={`/works/${work.id}`}>
                       <svg className="" width="15" height="15" viewBox="0 0 20 20" strokeWidth="0.5" stroke="#3b2d2b" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.41073 3.57757C9.73616 3.25214 10.2637 3.25214 10.5891 3.57757L16.4224 9.41091C16.4623 9.45075 16.4979 9.49471 16.5291 9.54193C16.5497 9.57317 16.5676 9.60561 16.5836 9.63877C16.6017 9.67643 16.6176 9.71541 16.63 9.75596C16.6351 9.77287 16.6389 9.79009 16.643 9.80723C16.6577 9.86919 16.6666 9.93364 16.6666 10.0001C16.6666 10.0693 16.6564 10.136 16.6405 10.2003C16.6371 10.2144 16.6342 10.2287 16.63 10.2426C16.6175 10.2834 16.6018 10.3227 16.5836 10.3606C16.5669 10.3953 16.5476 10.4289 16.5258 10.4615C16.5153 10.4772 16.5039 10.4922 16.4924 10.5071C16.4707 10.5353 16.4483 10.5635 16.4224 10.5893L10.5891 16.4226C10.2637 16.748 9.73614 16.748 9.41073 16.4226C9.08531 16.0972 9.08535 15.5697 9.41073 15.2442L13.8215 10.8334H4.16659C3.70637 10.8334 3.33329 10.4603 3.33325 10.0001C3.33325 9.53986 3.70635 9.16677 4.16659 9.16677H13.8215L9.41073 4.75596C9.08531 4.43054 9.08535 3.90302 9.41073 3.57757Z" fill="#23282B"/>
                       </svg>

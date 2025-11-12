@@ -34,84 +34,42 @@ export const POST = async (req, route) => {
 
     const vectorLiteral = `[${queryEmbedding.join(', ')}]`
 
-    const combined = sql`
-      (
-        SELECT 
-          id,
-          text::text AS content,
-          "letterId",
-          "sectionId",
-          vector_small
-        FROM "Summary"
-
-        UNION ALL
-
-        SELECT 
-          id,
-          array_to_string(themes, ', ')::text AS content,
-          "letterId",
-          "sectionId",
-          vector_small
-        FROM "Themes"
-
-        UNION ALL
-
-        SELECT 
-          id,
-          array_to_string(keywords, ', ')::text AS content,
-          "letterId",
-          "sectionId",
-          vector_small
-        FROM "Keywords"
-      )
-    `.as('combined');
-
     let sub = db
-      .selectFrom(combined)
+      .selectFrom("Metadata")
       .distinctOn(['summary'])
       .select((eb) => [
         sql`vector_small <=> ${vectorLiteral}::vector`.as('distance'),
-        sql`(
-          SELECT "text" FROM "Summary"
-          WHERE "Summary"."id" = combined."id"
-          LIMIT 1
-        )`.as('summary'),
-        jsonArrayFrom(
-          db.selectFrom('Keywords')
-            .select('keywords')
-            .whereRef('Keywords.id', '=', 'combined.id')
-        ).as('keywords'),
-        jsonArrayFrom(
-          db.selectFrom('Themes')
-            .select('themes')
-            .whereRef('Themes.id', '=', 'combined.id')
-        ).as('themes'),
+        jsonBuildObject({
+          summary : sql.ref('summary'), 
+          keywords : sql.ref('keywords'), 
+          themes : sql.ref('themes')
+        }).as('metadata'),
         jsonObjectFrom(
           eb.selectFrom('Letter')
             .select(['id', 'title', 'alt_title', 'reference', 'year', 'month', 'day', 'date_text', 'origin', 'destination', 'place_text'])
-            .whereRef('Letter.id', '=', 'combined.letterId')
+            .whereRef('Letter.id', '=', 'Metadata.letterId')
         ).as('letter'),
         jsonObjectFrom(
           eb.selectFrom('Section')
             .select((eb) => [
-              'id', 'title',
+              'id', 'title', 'pages',
               jsonObjectFrom(
-                eb.selectFrom('Book')
+                eb.selectFrom('Work')
                   .select(['id', 'title', 'alt_title', 'year', 'month', 'day', 'placename'])
-                  .whereRef('Section.bookId', '=', 'Book.id')
-              ).as('book')
+                  .whereRef('Section.workId', '=', 'Work.id')
+              ).as('work')
             ])
-            .whereRef('Section.id', '=', 'combined.sectionId')
+            .whereRef('Section.id', '=', 'Metadata.sectionId')
         ).as('section')
       ])
       .orderBy('summary')
       .orderBy('distance')
       
     if(body.objects === 'letters') {
-      sub = sub.where('combined.letterId', 'is not', null)
+      sub = sub.where('Metadata.letterId', 'is not', null)
     }
-    if(body.objects === 'books') {
-      sub = sub.where('combined.sectionId', 'is not', null)
+    if(body.objects === 'works') {
+      sub = sub.where('Metadata.sectionId', 'is not', null)
     }
     
     sub = sub.as('deduped')
@@ -126,7 +84,7 @@ export const POST = async (req, route) => {
 
     return NextResponse.json({
       searchTerm : body.search,
-      totalResults : false,
+      totalResults : 1000,
       results : results
     });
     
@@ -144,16 +102,11 @@ export const POST = async (req, route) => {
         .selectFrom("Letter")
         .distinctOn(['text'])
         .select([
-          jsonArrayFrom(
-            db.selectFrom('Keywords')
-              .select('keywords')
-              .whereRef('Keywords.letterId', '=', 'Letter.id')
-          ).as('keywords'),
-          jsonArrayFrom(
-            db.selectFrom('Themes')
-              .select('themes')
-              .whereRef('Themes.letterId', '=', 'Letter.id')
-          ).as('themes'),
+          jsonObjectFrom(
+            db.selectFrom('Metadata')
+              .select('summary', 'themes', 'keywords')
+              .whereRef('Metadata.letterId', '=', 'Letter.id')
+          ).as('metadata'),
           jsonBuildObject({
             id : sql.ref('id'), 
             title : sql.ref('title'), 
@@ -181,27 +134,23 @@ export const POST = async (req, route) => {
     }
 
 
-    if(body.objects === 'all' || body.objects === 'books') {
+    if(body.objects === 'all' || body.objects === 'works') {
       let sectionResults = await db
         .selectFrom("Section")
         .select((eb) => [
-          jsonArrayFrom(
-            db.selectFrom('Keywords')
-              .select('keywords')
-              .whereRef('Keywords.sectionId', '=', 'Section.id')
-          ).as('keywords'),
-          jsonArrayFrom(
-            db.selectFrom('Themes')
-              .select('themes')
-              .whereRef('Themes.sectionId', '=', 'Section.id')
-          ).as('themes'),
+          jsonObjectFrom(
+            db.selectFrom('Metadata')
+              .select('summary', 'themes', 'keywords')
+              .whereRef('Metadata.sectionId', '=', 'Section.id')
+          ).as('metadata'),
           jsonBuildObject({
             id : sql.ref('id'), 
             title : sql.ref('title'), 
-            book : jsonObjectFrom(
-              eb.selectFrom('Book')
+            pages : sql.ref('pages'),
+            work : jsonObjectFrom(
+              eb.selectFrom('Work')
                 .select(['id', 'title', 'alt_title', 'year', 'month', 'day', 'placename'])
-                .whereRef('Section.bookId', '=', 'Book.id')
+                .whereRef('Section.workId', '=', 'Work.id')
             )
           }).as('section'),
           sql`
@@ -236,10 +185,10 @@ export const POST = async (req, route) => {
               .whereRef('Translation.letterId', '=', 'Letter.id')
           ).as('letter'),
           jsonObjectFrom(
-            eb.selectFrom('Book')
+            eb.selectFrom('Work')
               .select(['id', 'title', 'alt_title', 'year', 'month', 'day', 'placename'])
-              .whereRef('Translation.bookId', '=', 'Book.id')
-          ).as('book')
+              .whereRef('Translation.workId', '=', 'Work.id')
+          ).as('work')
         ])
         .where(sql`LOWER(text) LIKE LOWER(${searchTerm})`)
         .orderBy('text')
@@ -248,16 +197,16 @@ export const POST = async (req, route) => {
         if(body.objects === 'letters') {
           translationQuery = translationQuery.where('Translation.letterId', 'is not', null)
         }
-        if(body.objects === 'books') {
-          translationQuery = translationQuery.where('Translation.bookId', 'is not', null)
+        if(body.objects === 'works') {
+          translationQuery = translationQuery.where('Translation.workId', 'is not', null)
         }
 
       const translationResults = await translationQuery.execute()
       
       translationResults.forEach(result => {
-        if(result.book) {
+        if(result.work) {
           result.section = {
-            book : result.book
+            work : result.work
           }
         }
       })

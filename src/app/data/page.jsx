@@ -1,9 +1,9 @@
 export default async function Page() {
 
   return (
-    <div className="w-full min-h-screen h-full bg-[url('/assets/erasmus-bg-2.png')] bg-cover bg-center bg-no-repeat bg-[#1d1f1b] bg-blend-overlay p-16">
-      <div className="w-full m-auto max-w-7xl pb-16">
-        <div className="max-w-7xl bg-white/90 relative p-8">
+    <div className="m-auto flex-1 mt-8 w-full h-[720px] max-h-[720px] pb-10 bg-no-repeat bg-contain bg-center bg-[url('/assets/main-paper-bg.png')]">
+      <div className="w-[110vh] m-auto">
+        <div className="grid grid-cols-2 gap-4 flex-1 text-left">
           <div className="text-xl cardo-regular">
             <h1 className="im-fell-dw-pica-regular text-4xl mb-4">Data Visualizations</h1>
             <p>On this page, you can find a few ways that we've visualized the data we have on Erasmus's letters and writings. There are surely many more interesting visualizations that can be done, so please get in touch if you'd like to see more or get a copy of the full dataset.</p>

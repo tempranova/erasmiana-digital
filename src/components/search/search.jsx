@@ -77,41 +77,53 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
 
   return (
     <div>
-      <div className="mb-4">
-        <div className="rounded-t-lg border-t border-x ml-2 text-sm inline-flex items-center p-2">
-          <div>
-            <input type="radio" name="search-type" checked={searchType === 'semantic'} onChange={() => setSearchType('semantic')} /><span className="ml-2">Semantic Search</span>
+      <form onSubmit={() => doSearch()} onKeyDown={(e) => checkEnterPress(e)}>
+        <textarea
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="p-4 bg-white border border-black text-black w-full rounded-md"
+          placeholder="Enter your search here..."
+        />
+        <div className="cardo-regular">
+          <div className="text-sm inline-flex items-center p-2">
+            <div className="text-xl -mt-1">1.</div>
+            <div className="ml-4">
+              <input type="radio" name="search-type" checked={searchType === 'semantic'} onChange={() => setSearchType('semantic')} /><span className="ml-2">Semantic Search</span>
+            </div>
+            <div className="ml-4">
+              <input type="radio" name="search-type" checked={searchType === 'text'} onChange={() => setSearchType('text')} /><span className="ml-2">Text-Match Search</span>
+            </div>
           </div>
-          <div className="ml-4">
-            <input type="radio" name="search-type" checked={searchType === 'text'} onChange={() => setSearchType('text')} /><span className="ml-2">Text-Match Search</span>
+          <div className="text-sm inline-flex items-center p-2">
+            <div className="text-xl -mt-1">2.</div>
+            <div className="ml-4">
+              <input type="radio" name="search-objects" checked={searchObjects === 'all'} onChange={() => setSearchObjects('all')} /><span className="ml-2">All</span>
+            </div>
+            <div className="ml-4">
+              <input type="radio" name="search-objects" checked={searchObjects === 'works'} onChange={() => setSearchObjects('works')} /><span className="ml-2">Works</span>
+            </div>
+            <div className="ml-4">
+              <input type="radio" name="search-objects" checked={searchObjects === 'letters'} onChange={() => setSearchObjects('letters')} /><span className="ml-2">Letters</span>
+            </div>
           </div>
         </div>
-        <div className="rounded-t-lg border-t border-x float-right mr-2 text-sm inline-flex items-center p-2">
-          <div>
-            <input type="radio" name="search-objects" checked={searchObjects === 'all'} onChange={() => setSearchObjects('all')} /><span className="ml-2">All</span>
-          </div>
-          <div className="ml-4">
-            <input type="radio" name="search-objects" checked={searchObjects === 'books'} onChange={() => setSearchObjects('books')} /><span className="ml-2">Books</span>
-          </div>
-          <div className="ml-4">
-            <input type="radio" name="search-objects" checked={searchObjects === 'letters'} onChange={() => setSearchObjects('letters')} /><span className="ml-2">Letters</span>
-          </div>
+        <div
+          onClick={() => doSearch()}
+          className="mt-2 w-full border text-center rounded-md text-md px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">
+          Search
         </div>
-        <form onSubmit={() => doSearch()} onKeyDown={(e) => checkEnterPress(e)}>
-          <textarea
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            className="p-4 bg-white border border-black text-black w-full rounded-md"
-            placeholder="Type (in natural language) whatever you'd like to learn from Erasmus's letters."
-          />
-          <div
-            onClick={() => doSearch()}
-            className="-mt-1 w-[100px] bg-black border border-gray-500 text-white text-xl text-center px-4 py-2 rounded-md w-full cursor-pointer hover:bg-gray-900">
-            Search
+        <details className="mt-4">
+          <summary className="cursor-pointer hover:underline underline-offset-2 italic">How semantic search works</summary>
+          <div className="mt-2">
+            <p>By default, this search works <em>semantically</em>. This means that you should type in natural language, as to an AI or a chatbot, for what you're looking for. The search system will try to interpret what you are searching for and compare it semantically to an indexed set of passages from Erasmus's works.</p>
+            <p className="mt-4">During processing of the text corpus, the texts were broken up into comprehensible sections, which may not have been present in the original text. These chunks were then processed by a LLM AI to create a 2-3 sentence summary, 3-5 themes, and 3-5 keywords. These three elements were then encoded using semantic embedding, creating multiple numeric representations in the database.</p>
+            <p className="mt-4">When you enter your query, it is similarly transformed -- first passed through an LLM to contextualize the search, and then encoded using semantic embedding. Finally, this encoding is compared against entries in the database in an attempt to find results that are most semantically similar.</p>
           </div>
-        </form>
-      </div>
+        </details>
+      </form>
     </div>
   )
 
 }
+
+ 

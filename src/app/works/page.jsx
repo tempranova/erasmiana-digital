@@ -1,7 +1,7 @@
 import { db } from '@/lib/db/kysely'
 import { sql } from 'kysely';
 
-import LetterIndex from '@/components/letter/letter-index';
+import WorkIndex from '@/components/work/work-index';
 
 export default async function Page({ searchParams }) {
 
@@ -11,29 +11,23 @@ export default async function Page({ searchParams }) {
   } else {
     page = parseInt(page)
   }
-  const itemsPerPage = 50;
+  const itemsPerPage = 20;
 
-  let baseQuery = db.selectFrom('Letter');
+  let baseQuery = db.selectFrom('Work');
 
   if(search && search !== "") {
     baseQuery = baseQuery.where((eb) =>
       eb.or([
         eb('title', 'ilike', `%${search}%`),
-        eb('alt_title', 'ilike', `%${search}%`),
-        eb('reference', 'ilike', `%${search}%`),
-        eb('date_text', 'ilike', `%${search}%`),
-        eb('origin', 'ilike', `%${search}%`),
-        eb('destination', 'ilike', `%${search}%`),
         eb(sql`lower(cast("year" as text))`, 'like', `%${search}%`)
       ])
     );
   }
     
 
-  let allLettersQuery = baseQuery
+  let allWorksQuery = baseQuery
     .select([
-      'id','title','alt_title','reference','date_text',
-      'origin','destination','place_text','volume','related_to','year'
+      'id','title','blurb','year'
     ])
     .limit(itemsPerPage)
     .offset(itemsPerPage * (page - 1))
@@ -41,14 +35,14 @@ export default async function Page({ searchParams }) {
   if(orderBy && orderBy !== "" && orderBy.indexOf('-') > -1) {
     const sort = orderBy.split('-')[0]
     const order = orderBy.split('-')[1]
-    allLettersQuery = allLettersQuery.orderBy(sort, order)
+    allWorksQuery = allWorksQuery.orderBy(sort, order)
   } else {
-    allLettersQuery = allLettersQuery.orderBy('year');
+    allWorksQuery = allWorksQuery.orderBy('year');
   }
 
-  const allLetters = await allLettersQuery.execute();;
+  const allWorks = await allWorksQuery.execute();;
 
-  const allLettersCount = await baseQuery
+  const allWorksCount = await baseQuery
     .select((eb) => [eb.fn.countAll().as('totalCount')])
     .executeTakeFirst();
 
@@ -56,14 +50,14 @@ export default async function Page({ searchParams }) {
     <div className="m-auto flex-1 mt-8 w-full max-w-7xl p-8 rounded-md shadow-lg bg-no-repeat bg-cover bg-center bg-[url('/assets/bg-parchment-2.png')] max-h-[80vh] overflow-y-scroll">
       <div className="text-left">
         <div className="text-xl cardo-regular">
-          <h1 className="im-fell-dw-pica-regular-italic text-2xl mb-4">Letters & Correspondence</h1>
+          <h1 className="im-fell-dw-pica-regular-italic text-2xl mb-4">Works</h1>
         </div>
 
         <div className="w-full m-auto max-w-7xl pb-16">
-          <LetterIndex 
+          <WorkIndex 
             page={page} 
-            allLetters={allLetters} 
-            totalCount={parseInt(allLettersCount.totalCount)} 
+            allWorks={allWorks} 
+            totalCount={parseInt(allWorksCount.totalCount)} 
             itemsPerPage={itemsPerPage} 
             search={search}
             orderBy={orderBy}
