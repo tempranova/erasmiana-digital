@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 export default function Search({ setResults, setPage, page, searchedText, setTotalResults, setSearchedText, workOptions }) {
 
+  const [ loading, setLoading ] = useState(false)
   const [ searchType, setSearchType ] = useState('semantic')
   const [ searchObjects, setSearchObjects ] = useState('all')
   const [ searchText, setSearchText ] = useState("")
@@ -17,6 +18,7 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
       pageToSend = 1;
     }
     if(searchText && searchText !== "") {
+      setLoading(true)
       const searchResults = await fetch('/api/search', {
         method : "POST",
         body : JSON.stringify({
@@ -27,6 +29,7 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
           page : pageToSend
         })
       }).then(resp => resp.json())
+      setLoading(false)
 
       const url = new URL(window.location)
       url.searchParams.set("search", searchText)
@@ -133,8 +136,62 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
         </div>
         <div
           onClick={() => doSearch()}
-          className="mt-2 w-full border text-center rounded-md text-md px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">
-          Search
+          className="mt-2 w-full border text-center rounded-md text-md px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20 flex justify-center items-center">
+          Search 
+          {loading ? 
+            <svg className="ml-2" width="20" height="20" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#333">
+                <rect y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.5s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.5s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="30" y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.25s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.25s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="60" width="15" height="140" rx="6">
+                    <animate attributeName="height"
+                        begin="0s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="90" y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.25s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.25s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="120" y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.5s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.5s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+            </svg>
+          : false}
         </div>
         <details className="mt-4">
           <summary className="cursor-pointer hover:underline underline-offset-2 italic">How semantic search works</summary>

@@ -17,8 +17,6 @@ export default function SearchResults({ results, searchedText, showKeywords, sho
     }
   }
 
-  console.log(results)
-
   return (
     <div>
       {results.map((result, i) => {
