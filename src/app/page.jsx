@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div className="m-auto flex-1 flex">
-      <div className="m-auto w-[500px] h-[700px] bg-no-repeat bg-contain bg-center bg-[url('/assets/book-bg.png')]">
+      {/* <div className="m-auto w-[500px] h-[700px] bg-no-repeat bg-contain bg-center bg-[url('/assets/book-bg.png')]">
         <div className="w-full flex-1 text-center pt-[157px] lg:pt-[125px]">
           <div className="cardo-regular uppercase text-[36px] lg:text-[42px] text-[#3b2d2b] blur-[0.5px]">Erasmiana</div>
           <div className="cardo-regular -mt-4 uppercase text-[22px] lg:text-[26px] text-[#3b2d2b] blur-[0.5px]">a digital corpus</div>
@@ -37,7 +37,7 @@ export default function Home() {
             </div>
           </Link>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

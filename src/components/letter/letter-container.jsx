@@ -5,7 +5,7 @@ export default function LetterContainer({ letter }) {
   const lines = letter.text.split("\n");
 
   return (
-    <div className="grid grid-cols-2 gap-4 flex-1 text-left max-h-[700px] overflow-y-scroll text-[#3b2d2b] cardo-regular">
+    <div id="scroll-container" className="grid grid-cols-1 lg:grid-cols-2 p-4 gap-4 flex-1 text-left max-h-[700px] overflow-y-scroll text-[#3b2d2b] cardo-regular">
       <div className="p-4 pt-8">
         <div className="text-center">
           <h1 className="capitalize text-2xl font-semibold">{letter.title.toLowerCase()}</h1>

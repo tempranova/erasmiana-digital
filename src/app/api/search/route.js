@@ -34,9 +34,17 @@ export const POST = async (req, route) => {
 
     const vectorLiteral = `[${queryEmbedding.join(', ')}]`
 
+    const candidates = await db
+      .selectFrom("Metadata")
+      .select(["id", sql`vector_small <=> ${vectorLiteral}::vector`.as("distance")])
+      .orderBy(sql`vector_small <=> ${vectorLiteral}::vector`)
+      .limit(100)   // limit BEFORE joins
+      .execute();
+
+    const ids = candidates.map((c) => c.id);
+
     let sub = db
       .selectFrom("Metadata")
-      .distinctOn(['summary'])
       .select((eb) => [
         sql`vector_small <=> ${vectorLiteral}::vector`.as('distance'),
         jsonBuildObject({
@@ -62,7 +70,7 @@ export const POST = async (req, route) => {
             .whereRef('Section.id', '=', 'Metadata.sectionId')
         ).as('section')
       ])
-      .orderBy('summary')
+      .where("Metadata.id", "in", ids)
       .orderBy('distance')
       
     if(body.objects === 'letters') {

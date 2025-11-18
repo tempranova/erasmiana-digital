@@ -55,9 +55,6 @@ export default async function Page() {
               
             </div>
             <div className="order-1 lg:order-2 p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] lg:overflow-y-scroll">
-              <div className="text-center">
-                <div className="mt-4 cardo-regular uppercase text-3xl text-[#3b2d2b] leading-none break-all">Data Visualizations</div>
-              </div>
               <div className="mt-4 cardo-regular text-lg text-[#3b2d2b]">There are over 8,000 pages of Erasmus's works scanned on this site as well as over 3,000 of his letters. Some of this information is tagged with locations, dates, and names.</div>
               <div className="mt-4 cardo-regular text-lg text-[#3b2d2b]">I am working on improving the accuracy of the data and adding more, but I've put a few data visualizations here that might reveal interesting insights about Erasmus's life or work.</div>
               <div className="mt-4 cardo-regular text-lg text-[#3b2d2b]">I'd particularly like to add more data on publications.</div>

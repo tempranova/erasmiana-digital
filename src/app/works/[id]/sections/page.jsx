@@ -75,10 +75,10 @@ export default async function Page({ searchParams, params : { id }}) {
     .executeTakeFirst();
 
   return (
-    <div className="m-auto flex-1 mt-8 w-full max-w-7xl p-8 rounded-md shadow-lg bg-no-repeat bg-cover bg-center bg-[url('/assets/bg-parchment-2.png')] max-h-[80vh] overflow-y-scroll">
+    <div id="scroll-container" className="my-4 mx-4 lg:my-auto lg:mx-0 lg:-ml-[20px] w-full max-w-7xl rounded-lg shadow-lg min-h-[90vh] p-8 bg-repeat lg:bg-no-repeat lg:bg-cover bg-center bg-[url('/assets/bg-parchment-2.png')] overflow-y-auto outline-none">
       <div className="text-left">
         <div className="text-xl cardo-regular">
-          <h1 className="im-fell-dw-pica-regular-italic text-2xl mb-4">{work.title}</h1>
+          <h1 className="im-fell-dw-pica-regular text-center text-3xl mb-4">{work.title}</h1>
         </div>
         <WorkBrowse work={work} lastPage={lastPage} pages={pages} allSections={allSections} page={page} totalCount={allSectionsCount.totalCount} itemsPerPage={itemsPerPage} search={search} />
       </div>

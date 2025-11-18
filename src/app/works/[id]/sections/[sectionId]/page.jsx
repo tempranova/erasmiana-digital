@@ -65,9 +65,11 @@ export default async function Page({ params : { id, sectionId }}) {
   const numberOfPages = lastPage.pages[lastPage.pages.length - 1];
 
   return (
-    <div className="m-auto flex-1 mt-8 w-full h-[720px] max-h-[720px] pb-10 bg-no-repeat bg-contain bg-center bg-[url('/assets/main-paper-bg.png')]">
-      <div className="w-[110vh] m-auto">
-        <SectionContainer section={section} nextSection={nextSection} prevSection={prevSection} numberOfPages={numberOfPages} />
+    <div className="m-auto flex-1 flex">
+      <div className="m-4 lg:m-auto w-full lg:w-2/3 h-full pb-16 lg:pb-0 lg:w-[950px] lg:h-[700px] bg-no-repeat bg-cover lg:bg-contain bg-center lg:bg-[url('/assets/main-paper-bg.png')] bg-[url('/assets/mobile-parchment-bg.png')] ">
+        <div className="w-full m-auto">
+          <SectionContainer section={section} nextSection={nextSection} prevSection={prevSection} numberOfPages={numberOfPages} />
+        </div>
       </div>
     </div>
   );

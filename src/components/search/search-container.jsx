@@ -31,7 +31,7 @@ export default function SearchContainer({ placeholder, workOptions }) {
         </div>
         <div className="col-span-2">
           {results.length === 0 ? 
-            <img src="/assets/erasmus-bg.jpg" className="rounded-md shadow-md" />
+            <img src="/assets/painting-bg-2.png" className="rounded-md shadow-md" />
           : false}
           <div className="flex mb-4">
             {results.length > 0 ? 

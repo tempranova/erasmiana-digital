@@ -56,14 +56,6 @@ export default function WorkIndex({ page, orderBy, allWorks, totalCount, itemsPe
       <div>
         <div className="w-full mb-4 block lg:flex">
           <div className="mr-auto flex items-center">
-            <div className="flex items-center">
-              <div className="ml-2 text-xs border mr-2 px-2 py-1 rounded-md">
-                <select value={orderBySelect} onChange={(e) => setOrder(e.target.value)} >
-                  <option value="year-asc">Year (asc)</option>
-                  <option value="year-desc">Year (desc)</option>
-                </select>
-              </div>
-            </div>
             <form>
               <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[100px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
               <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
@@ -86,7 +78,7 @@ export default function WorkIndex({ page, orderBy, allWorks, totalCount, itemsPe
           <tbody>
             {allWorks.map((work, i) => {
               return (
-                <tr onClick={() => router.push(`/works/${work.id}`)} key={`work-${i}`} className={`${i%2 ? 'bg-white/30' : ''} hover:bg-white/20 cursor-pointer`}>
+                <tr onClick={() => router.push(`/works/${work.id}/sections`)} key={`work-${i}`} className={`${i%2 ? 'bg-white/30' : ''} hover:bg-white/20 cursor-pointer`}>
                   <td className="table-cell px-3 py-1 font-medium capitalize break-words">{work.title.toLowerCase()}</td>
                   <td className=" hidden lg:table-cell px-3 py-1 font-medium break-words">{work.blurb}</td>
                   <td>

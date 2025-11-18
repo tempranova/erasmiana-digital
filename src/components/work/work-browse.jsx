@@ -66,9 +66,9 @@ export default function WorkBrowse({ page, work, lastPage, pages, allSections, t
   return (
     <div className="cardo-regular">
       <div>
-        <div className="w-full mb-4 flex">
-          <div className="mr-auto flex items-center">
-            <form onSubmit={(e) => handleSubmit(e)} className="flex items-center">
+        <div className="w-full mb-4 lg:flex">
+          <div className="mr-auto lg:flex items-center">
+            <form onSubmit={(e) => handleSubmit(e)} className="lg:flex items-center">
               {pageOptions.length > 0 ?
                 <Select 
                   name="pages"
@@ -79,7 +79,7 @@ export default function WorkBrowse({ page, work, lastPage, pages, allSections, t
                   options={pageOptions}
                 />
               : false}
-              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
+              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="mt-2 lg:mt-0 lg:ml-2 border rounded-md text-sm px-2 py-1 bg-white w-[150px]" placeholder="Table filter..." />
               <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
             </form>
             <div className="text-xs ml-2">{totalCount} results</div>

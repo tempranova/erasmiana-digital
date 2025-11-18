@@ -68,9 +68,9 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
     <div className="cardo-regular">
       <div>
         <div className="w-full mb-4 block lg:flex">
-          <div className="mr-auto flex items-center">
+          <div className="mr-auto lg:flex items-center">
             <div className="flex items-center">
-              <div className="ml-2 text-xs border mr-2 px-2 py-1 rounded-md">
+              <div className="mb-2 lg:mb-0 lg:ml-2 text-xs border mr-2 px-2 py-1 rounded-md">
                 <select value={orderBySelect} onChange={(e) => setOrder(e.target.value)} >
                   <option value="year-asc">Year (asc)</option>
                   <option value="year-desc">Year (desc)</option>
@@ -87,7 +87,7 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
                 </select>
               </div>
             </div>
-            <form>
+            <form className="mb-2 lg:mb-0">
               <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[80px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
               <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
             </form>

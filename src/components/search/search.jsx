@@ -105,7 +105,7 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
               <input type="radio" name="search-type" checked={searchType === 'text'} onChange={() => setSearchType('text')} /><span className="ml-2">Text-Match Search</span>
             </div>
           </div>
-          <div className="text-sm inline-flex items-center lg:p-2">
+          <div className="text-sm inline-flex items-center ml-4 lg:ml-0 lg:p-2">
             <div className="text-xl -mt-1">2.</div>
             <div className="ml-4">
               <input type="radio" name="search-objects" checked={searchObjects === 'all'} onChange={() => setSearchObjects('all')} /><span className="ml-2">All</span>

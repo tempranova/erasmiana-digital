@@ -6,13 +6,16 @@ export default async function Page() {
 
   return (
     <div className="m-auto flex-1 flex">
-      <div className="m-auto w-full md:w-2/3 h-full pb-16 lg:pb-0 lg:w-[950px] lg:h-[700px] bg-no-repeat bg-cover lg:bg-contain bg-center lg:bg-[url('/assets/main-paper-bg.png')] bg-[url('/assets/mobile-parchment-bg.png')] ">
+      <div className="m-4 lg:m-auto w-full lg:w-2/3 h-full pb-16 lg:pb-0 lg:w-[950px] lg:h-[700px] bg-no-repeat bg-cover lg:bg-contain bg-center lg:bg-[url('/assets/main-paper-bg.png')] bg-[url('/assets/mobile-parchment-bg.png')] ">
         <div className="w-full m-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 text-left">
             <div className="p-8">
+              <div className="lg:hidden text-center">
+                <div className="my-4 cardo-regular text-2xl text-[#3b2d2b] leading-none break-all">Debate AI</div>
+              </div>
               <AIContainer />
             </div>
-            <div className="p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] lg:overflow-y-scroll cardo-regular">
+            <div id="scroll-container" className="p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] overflow-y-scroll cardo-regular">
               <h2 className="text-xl font-semibold">Associated Sources</h2>
               <p className="mt-2">As you start chatting, the ErasmusAI bot will try to find some passages by Erasmus that might relate in some way to your conversation. Check them out for more about what Erasmus himself might have thought!</p>
               <div className="mt-2 border rounded-md">
