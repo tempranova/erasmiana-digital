@@ -67,7 +67,7 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
   return (
     <div className="cardo-regular">
       <div>
-        <div className="w-full mb-4 flex">
+        <div className="w-full mb-4 block lg:flex">
           <div className="mr-auto flex items-center">
             <div className="flex items-center">
               <div className="ml-2 text-xs border mr-2 px-2 py-1 rounded-md">
@@ -88,13 +88,13 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
               </div>
             </div>
             <form>
-              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
+              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[80px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
               <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
             </form>
             <div className="text-xs ml-2">{totalCount} results</div>
 
           </div>
-          <div className="ml-auto flex">
+          <div className="ml-2 mt-2 lg:mt-0 lg:ml-auto flex">
             <Pagination currentPage={page} totalResults={totalCount} resultsPerPage={itemsPerPage} onPageChange={changePage} />
           </div>
         </div>
@@ -102,10 +102,10 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
           <thead className="text-xs text-black uppercase">
             <tr>
               <th className="w-[80px] px-3 py-1"># / Vol.</th>
-              <th className="hidden md:table-cell px-3 py-1">Title</th>
+              <th className="hidden lg:table-cell px-3 py-1">Title</th>
               <th className="px-3 py-1">Alt. Title</th>
-              <th className="px-3 py-1">Origin</th>
-              <th className="px-3 py-1">Destination</th>
+              <th className="hidden lg:table-cell px-3 py-1">Origin</th>
+              <th className="hidden lg:table-cell px-3 py-1">Destination</th>
               <th className="w-[80px] px-3 py-1">Year</th>
               <th className="w-[20px] px-3 py-1"></th>
             </tr>
@@ -115,10 +115,10 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
               return (
                 <tr onClick={() => router.push(`/letters/${letter.id}`)} key={`letter-${i}`} className={`${i%2 ? 'bg-white/30' : ''} hover:bg-white/20 cursor-pointer`}>
                   <td className="w-[80px] px-3 py-1 font-medium break-words">{letter.reference} / {letter.volume}</td>
-                  <td className="hidden md:table-cell px-3 py-1 font-medium capitalize break-words">{letter.title.toLowerCase()}</td>
+                  <td className="hidden lg:table-cell px-3 py-1 font-medium capitalize break-words">{letter.title.toLowerCase()}</td>
                   <td className="px-3 py-1 font-medium capitalize break-words">{letter.alt_title.toLowerCase()}</td>
-                  <td className="px-3 py-1 font-medium capitalize break-words">{letter.origin ? letter.origin.split(',')[0] : ''}</td>
-                  <td className="px-3 py-1 font-medium capitalize break-words">{letter.destination ? letter.destination.split(',')[0] : ''}</td>
+                  <td className="hidden lg:table-cell px-3 py-1 font-medium capitalize break-words">{letter.origin ? letter.origin.split(',')[0] : ''}</td>
+                  <td className="hidden lg:table-cell px-3 py-1 font-medium capitalize break-words">{letter.destination ? letter.destination.split(',')[0] : ''}</td>
                   <td className="w-[80px] px-3 py-1 font-medium capitalize whitespace-nowrap">{letter.year}</td>
                   <td>
                     <Link href={`/letters/${letter.id}`}>

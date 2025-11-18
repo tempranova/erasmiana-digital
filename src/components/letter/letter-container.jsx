@@ -31,7 +31,7 @@ export default function LetterContainer({ letter }) {
         <hr className="m-auto my-4 w-1/3 border-[#3b2d2b]" />
         <div className="grid grid-cols-2 gap-4">
           {letter.pages.map((page, index) => {
-            const url = `https://d1cmk1mkpb53mi.cloudfront.net/letters/volume-${letter.volume}/page-${String(page).padStart(3, '0')}.jpg`
+            const url = `https://d1cmk1mkpb53mi.cloudfront.net/letters/${letter.volume}/page-${String(page).padStart(3, '0')}.jpg`
             return (
               <div key={`image-${index}`} className="p-2 border border-[#3b2d2b] rounded-md shadow-md bg-white/20">
                 <a href={url} target="_blank">

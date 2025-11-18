@@ -99,6 +99,7 @@ model Letter {
 model Work {
 	id                  Int @id @default(autoincrement())
   title               String
+  slug                String?
   alt_title           String?
   blurb               String?
   year                Int?

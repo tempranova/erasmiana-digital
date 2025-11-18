@@ -6,11 +6,16 @@ import WorkBrowse from '@/components/work/work-browse';
 
 export default async function Page({ searchParams, params : { id }}) {
 
-  let { page, search } = searchParams;
+  let { page, search, pages } = await searchParams;
   if(!page) {
     page = 1;
   } else {
     page = parseInt(page)
+  }
+  if(pages) {
+    pages = decodeURIComponent(pages)
+    pages = pages.split(',')
+    pages = pages.map(thisPage => parseInt(thisPage))
   }
   const itemsPerPage = 20;
 
@@ -43,6 +48,10 @@ export default async function Page({ searchParams, params : { id }}) {
     );
   }
 
+  if(pages && pages.length > 0) {
+    baseQuery = baseQuery.where(sql`"Section"."pages" && ${sql`ARRAY[${sql.join(pages)}]::int[]`}`)
+  }
+
   let allSectionsQuery = baseQuery
     .select([
       'Section.id', 'Section.pages', 'Metadata.summary', 'Metadata.keywords', 'Metadata.themes', 'Section.position'
@@ -51,7 +60,15 @@ export default async function Page({ searchParams, params : { id }}) {
     .limit(itemsPerPage)
     .offset(itemsPerPage * (page - 1))
 
-  const allSections = await allSectionsQuery.execute();;
+  const allSections = await allSectionsQuery.execute();
+
+  const lastPage = await db.selectFrom('Section')
+    .where('workId', '=', parseInt(id))
+    .select((eb) => [
+      'id', 'pages'
+    ])
+    .orderBy('pages', 'desc')
+  .executeTakeFirst()
 
   const allSectionsCount = await baseQuery
     .select((eb) => [eb.fn.countAll().as('totalCount')])
@@ -63,7 +80,7 @@ export default async function Page({ searchParams, params : { id }}) {
         <div className="text-xl cardo-regular">
           <h1 className="im-fell-dw-pica-regular-italic text-2xl mb-4">{work.title}</h1>
         </div>
-        <WorkBrowse work={work} allSections={allSections} page={page} totalCount={allSectionsCount.totalCount} itemsPerPage={itemsPerPage} search={search} />
+        <WorkBrowse work={work} lastPage={lastPage} pages={pages} allSections={allSections} page={page} totalCount={allSectionsCount.totalCount} itemsPerPage={itemsPerPage} search={search} />
       </div>
     </div>
   );

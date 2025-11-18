@@ -41,7 +41,13 @@ export default function SearchResults({ results, searchedText, showKeywords, sho
                   <div className="capitalize text-xl">{result.section.work.title.toLowerCase()}</div>
                   {result.section.work.alt_title ? <div className="capitalize text-md text-gray-600">{result.section.work.alt_title.toLowerCase()}</div> : false }
                 </Link>
-                {result.metadata?.summary ? <div className="mt-4 text-sm cardo-regular"><span className="italic">Page{result.section.pages.length > 1 ? 's' : ''} {result.section.pages.join(', ')}:</span> {result.metadata.summary}</div> : false}
+                {result.metadata?.summary ? 
+                  <div className="mt-4 text-sm cardo-regular">
+                    {result.section.title ? <span className="italic mr-1">{result.section.title}:</span> : false}
+                    {result.section.pages.length > 0 ? <span className="italic mr-1">Page{result.section.pages.length > 1 ? 's' : ''} {result.section.pages.join(', ')}:</span> : false}
+                    {result.metadata.summary}
+                  </div> 
+                : false}
                 {result.snippet ? <div className="mt-4 text-sm cardo-regular">... <span dangerouslySetInnerHTML={{ __html : highlightSnippet(result) }} /> ...</div> : false}
               </div>
             : false}

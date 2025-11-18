@@ -37,7 +37,7 @@ export default async function Page({ searchParams }) {
     const order = orderBy.split('-')[1]
     allWorksQuery = allWorksQuery.orderBy(sort, order)
   } else {
-    allWorksQuery = allWorksQuery.orderBy('year');
+    allWorksQuery = allWorksQuery.orderBy('title');
   }
 
   const allWorks = await allWorksQuery.execute();;

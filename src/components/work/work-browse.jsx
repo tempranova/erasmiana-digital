@@ -1,23 +1,28 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Select from 'react-select';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 import Pagination from '@/components/common/pagination';
 
-export default function WorkBrowse({ page, work, allSections, totalCount, itemsPerPage, search = "" }) {
+export default function WorkBrowse({ page, work, lastPage, pages, allSections, totalCount, itemsPerPage, search = "" }) {
 
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams()
 
   const [ searchText, setSearchText ] = useState(search)
+  const [ selectedPages, setSelectedPages ] = useState(pages ? pages : [])
 
   const changePage = (newPage) => {
     const params = new URLSearchParams(searchParams.toString())
     params.set('page', newPage)
     if(search) {
       params.set('search', search)
+    }
+    if(pages) {
+      params.set('pages', pages.join(','))
     }
     router.push(`${pathname}?${params.toString()}`)
     router.refresh();
@@ -27,19 +32,54 @@ export default function WorkBrowse({ page, work, allSections, totalCount, itemsP
     const params = new URLSearchParams(searchParams.toString())
     params.set('page', 1)
     params.set('search', searchText)
-    router.push(`${pathname}?${params.toString()}`)
-    router.refresh();
+    if(selectedPages.length > 0) {
+      params.set('pages', selectedPages.join(','))
+    }
+    console.log(`${pathname}?${params.toString()}`)
+    // router.push(`${pathname}?${params.toString()}`)
+    // router.refresh();
   }
 
-  console.log(search)
+  const handleSubmit = (e) => {
+    const form = e.currentTarget;
 
+    form.querySelectorAll('input[type="hidden"][name="pages"]')
+      .forEach((el) => { (el).disabled = true; });
+    form.querySelectorAll('input[name="pages"]')
+      .forEach((el) => { if ((el).dataset.joined === '1') el.remove(); });
+
+
+    const hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.name = "pages";
+    hidden.value = selectedPages.join(",");
+    form.appendChild(hidden);
+  };
+
+  const pageOptions = [];
+  if(lastPage.pages.length > 0) {
+    for(let i = 0; i < lastPage.pages[lastPage.pages.length - 1]; i++) {
+      pageOptions.push({ value : i+1, label : i+1 })
+    }
+  }
+ 
   return (
     <div className="cardo-regular">
       <div>
         <div className="w-full mb-4 flex">
           <div className="mr-auto flex items-center">
-            <form>
-              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
+            <form onSubmit={(e) => handleSubmit(e)} className="flex items-center">
+              {pageOptions.length > 0 ?
+                <Select 
+                  name="pages"
+                  placeholder="Select pages"
+                  isMulti
+                  value={pageOptions.filter(option => selectedPages.indexOf(option.value) > -1)}
+                  onChange={(e) => setSelectedPages(e.map(option => option.value))}
+                  options={pageOptions}
+                />
+              : false}
+              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
               <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
             </form>
             <div className="text-xs ml-2">{totalCount} results</div>

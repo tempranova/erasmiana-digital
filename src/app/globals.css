@@ -45,6 +45,15 @@ body {
   scrollbar-color: rgba(120, 120, 120, 0.3) transparent;
 }
 
+/* Range Slider */
+.range-slider__range {
+  background: #333 !important;
+}
+.range-slider__thumb {
+  background: #FFF !important;
+  border: #333 4px solid;
+}
+
 /* Fonts */
 .im-fell-dw-pica-regular {
   font-family: "IM Fell DW Pica", serif;

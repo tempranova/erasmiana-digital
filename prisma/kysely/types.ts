@@ -82,6 +82,7 @@ export type Translation = {
 export type Work = {
     id: Generated<number>;
     title: string;
+    slug: string | null;
     alt_title: string | null;
     blurb: string | null;
     year: number | null;

@@ -20,7 +20,22 @@ export default async function Page({ params : { id, sectionId }}) {
       jsonObjectFrom(
         eb.selectFrom('Work')
           .select((eb) => [
-            'id', 'title', 'alt_title', 'placename', 'month', 'year',
+            'id', 'title', 'slug', 'alt_title', 'placename', 'month', 'year',
+            jsonArrayFrom(
+              eb.selectFrom('Commentary')
+                .select(['id', 'commentator', 'text', 'url', 'title'])
+                .whereRef('Commentary.workId', '=', 'Work.id')
+            ).as('commentary'),
+            jsonArrayFrom(
+              eb.selectFrom('Translation')
+                .select(['id', 'translator', 'text', 'language', 'url', 'title'])
+                .whereRef('Translation.workId', '=', 'Work.id')
+            ).as('translations'),
+            jsonArrayFrom(
+              eb.selectFrom('Source')
+                .select(['id', 'title', 'url', 'author', 'publication'])
+                .whereRef('Source.workId', '=', 'Work.id')
+            ).as('sources'),
           ])
           .whereRef('Work.id', '=', 'Section.workId')
       ).as('work')

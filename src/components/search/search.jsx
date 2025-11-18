@@ -1,47 +1,53 @@
 'use client';
+import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-export default function Search({ setResults, setPage, page, searchedText, setTotalResults, setSearchedText}) {
+export default function Search({ setResults, setPage, page, searchedText, setTotalResults, setSearchedText, workOptions }) {
 
   const [ searchType, setSearchType ] = useState('semantic')
   const [ searchObjects, setSearchObjects ] = useState('all')
   const [ searchText, setSearchText ] = useState("")
   const [ paramsLoaded, setParamsLoaded ] = useState(false);
+  const [ selectedWorks, setSelectedWorks ] = useState([])
 
   const doSearch = async () => {
     let pageToSend = page;
     if(searchedText && searchedText !== searchText) {
       pageToSend = 1;
     }
-    const searchResults = await fetch('/api/search', {
-      method : "POST",
-      body : JSON.stringify({
-        type : searchType,
-        objects : searchObjects,
-        search : searchText,
-        page : pageToSend
-      })
-    }).then(resp => resp.json())
+    if(searchText && searchText !== "") {
+      const searchResults = await fetch('/api/search', {
+        method : "POST",
+        body : JSON.stringify({
+          type : searchType,
+          objects : searchObjects,
+          search : searchText,
+          selectedWorks : selectedWorks,
+          page : pageToSend
+        })
+      }).then(resp => resp.json())
 
-    const url = new URL(window.location)
-    url.searchParams.set("search", searchText)
-    url.searchParams.set("objects", searchObjects)
-    url.searchParams.set("type", searchType)
-    url.searchParams.set("page", pageToSend)
-    window.history.replaceState({}, "", url);
+      const url = new URL(window.location)
+      url.searchParams.set("search", searchText)
+      url.searchParams.set("objects", searchObjects)
+      url.searchParams.set("type", searchType)
+      url.searchParams.set("works", selectedWorks.join(','))
+      url.searchParams.set("page", pageToSend)
+      window.history.replaceState({}, "", url);
 
-    if(searchResults.error) {
-      toast(searchResults.error)
-    } else if(searchResults.results.length === 0) {
-      toast("No results found.")
-      setSearchedText(searchResults.searchTerm)
-      setTotalResults(searchResults.totalResults)
-      setResults(searchResults.results)
-    } else {
-      setSearchedText(searchResults.searchTerm)
-      setTotalResults(searchResults.totalResults)
-      setResults(searchResults.results)
+      if(searchResults.error) {
+        toast(searchResults.error)
+      } else if(searchResults.results.length === 0) {
+        toast("No results found.")
+        setSearchedText(searchResults.searchTerm)
+        setTotalResults(searchResults.totalResults)
+        setResults(searchResults.results)
+      } else {
+        setSearchedText(searchResults.searchTerm)
+        setTotalResults(searchResults.totalResults)
+        setResults(searchResults.results)
+      }
     }
   }
 
@@ -63,6 +69,10 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
     if(params.get("type")) {
       setSearchType(params.get("type"))
     }
+    if(params.get("works")) {
+      let workArray = params.get("works").split(',')
+      setSelectedWorks(workArray.map(workId => parseInt(workId)))
+    }
     if(params.get("page")) {
       setPage(parseInt(params.get("page")))
     }
@@ -71,6 +81,7 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
 
   useEffect(() => {
     if(page && paramsLoaded) {
+      console.log('does search')
       doSearch()
     }
   }, [page, paramsLoaded])
@@ -85,7 +96,7 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
           placeholder="Enter your search here..."
         />
         <div className="cardo-regular">
-          <div className="text-sm inline-flex items-center p-2">
+          <div className="text-sm inline-flex items-center lg:p-2">
             <div className="text-xl -mt-1">1.</div>
             <div className="ml-4">
               <input type="radio" name="search-type" checked={searchType === 'semantic'} onChange={() => setSearchType('semantic')} /><span className="ml-2">Semantic Search</span>
@@ -94,7 +105,7 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
               <input type="radio" name="search-type" checked={searchType === 'text'} onChange={() => setSearchType('text')} /><span className="ml-2">Text-Match Search</span>
             </div>
           </div>
-          <div className="text-sm inline-flex items-center p-2">
+          <div className="text-sm inline-flex items-center lg:p-2">
             <div className="text-xl -mt-1">2.</div>
             <div className="ml-4">
               <input type="radio" name="search-objects" checked={searchObjects === 'all'} onChange={() => setSearchObjects('all')} /><span className="ml-2">All</span>
@@ -105,6 +116,19 @@ export default function Search({ setResults, setPage, page, searchedText, setTot
             <div className="ml-4">
               <input type="radio" name="search-objects" checked={searchObjects === 'letters'} onChange={() => setSearchObjects('letters')} /><span className="ml-2">Letters</span>
             </div>
+          </div>
+          <div>
+            <details className="mb-2" open={selectedWorks.length > 0}>
+              <summary className="mb-1 cursor-pointer hover:underline underline-offset-2 italic">Select specific work(s)</summary>
+              <Select
+                size={1}
+                closeMenuOnSelect={false}
+                isMulti
+                value={workOptions.filter(option => selectedWorks.indexOf(option.value) > -1)}
+                onChange={(e) => setSelectedWorks(e.map(option => option.value))}
+                options={workOptions}
+              />
+            </details>
           </div>
         </div>
         <div

@@ -69,7 +69,7 @@ export default function AIContainer() {
   }
 
   return (
-    <div className="text-black cardo-regular h-[660px] max-h-[700px] w-full flex flex-col">
+    <div className="text-black cardo-regular min-h-[400px] lg:h-[630px] w-full flex flex-col">
       <div className="flex-1 rounded-t-md overflow-y-auto">
         {messages.map((message, i) => {
           if(message.type === 'user') {

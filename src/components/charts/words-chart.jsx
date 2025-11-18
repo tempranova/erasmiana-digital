@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-export default function LetterChart({ letters, books }) {
+export default function LetterChart({ letters, works }) {
 
   const [ labels, setLabels ] = useState([]);
   const [ datasets, setDatasets ] = useState([])
@@ -47,7 +47,7 @@ export default function LetterChart({ letters, books }) {
     const years2 = [];
     const letterWordsByYear = [];
     const years3 = [];
-    const bookWordsByYear = [];
+    const workWordsByYear = [];
     letters.forEach(letter => {
       if(letter.year) {
         const thisIndex = years2.indexOf(letter.year);
@@ -72,30 +72,34 @@ export default function LetterChart({ letters, books }) {
         }
       }
     })
-    books.forEach(book => {
-      if(book.year) {
-        const thisIndex = years3.indexOf(book.year);
+    works.forEach(work => {
+      if(work.year) {
+        const thisIndex = years3.indexOf(work.year);
         if(thisIndex === -1) {
-          years3.push(book.year);
-          bookWordsByYear.push({
-            year : book.year,
-            totalWords : book.sections.reduce((acc, val) => acc + val.wordCount, 0)
+          years3.push(work.year);
+          workWordsByYear.push({
+            year : work.year,
+            totalWords : work.sections.reduce((acc, val) => acc + val.wordCount, 0)
           })
         } else {
-          bookWordsByYear[thisIndex].totalWords = bookWordsByYear[thisIndex].totalWords + book.sections.reduce((acc, val) => acc + val.wordCount, 0)
+          workWordsByYear[thisIndex].totalWords = workWordsByYear[thisIndex].totalWords + work.sections.reduce((acc, val) => acc + val.wordCount, 0)
         }
-        const totalIndex = years1.indexOf(book.year);
+        const totalIndex = years1.indexOf(work.year);
         if(totalIndex === -1) {
-          years1.push(book.year);
+          years1.push(work.year);
           wordsByYear.push({
-            year : book.year,
-            totalWords : book.sections.reduce((acc, val) => acc + val.wordCount, 0)
+            year : work.year,
+            totalWords : work.sections.reduce((acc, val) => acc + val.wordCount, 0)
           })
         } else {
-          wordsByYear[totalIndex].totalWords = wordsByYear[totalIndex].totalWords + book.sections.reduce((acc, val) => acc + val.wordCount, 0)
+          wordsByYear[totalIndex].totalWords = wordsByYear[totalIndex].totalWords + work.sections.reduce((acc, val) => acc + val.wordCount, 0)
         }
       }
     })
+
+    wordsByYear.sort((a, b) => a.year < b.year ? 1 : -1)
+    letterWordsByYear.sort((a, b) => a.year < b.year ? 1 : -1)
+    workWordsByYear.sort((a, b) => a.year < b.year ? 1 : -1)
 
     let newDatasets = [];
     newDatasets.push({
@@ -118,9 +122,9 @@ export default function LetterChart({ letters, books }) {
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     })
     newDatasets.push({
-      label : "Book Words By Year",
+      label : "Works Words By Year",
       data : wordsByYear.map(thisGroup => {
-        let thisYearGroup = bookWordsByYear.find(yearGroup => yearGroup.year === thisGroup.year);
+        let thisYearGroup = workWordsByYear.find(yearGroup => yearGroup.year === thisGroup.year);
         if(thisYearGroup) {
           return thisYearGroup.totalWords;
         } else {

@@ -16,8 +16,8 @@ export default async function Page() {
     ])
     .execute()
 
-  const bookResults = await db
-    .selectFrom('Book')
+  const workResults = await db
+    .selectFrom('Work')
     .select((eb) => [
       'id',
       'title',
@@ -28,20 +28,18 @@ export default async function Page() {
             sub.ref('id'),
             sql`array_length(regexp_split_to_array("text", '\\s+'), 1)`.as('wordCount')
           ])
-          .whereRef('Section.bookId', '=', 'Book.id')
+          .whereRef('Section.workId', '=', 'Work.id')
       ).as('sections'),
     ])
     .execute()
 
   return (
-    <div className="w-full min-h-screen h-full bg-[url('/assets/erasmus-bg-2.png')] bg-cover bg-center bg-no-repeat bg-[#1d1f1b] bg-blend-overlay p-16">
-      <div className="w-full m-auto max-w-7xl pb-16">
-        <div className="max-w-7xl bg-white/90 relative p-8">
-          <div className="text-xl cardo-regular">
-            <h1 className="im-fell-dw-pica-regular text-4xl mb-4">Words Chart</h1>
-          </div>
-          <WordsChart letters={letterResults} books={bookResults} />
+    <div className="m-auto flex-1 mt-8 w-full max-w-7xl p-8 rounded-md shadow-lg bg-no-repeat bg-cover bg-center bg-[url('/assets/bg-parchment-2.png')] max-h-[80vh] overflow-y-scroll">
+      <div className="text-left">
+        <div className="text-xl cardo-regular">
+          <h1 className="im-fell-dw-pica-regular-italic text-2xl mb-4">Words Over Time</h1>
         </div>
+        <WordsChart letters={letterResults} works={workResults} />
       </div>
     </div>
   );

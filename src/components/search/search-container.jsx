@@ -5,7 +5,7 @@ import Search from '@/components/search/search'
 import SearchResults from '@/components/search/search-results'
 import Pagination from '@/components/common/pagination';
 
-export default function SearchContainer({ placeholder }) {
+export default function SearchContainer({ placeholder, workOptions }) {
 
   const [ searchedText, setSearchedText ] = useState(false)
   const [ totalResults, setTotalResults ] = useState(false)
@@ -16,9 +16,10 @@ export default function SearchContainer({ placeholder }) {
 
   return (
     <div className="cardo-regular">
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div>
           <Search
+            workOptions={workOptions}
             placeholder={placeholder}
             searchedText={searchedText}
             setResults={setResults}

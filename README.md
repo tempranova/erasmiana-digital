@@ -28,28 +28,46 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 
 ## To Do:
 
-Major
-- Adding metadata to a sample so I can see how it all looks and feels (and the work for metadata...)
-- Laying out the in-section with a search in works (or, rather, link to main search with that pre-selected)
-- Allowing selection of a specific work in search
+- Look at general Work with title, subtitle, blurb, etc
+- Adding disclaimers, About page, general bibliography and source list
+- Improving data section + visualizations
+  - Mind-map type thing connections, improving life map
+- Improving LLM to give sources
+- Mobile design (individual works and letters)
+- Basic exhibition design
+- Adding at least basic years to publications
 
-- Improving the search to incorporate a LLM in-between to interpret the search (Batavians)
-- Improving the AI to pull out some references that might be related
-
-- Disclaimers and beta notices
+Minor
+- Have more into the back button, maybe some more back buttons to make it easier to return to searches
 - Index the vector fields
 - Multilingualize
-- Adding a general "sources" page to collate Erasmus resources
-- Adding "exhibition" page about Erasmus images over time for fun
+- Setting up static page generation
+- review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
 
-- Doing the rest of the letters
-- Adding more books, more book translations
+Data
 - Adding more edition variations and publications
 
-- Sorting by date, alphabetical, place, book, letter
+Advanced
 - A way to submit tickets for fixes (new section in DB for fixes)
-- Testing OCRing the English translation that's out of copyright
-- Considering doing the semantic embedding using the Dutch translations instead
+- Could even improve to do "ideas" charting, since I have keywords and themes -- a further enhancement
+
+Disclaimers:
+- Translation is AI, there are definitely errors
+- Errors in transcription from OCR are present
+- More, worse errors in the Works transcriptions
+- Data is not flawless; some letters are missing Bodleian stuff, etc
+- Errors, missing Greek, letters duplicated on some pages due to Allen not separating them, AI translation inadequate
+- Linking to the values of the project so that it's clear what we're trying to do
+- The Opera Omnia is drawn from Bibliotheek Rotterdam on the split PDFs from Opera Omnia Froben, so it may not match up to others
+
+Stuff we didn't add that we'd like to:
+- Better corpus digitization, headers, proper Latin, etc
+- Sets of translations for each text
+- Sets of publication history for each text 
+- Set of sources pointing around the web for each text
+- Any commentary links for each text
+- Inviting direct community editing
+
 
 Sources:
 - Some English translations (out of copyright!) (https://archive.org/details/epistlesoferasm01eras/page/n91/mode/2up?utm_source=chatgpt.com) - by dates
@@ -70,44 +88,8 @@ Sources:
 - Good link https://www.erasmushouse.museum/en/publications/
 - Thank you to Bodleian guy for cleaning and prepping data years ago
 
+- I used deepseek-coder... rather stupidly maybe? Could have used different models better trained for this...
 
-Interface
-- Nice layout to consider that feels more SOLID: https://archivum.org/
-- Adding general sources to letter front page and note about how assembled/created
-- Sorting letters by dates, people, etc
-- Adding a direct match text search
-- Creating comprehensive search page
-- Adding disclaimers:
-  - Errors, missing Greek, letters duplicated on some pages due to Allen not separating them, AI translation inadequate
-  - Linking to the values of the project so that it's clear what we're trying to do
-- Searching also update query params for going back (save result IDs?)
-- review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
-- Setting up static page generation
-- Nicer background transition into pages
-- A first basic "exhibition" page for images of Erasmus over time
-  - Another one might be pictures of the cities he lived in
-  - Letter delivery in Erasmus's time
-- Central page for Bibliography, finding more out about Erasmus, Erasmus articles etc
-
-Data visualization
-- Copy buddy's visualizations (mind maps, etc)
-- Add a journey of Erasmus around Europe with a timeline
-- Experimenting with other basemaps
-- Timeline journeys around Europe like a video game (moving character of Erasmus with images beside of the cities he moves in, animated weather effects, language noises)
-- Could even improve to do "ideas" charting, since I have keywords and themes -- a further enhancement
-
-Issues
-- Data is not flawless; some letters are missing Bodleian stuff, etc
-
-
-### Data Visualization
-
-- How to handle multiple points on the same location? (publication and stay)
-- Maybe three big switches along the bottom
-- What is MOST INTERESTING to people about Erasmus's life and influence? Have that be first and foremost.
-- The interconnectivity seems very valuable
-- Then something about how he moved around the world
-- A visualization that shows the old map would be stunning
 
 ### Maps
 
@@ -167,13 +149,3 @@ Issues
 - Any museums about Erasmus I can visit?
 - Any DH sites or displays that you find particularly interesting?
 - Who are the users? What's the point of this website? Where is it going to be used? How well are things already digitized?
-
-
-
-NOTE ON DB STRUCTURE
-
-- Entry is meant either for chunks of text -- like paragraphs within a larger work, parts of letters, generally not exceeding 500 words
-  - OR for small independent pieces of work that are part of a larger work but well-defined -- like adages
-- Summary and metadata are only really useful for letters -- for huge long works the chunks will do the lifting
-
-- May add more in terms of published dates and so on

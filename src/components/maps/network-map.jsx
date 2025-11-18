@@ -4,15 +4,22 @@ import { useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import bbox from '@turf/bbox';
 import greatCircle from "@turf/great-circle";
+import RangeSlider from 'react-range-slider-input';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { formatDate } from '@/lib/utils/dates';
-import { darkMatterStyle } from '@/lib/map/constants';
+
+import 'react-range-slider-input/dist/style.css';
 
 export default function MapContainer({ letters }) {
 
   const [map, setMap] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
   const [popup, setPopup] = useState(false)
+  const [minYear, setMinYear] = useState(0);
+  const [maxYear, setMaxYear] = useState(0);
+  const [selectedMinYear, setSelectedMinYear] = useState(false);
+  const [selectedMaxYear, setSelectedMaxYear] = useState(false);
   const [currentVis, setCurrentVis] = useState('network');
   const [currentLetterSet, setCurrentLetterSet] = useState([])
   const [currentTableRefs, setCurrentTableRefs] = useState([])
@@ -24,7 +31,8 @@ export default function MapContainer({ letters }) {
       container: 'erasmus-map', // container id
       style: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
       center: [4.4777, 51.9244], // starting position [lng, lat]
-      zoom: 6 // starting zoom
+      zoom: 6, // starting zoom
+      attributionControl : false
     });
 
     const newPopup = new maplibregl.Popup({ closeButton : false });
@@ -32,34 +40,84 @@ export default function MapContainer({ letters }) {
 
     newMap.on('load', () => {
       setMap(newMap);
-      groupLettersByNetwork();
     })
   }, [])
 
-  const groupLettersByNetwork = () => {
+  useEffect(() => {
+    if(map && selectedMaxYear && selectedMinYear && firstLoad) {
+      groupLetters('from-origin');
+      setFirstLoad(false)
+    }
+  }, [map, selectedMaxYear, selectedMinYear])
+
+  useEffect(() => {
+    if(letters.length > 0) {
+      const min = Math.min(...letters.map(o => o.year));
+      setMinYear(min)
+      setSelectedMinYear(min)
+      const max = Math.max(...letters.map(o => o.year));
+      setMaxYear(max)
+      setSelectedMaxYear(max)
+    }
+  }, [letters])
+
+  const groupLetters = (viz) => {
     const places = [];
     const letterGroup = [];
-    letters.forEach(letter => {
-      if(letter.origin_geo && letter.destination_geo) {
-        const thisIndex = places.indexOf(`${letter.origin} - ${letter.destination}`);
-        if(thisIndex === -1) {
-          places.push(`${letter.origin} - ${letter.destination}`);
-          letterGroup.push({
-            groupId : `${letter.origin} - ${letter.destination}`,
-            origin : letter.origin_geo,
-            destination : letter.destination_geo,
-            totalLetters : 1,
-            letters : [letter.id]
-          })
-        } else {
-          letterGroup[thisIndex].letters.push(letter.id)
-          letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
+    if(viz === 'from-origin') {
+      letters.forEach(letter => {
+        if(letter.origin_geo && letter.destination_geo) {
+          if(letter.year >= selectedMinYear && letter.year <= selectedMaxYear) {
+            if(letter.author && letter.author.indexOf("Erasmus") > -1) {
+              const thisIndex = places.indexOf(`${letter.origin} - ${letter.destination}`);
+              if(thisIndex === -1) {
+                places.push(`${letter.origin} - ${letter.destination}`);
+                letterGroup.push({
+                  groupId : `${letter.origin} - ${letter.destination}`,
+                  origin : letter.origin_geo,
+                  destination : letter.destination_geo,
+                  totalLetters : 1,
+                  letters : [letter.id]
+                })
+              } else {
+                letterGroup[thisIndex].letters.push(letter.id)
+                letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
+              }
+            }
+          }
         }
-      }
-    })
-    setCurrentVis('network')
-    setCurrentLetterSet(letterGroup);
-    setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
+      })
+      setCurrentVis('from-origin')
+      setCurrentLetterSet(letterGroup);
+      setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
+    }
+    if(viz === 'to-origin') {
+      letters.forEach(letter => {
+        if(letter.origin_geo && letter.destination_geo) {
+          if(letter.year >= selectedMinYear && letter.year <= selectedMaxYear) {
+            if(letter.recipient && letter.recipient.indexOf("Erasmus") > -1) {
+              const thisIndex = places.indexOf(`${letter.origin} - ${letter.destination}`);
+              if(thisIndex === -1) {
+                places.push(`${letter.origin} - ${letter.destination}`);
+                letterGroup.push({
+                  groupId : `${letter.origin} - ${letter.destination}`,
+                  origin : letter.origin_geo,
+                  destination : letter.destination_geo,
+                  totalLetters : 1,
+                  letters : [letter.id]
+                })
+              } else {
+                letterGroup[thisIndex].letters.push(letter.id)
+                letterGroup[thisIndex].totalLetters = letterGroup[thisIndex].totalLetters + 1;
+              }
+            }
+          }
+        }
+      })
+      setCurrentVis('to-origin')
+      setCurrentLetterSet(letterGroup);
+      setCurrentTableRefs([{ label : "Origin", ref : 'groupId' }, { label : "Total", ref : 'totalLetters'} ]);
+    }
   }
 
   useEffect(() => {
@@ -150,59 +208,71 @@ export default function MapContainer({ letters }) {
 
   return (
     <div>
-      <div className="flex gap-4">
-        <div onClick={() => groupLettersByNetwork()} className={`${currentVis === 'network' ? 'bg-gray-300' : ''} px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>By Network</div>
-      </div>
-      <div className="relative">
-        <div 
-          id="erasmus-map"
-          className="mt-4 w-full h-[70vh]" 
-        />
-        {clickedLetterSet ? 
-          <div className="absolute bottom-0 left-0 p-4 bg-white max-w-[350px] max-h-[300px] m-4 shadow-md overflow-y-auto">
-            {clickedLetterSet.letters.map((letterId, i) => {
-              const thisLetter = letters.find(letter => letter.id === letterId)
-              return (
-                <div key={`letter-${i}`} className="mb-2.5 capitalize">
-                  <a href={`/letters/${thisLetter.id}`} target="_blank" className="hover:opacity-70">
-                    <div className="text-black">{thisLetter.alt_title.toLowerCase()}</div>
-                  </a>
-                  <div className="text-gray-500">{formatDate(thisLetter.day, thisLetter.month, thisLetter.year)}</div>
-                </div>
-              )
-            })}
+      <div className="grid grid-cols-4 gap-4 h-[60vh] cardo-regular">
+        <div className="relative col-span-3">
+          <div 
+            id="erasmus-map"
+            className="mt-4 w-full h-[60vh]" 
+          />
+          <div className="mt-4 grid grid-cols-4 gap-4">
+            <div className="col-span-3">
+              <RangeSlider onThumbDragEnd={() => groupLetters(currentVis)} min={minYear} max={maxYear} defaultValue={[minYear, maxYear]} value={[selectedMinYear, selectedMaxYear]} onInput={(e) => { setSelectedMinYear(e[0]); setSelectedMaxYear(e[1]); }} />
+            </div>
+            <div className="text-center text-xl">
+              {selectedMinYear} - {selectedMaxYear}
+            </div>
           </div>
-        : false}
-      </div>
-      <div className="mt-8 cardo-regular text-left">
-        <table>
-          {currentLetterSet.length > 0 ? 
-            <>
-              <thead>
-                <tr>
-                  {currentTableRefs.map((tableRef, i) => {
+          <table className="mt-4">
+            {currentLetterSet.length > 0 ? 
+              <>
+                <thead>
+                  <tr>
+                    {currentTableRefs.map((tableRef, i) => {
+                      return (
+                        <th key={`header-${i}`} className="px-2 py-1 capitalize">{tableRef.label}</th>
+                      )
+                    })}
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentLetterSet.sort((a, b) => a.totalLetters < b.totalLetters ? 1 : -1).map((letters, i) => {
                     return (
-                      <th key={`header-${i}`} className="px-2 py-1 capitalize">{tableRef.label}</th>
+                      <tr key={`row-${i}`}>
+                        {currentTableRefs.map((tableRef, ii) => {
+                          return (
+                            <td key={`${i}-cell-${ii}`} className="px-2 py-1 capitalize">{letters[tableRef.ref]}</td>
+                          )
+                        })}
+                      </tr>
                     )
                   })}
-                </tr>
-              </thead>
-              <tbody>
-                {currentLetterSet.sort((a, b) => a.totalLetters < b.totalLetters ? 1 : -1).map((letters, i) => {
-                  return (
-                    <tr key={`row-${i}`}>
-                      {currentTableRefs.map((tableRef, ii) => {
-                        return (
-                          <td key={`${i}-cell-${ii}`} className="px-2 py-1 capitalize">{letters[tableRef.ref]}</td>
-                        )
-                      })}
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </>
+                </tbody>
+              </>
+            : false}
+          </table>
+        </div>
+        <div className="cardo-regular text-left text-sm">
+          <div onClick={() => groupLetters('from-origin')} className={`${currentVis === 'from-origin' ? 'bg-gray-300' : ''} mb-2 px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters from Erasmus</div>
+          <div onClick={() => groupLetters('to-origin')} className={`${currentVis === 'to-origin' ? 'bg-gray-300' : ''} mb-2 px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters to Erasmus</div>
+
+          <hr className="my-4"></hr>
+          {clickedLetterSet ? 
+            <div className="grid grid-cols-1 gap-2">
+              <h4 className="text-xl">{clickedLetterSetFeature.properties.groupId}</h4>
+              {clickedLetterSet.letters.map((letterId, i) => {
+                const thisLetter = letters.find(letter => letter.id === letterId)
+                return (
+                  <div key={`letter-${i}`} className="capitalize">
+                    <a href={`/letters/${thisLetter.id}`} target="_blank" className="hover:opacity-70">
+                      <div className="text-black">{thisLetter.alt_title.toLowerCase()}</div>
+                    </a>
+                    <div className="text-gray-500">{formatDate(thisLetter.day, thisLetter.month, thisLetter.year)}</div>
+                  </div>
+                )
+              })}
+            </div>
           : false}
-        </table>
+        </div>
       </div>
     </div>
   )
