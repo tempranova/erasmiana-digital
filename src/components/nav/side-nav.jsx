@@ -94,20 +94,23 @@ export default function SideNav({}) {
             <Link className="ml-auto" href="/debate">
               <div className="text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Debate</div>
             </Link>
-            <Link className="ml-auto" href="/learn">
+            <Link className="ml-auto mt-2" href="/learn">
               <div className="ml-auto text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Learn</div>
             </Link>
-            <Link className="ml-auto" href="/data">
+            <Link className="ml-auto mt-2" href="/data">
               <div className="ml-auto text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Data</div>
             </Link>
-            <Link className="mr-auto" href="/search">
+            <Link className="mr-auto mt-2" href="/search">
               <div className="text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Search</div>
             </Link>
-            <Link className="mr-auto" href="/works">
+            <Link className="mr-auto mt-2" href="/works">
               <div className="text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Works</div>
             </Link>
-            <Link className="mr-auto" href="/letters">
+            <Link className="mr-auto mt-2" href="/letters">
               <div className="text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Letters</div>
+            </Link>
+            <Link className="mr-auto mt-2" href="/about">
+              <div className="text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">About</div>
             </Link>
           </div>
         : false}

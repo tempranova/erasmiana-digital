@@ -208,8 +208,8 @@ export default function MapContainer({ letters }) {
 
   return (
     <div>
-      <div className="grid grid-cols-4 gap-4 h-[60vh] cardo-regular">
-        <div className="relative col-span-3">
+      <div className="grid lg:grid-cols-4 gap-4 h-[60vh] cardo-regular">
+        <div className="order-2 lg:order-1 relative lg:col-span-3">
           <div 
             id="erasmus-map"
             className="mt-4 w-full h-[60vh]" 
@@ -251,26 +251,31 @@ export default function MapContainer({ letters }) {
             : false}
           </table>
         </div>
-        <div className="cardo-regular text-left text-sm">
+        <div className="order-1 lg:order-2 cardo-regular text-left text-sm">
           <div onClick={() => groupLetters('from-origin')} className={`${currentVis === 'from-origin' ? 'bg-gray-300' : ''} mb-2 px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters from Erasmus</div>
           <div onClick={() => groupLetters('to-origin')} className={`${currentVis === 'to-origin' ? 'bg-gray-300' : ''} mb-2 px-4 py-2 border border-black rounded-md cursor-pointer hover:bg-gray-300`}>Letters to Erasmus</div>
 
           <hr className="my-4"></hr>
           {clickedLetterSet ? 
-            <div className="grid grid-cols-1 gap-2">
-              <h4 className="text-xl">{clickedLetterSetFeature.properties.groupId}</h4>
-              {clickedLetterSet.letters.map((letterId, i) => {
-                const thisLetter = letters.find(letter => letter.id === letterId)
-                return (
-                  <div key={`letter-${i}`} className="capitalize">
-                    <a href={`/letters/${thisLetter.id}`} target="_blank" className="hover:opacity-70">
-                      <div className="text-black">{thisLetter.alt_title.toLowerCase()}</div>
-                    </a>
-                    <div className="text-gray-500">{formatDate(thisLetter.day, thisLetter.month, thisLetter.year)}</div>
+            <details className="mt-4">
+              <summary className="cursor-pointer hover:underline underline-offset-2 italic">See selected letters</summary>
+              <div className="mt-2">
+                  <div className="grid grid-cols-1 gap-2">
+                    <h4 className="text-xl">{clickedLetterSetFeature.properties.groupId}</h4>
+                    {clickedLetterSet.letters.map((letterId, i) => {
+                      const thisLetter = letters.find(letter => letter.id === letterId)
+                      return (
+                        <div key={`letter-${i}`} className="capitalize">
+                          <a href={`/letters/${thisLetter.id}`} target="_blank" className="hover:opacity-70">
+                            <div className="text-black">{thisLetter.alt_title.toLowerCase()}</div>
+                          </a>
+                          <div className="text-gray-500">{formatDate(thisLetter.day, thisLetter.month, thisLetter.year)}</div>
+                        </div>
+                      )
+                    })}
                   </div>
-                )
-              })}
-            </div>
+              </div>
+            </details>
           : false}
         </div>
       </div>

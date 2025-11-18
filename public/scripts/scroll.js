@@ -3,9 +3,11 @@ window.addEventListener('wheel', (e) => {
   const boxNav = document.querySelector('#scroll-container-nav');
   if(box) {
     box.scrollTop += e.deltaY;
+    e.preventDefault()
   }
   if(boxNav) {
     boxNav.scrollTop += e.deltaY;
+    e.preventDefault()
   }
 });
 
