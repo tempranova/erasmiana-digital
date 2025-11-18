@@ -28,14 +28,9 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 
 ## To Do:
 
-- Look at general Work with title, subtitle, blurb, etc
 - Adding disclaimers, About page, general bibliography and source list
-- Improving data section + visualizations
-  - Mind-map type thing connections, improving life map
 - Improving LLM to give sources
-- Mobile design (individual works and letters)
 - Basic exhibition design
-- Adding at least basic years to publications
 
 Minor
 - Have more into the back button, maybe some more back buttons to make it easier to return to searches

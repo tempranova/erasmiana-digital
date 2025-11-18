@@ -13,6 +13,14 @@ export default function SideNav({}) {
 
   const [ openMenu, setOpenMenu ] = useState(false)
   const [ minimized, setMinimized ] = useState(pathname === "/" ? false : true);
+  
+  const isMobile = () => {
+    let isMobile = false;
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        isMobile = true;
+    }
+    return isMobile;
+  }
 
   useEffect(() => {
     if(pathname === "/") {
@@ -23,7 +31,7 @@ export default function SideNav({}) {
   }, [pathname])
 
   const animateLink = (route) => {
-    if(pathname === "/") {
+    if(pathname === "/" && !isMobile()) {
       setMinimized(true)
       setTimeout(() => {
         router.push(route);
