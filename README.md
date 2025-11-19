@@ -33,6 +33,7 @@ Minor
 - Setting up static page generation
 - review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
 - Have more into the back button, maybe some more back buttons to make it easier to return to searches
+- Adding analytics
 
 Data
 - Adding more edition variations and publications
