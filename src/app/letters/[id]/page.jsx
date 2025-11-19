@@ -1,6 +1,5 @@
 import { db } from '@/lib/db/kysely'
 import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
-import Link from 'next/link'
 
 import LetterContainer from '@/components/letter/letter-container';
 
