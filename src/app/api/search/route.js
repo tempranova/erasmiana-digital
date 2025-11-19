@@ -32,10 +32,7 @@ export const POST = async (req, route) => {
       })
     ).data[0].embedding;
 
-
     const vectorLiteral = `[${queryEmbedding.join(', ')}]`
-
-    console.log(vectorLiteral)
 
     let candidatesQuery = db.selectFrom("Metadata")
       .select(["Metadata.id", sql`vector_small <=> ${vectorLiteral}::vector`.as("distance")])
