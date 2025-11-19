@@ -80,6 +80,9 @@ export default function LetterContainer({ letter }) {
         </div>
       </div>
       <div className="p-4 mt-4 mb-4 pl-8">
+        <div className="text-sm border border-black p-2 rounded-md mb-4">
+          Text has not been meticulously cleaned. You will find splits and errors, especially in Greek text. Refer to the originals or other sources for exact wording. Translation is done by AI, so do not regard it as authoritative! See <Link href="/about" className="im-fell-dw-pica-regular-italic hover:underline underline-offset-4 decoration-2">About</Link> for more.
+        </div>
         <h2 className="text-xl font-semibold">Commentary</h2>
         {letter.commentary.map((commentary, i) => {
           return (

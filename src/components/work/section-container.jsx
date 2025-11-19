@@ -32,6 +32,9 @@ export default function SectionContainer({ section, prevSection, nextSection, nu
         </div>
       </div>
       <div className="p-4 mt-4 mb-4 pl-8">
+        <div className="text-sm border border-black p-2 rounded-md mb-4">
+          Text has not been meticulously cleaned. You will find errors. Refer to the originals or other sources for exact wording and translations. See <Link href="/about" className="im-fell-dw-pica-regular-italic hover:underline underline-offset-4 decoration-2">About</Link> for more.
+        </div>
         <h2 className="mt-4 text-xl font-semibold">Commentary</h2>
         <details className="mt-2" open={true}>
           <summary className="cursor-pointer hover:underline underline-offset-2 italic">AI Summary</summary>

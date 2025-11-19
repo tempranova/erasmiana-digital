@@ -66,8 +66,8 @@ export default function WorkBrowse({ page, work, lastPage, pages, allSections, t
   return (
     <div className="cardo-regular">
       <div>
-        <div className="w-full mb-4 lg:flex">
-          <div className="mr-auto lg:flex items-center">
+        <div className="w-full mb-4 block lg:flex">
+          <div className="mr-auto flex items-center">
             <form onSubmit={(e) => handleSubmit(e)} className="lg:flex items-center">
               {pageOptions.length > 0 ?
                 <Select 

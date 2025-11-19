@@ -54,6 +54,9 @@ export default function SideNav({}) {
                 <div onMouseDown={(e) => e.preventDefault()} onClick={() => animateLink("/debate")}>Debate</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
+                <div onClick={() => animateLink("/learn")}>Learn</div>
+              </div>
+              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
                 <div onClick={() => animateLink("/search")}>Search</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">

@@ -1,106 +1,168 @@
 'use client';
 import { useState, useRef } from 'react';
+import Link from 'next/link'
+
+import AIChat from '@/components/ai/ai-chat';
+import { systemPrompt } from '@/lib/utils/ai';
 
 export default function AIContainer() {
 
-  const [ messages, setMessages ] = useState([{
-    type : "bot",
-    message : "Greetings! I'm an AI set up to debate with you in an Erasmian style. You can pick from a few preset topics, or ask me anything you like. Please keep your questions and the debate respectful."
-  }])
-  const returnMessageRef = useRef();
-  const [ returningMessage, setReturningMessage ] = useState("");
-  const [ input, setInput ] = useState("")
-  const [ loading, setLoading ] = useState(false)
+  const [clickedMessage, setClickedMessage] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [searchTerm, setSearchTerm] = useState(false)
+  const [suggestedSources, setSuggestedSources] = useState([])
 
-  const sendMessage = async () => {
-    const newMessages = [...messages];
-    newMessages.push({ type : "user", message : input })
-    setInput("")
-    setMessages(newMessages);
+  const suggestedTopics = [
+    "The nature of intelligence",
+    "Favorite ice cream",
+    "Climate change",
+    "Belief in God",
+    "War and violence"
+  ]
+
+  const sendForSources = async (latestMessages) => {
+    const messagesToSend = latestMessages
+      .filter(m => m.type === 'user')
+      .slice(-2); 
     setLoading(true)
-    const response = await fetch(`/api/ai`, {
+    const response = await fetch(`/api/ai/sources`, {
       method : "POST",
       body : JSON.stringify({
-        messages : newMessages
+        messages : messagesToSend
       })
-    })
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let streamingText = '';
+    }).then(resp => resp.json())
     setLoading(false)
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n').filter(line => line.trim() !== '');
-
-        for (const line of lines) {
-          if (line.startsWith('0:')) {
-            try {
-              let text = line.slice(3, line.length - 1);
-              text = text.replace(/\\n/g, "\n");
-              streamingText += text;
-
-              if(returnMessageRef.current) {
-                returnMessageRef.current.scrollIntoView({ behavior: "smooth" });
-              }
-              setReturningMessage(streamingText);
-            } catch (e) {
-              // Sometimes the data might not be JSON
-              console.log(e)
-              console.log('Raw data:', line.slice(6));
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Error reading stream:', error);
-    } finally {
-      newMessages.push({ type : "bot", message : streamingText })
-      setMessages(newMessages)
-      if(returnMessageRef.current) {
-        returnMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-      setReturningMessage("");
-    }
+    setSearchTerm(response.searchTerm)
+    setSuggestedSources(response.results)
   }
 
   return (
-    <div className="text-black cardo-regular min-h-[400px] lg:h-[630px] w-full flex flex-col">
-      <div className="flex-1 rounded-t-md overflow-y-auto">
-        {messages.map((message, i) => {
-          if(message.type === 'user') {
-            return (
-              <div key={`message-${i}`} className="flex">
-                <div className="text-right ml-auto mb-4 rounded-lg shadow border border-gray-500 bg-gray-100/50 p-2 inline-block">
-                  {message.message}
-                </div>
-              </div>
-            )
-          } else {
-            return (
-              <div key={`message-${i}`}>
-                <div 
-                  className={`im-fell-dw-pica-regular text-xl text-left mb-4 p-2`}
-                >
-                  “{message.message}”
-                </div>
-              </div>
-            )
-          }
-        })}
-        {returningMessage ? 
-            <div ref={returnMessageRef} className={`im-fell-dw-pica-regular text-xl text-left mb-4 p-2`}>
-              {returningMessage}
-            </div>
-        : false}
-        {loading ? "Thinking..." : false}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 text-left">
+      <div className="p-8">
+        <div className="lg:hidden text-center">
+          <div className="my-4 cardo-regular text-2xl text-[#3b2d2b] leading-none break-all">Debate AI</div>
+        </div>
+        <AIChat sendForSources={sendForSources} clickedMessage={clickedMessage} />
       </div>
-      <textarea value={input} onKeyUp={(e) => { if(e.keyCode === 13) { sendMessage() }}} onChange={(e) => setInput(e.target.value)} className="w-full mt-auto px-2.5 py-1 bg-white/90 rounded-md border border-[#3b2d2b]" placeholder="Type your message here..." />
-      <button onClick={() => sendMessage()} className="mt-2 w-full border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Send Message</button>
+      <div id="scroll-container" className="p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] overflow-y-scroll cardo-regular">
+        <h2 className="text-xl font-semibold">A Few Possible Topics</h2>
+        <div className="mt-2 flex flex-wrap gap-2 items-center text-sm">
+          {suggestedTopics.map((topic, i) => {
+            return (
+              <div key={`topic-${i}`} onClick={() => setClickedMessage(topic)} className="rounded-full px-2 py-1 border border-[#3b2d2b] bg-white/40 cursor-pointer hover:bg-white/20">{topic}</div>
+            )
+          })}
+        </div>
+        <h2 className="mt-4 text-xl font-semibold">Associated Sources</h2>
+        <div className="mt-2">
+          {suggestedSources.length === 0 && !loading ? 
+            <p className="mt-2">As you start chatting, the ErasmusAI bot will try to find some passages by Erasmus that might relate in some way to your conversation. Check them out for more about what Erasmus himself might have thought!</p>
+          : false}
+          {loading ? 
+            <div className="flex items-center ">
+              <svg className="ml-2" width="20" height="20" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#333">
+                <rect y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.5s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.5s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="30" y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.25s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.25s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="60" width="15" height="140" rx="6">
+                    <animate attributeName="height"
+                        begin="0s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="90" y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.25s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.25s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+                <rect x="120" y="10" width="15" height="120" rx="6">
+                    <animate attributeName="height"
+                        begin="0.5s" dur="1s"
+                        values="120;110;100;90;80;70;60;50;40;140;120" calcMode="linear"
+                        repeatCount="indefinite" />
+                    <animate attributeName="y"
+                        begin="0.5s" dur="1s"
+                        values="10;15;20;25;30;35;40;45;50;0;10" calcMode="linear"
+                        repeatCount="indefinite" />
+                </rect>
+            </svg>
+            <div className="ml-2 italic text-sm mb-2">Erasmus AI is searching for related sources...</div>
+            </div>
+          : false}
+          {searchTerm ? 
+            <div>
+              <div className="italic mb-2">“{searchTerm}”</div>
+              {suggestedSources.map((result, i) => {
+                return (
+                  <div key={`result-${i}`} className={`pb-4 mb-4 border-b-1 border-[#3b2d2b] relative cardo-regular`}>
+                    {result.letter ? 
+                      <div>
+                        <div className="float-right text-sm text-right text-gray-600">{result.letter.place_text}, {result.letter.date_text}</div>
+                        <Link target="_blank" href={`/letters/${result.letter.id}`} className="hover:opacity-50">
+                          <div className="capitalize text-xl">{result.letter.title.toLowerCase()}</div>
+                          <div className="capitalize text-md text-gray-600">Letter {result.letter.reference}. {result.letter.alt_title.toLowerCase()}</div>
+                        </Link>
+                        {result.metadata?.summary ? <div className="mt-4 text-sm cardo-regular">{result.metadata.summary}</div> : false}
+                      </div>
+                    : false }
+                    {result.section ?
+                      <div>
+                        <Link target="_blank" href={`/works/${result.section.work.id}/sections/${result.section.id}`} className="hover:opacity-50">
+                          <div className="capitalize text-xl">{result.section.work.title.toLowerCase()}</div>
+                          {result.section.work.alt_title ? <div className="capitalize text-md text-gray-600">{result.section.work.alt_title.toLowerCase()}</div> : false }
+                        </Link>
+                        {result.metadata?.summary ? 
+                          <div className="mt-4 text-sm cardo-regular">
+                            {result.section.title ? <span className="italic mr-1">{result.section.title}:</span> : false}
+                            {result.section.pages.length > 0 ? <span className="italic mr-1">Page{result.section.pages.length > 1 ? 's' : ''} {result.section.pages.join(', ')}:</span> : false}
+                            {result.metadata.summary}
+                          </div> 
+                        : false}
+                      </div>
+                    : false}
+                  </div>
+                )
+              })}
+            </div>
+          : false}
+        </div>
+        <hr className="m-auto my-4 w-1/3 border-[#3b2d2b]" />
+        <details className="mt-2 pb-8">
+          <summary className="cursor-pointer hover:underline underline-offset-2 italic">How ErasmusAI Works</summary>
+          <div className="mt-2">
+            <p>This "ErasmusAI" is an experiment in creating a tool to help chatters think more critically about their opinions. Just what might be considered an "Erasmian method" isn't entirely defined, but here is the system prompt:</p>
+            <div className="code text-[10px] whitespace-pre-line">
+              {systemPrompt}
+            </div>
+          </div>
+        </details>
+      </div>
     </div>
   )
 

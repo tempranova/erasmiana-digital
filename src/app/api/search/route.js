@@ -34,12 +34,27 @@ export const POST = async (req, route) => {
 
     const vectorLiteral = `[${queryEmbedding.join(', ')}]`
 
-    const candidates = await db
+    let candidatesQuery = db
       .selectFrom("Metadata")
       .select(["id", sql`vector_small <=> ${vectorLiteral}::vector`.as("distance")])
+      // .where('Metadata.letterId', 'is not', null)
       .orderBy(sql`vector_small <=> ${vectorLiteral}::vector`)
-      .limit(100)   // limit BEFORE joins
-      .execute();
+      .limit(100)
+
+    if(body.objects === 'letters') {
+      console.log('setting where')
+      candidatesQuery = candidatesQuery.where('Metadata.letterId', 'is not', null)
+    }
+    if(body.objects === 'works') {
+      console.log('setting where w')
+      candidatesQuery = candidatesQuery.where('Metadata.sectionId', 'is not', null)
+    }
+    if(body.selectedWorks && body.selectedWorks.length > 0) {
+      candidatesQuery = candidatesQuery.leftJoin('Section', 'Section.id', 'Metadata.sectionId')
+        .where('Section.workId', 'in', body.selectedWorks)
+    }
+
+    const candidates = await candidatesQuery.execute()
 
     const ids = candidates.map((c) => c.id);
 
@@ -72,17 +87,6 @@ export const POST = async (req, route) => {
       ])
       .where("Metadata.id", "in", ids)
       .orderBy('distance')
-      
-    if(body.objects === 'letters') {
-      sub = sub.where('Metadata.letterId', 'is not', null)
-    }
-    if(body.objects === 'works') {
-      sub = sub.where('Metadata.sectionId', 'is not', null)
-    }
-    if(body.selectedWorks && body.selectedWorks.length > 0) {
-      sub = sub.leftJoin('Section', 'Section.id', 'Metadata.sectionId')
-        .where('Section.workId', 'in', body.selectedWorks)
-    }
     
     sub = sub.as('deduped')
 

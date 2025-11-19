@@ -28,16 +28,11 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 
 ## To Do:
 
-- Adding disclaimers, About page, general bibliography and source list
-- Improving LLM to give sources
-- Basic exhibition design
-
 Minor
-- Have more into the back button, maybe some more back buttons to make it easier to return to searches
-- Index the vector fields
 - Multilingualize
 - Setting up static page generation
 - review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
+- Have more into the back button, maybe some more back buttons to make it easier to return to searches
 
 Data
 - Adding more edition variations and publications
@@ -63,6 +58,12 @@ Stuff we didn't add that we'd like to:
 - Any commentary links for each text
 - Inviting direct community editing
 
+Create index with 
+
+CREATE INDEX metadata_vector_small_hnsw
+ON "Metadata"
+USING hnsw (vector_small vector_cosine_ops)
+WITH (m = 16, ef_construction = 64);
 
 Sources:
 - Some English translations (out of copyright!) (https://archive.org/details/epistlesoferasm01eras/page/n91/mode/2up?utm_source=chatgpt.com) - by dates
