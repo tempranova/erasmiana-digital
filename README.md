@@ -36,6 +36,7 @@ Minor
 
 Data
 - Adding more edition variations and publications
+- Adding downloadable dataset
 
 Advanced
 - A way to submit tickets for fixes (new section in DB for fixes)
