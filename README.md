@@ -62,8 +62,12 @@ Create index with
 
 CREATE INDEX metadata_vector_small_hnsw
 ON "Metadata"
-USING hnsw (vector_small vector_cosine_ops)
+USING hnsw (vector_small vector_l2_ops)
 WITH (m = 16, ef_construction = 64);
+
+pg_dump --dbname=postgresql://erasmus_db_user:erasmus_db_pass@localhost:6543/erasmus_dev_db -c -Fc --file=backup.sql
+
+
 
 Sources:
 - Some English translations (out of copyright!) (https://archive.org/details/epistlesoferasm01eras/page/n91/mode/2up?utm_source=chatgpt.com) - by dates

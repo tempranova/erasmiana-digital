@@ -32,25 +32,27 @@ export const POST = async (req, route) => {
       })
     ).data[0].embedding;
 
+
     const vectorLiteral = `[${queryEmbedding.join(', ')}]`
 
-    let candidatesQuery = db
-      .selectFrom("Metadata")
-      .select(["id", sql`vector_small <=> ${vectorLiteral}::vector`.as("distance")])
+    console.log(vectorLiteral)
+
+    let candidatesQuery = db.selectFrom("Metadata")
+      .select(["Metadata.id", sql`vector_small <=> ${vectorLiteral}::vector`.as("distance")])
       // .where('Metadata.letterId', 'is not', null)
+      // .where('Metadata.sectionId', 'is not', null)
       .orderBy(sql`vector_small <=> ${vectorLiteral}::vector`)
       .limit(100)
 
     if(body.objects === 'letters') {
-      console.log('setting where')
       candidatesQuery = candidatesQuery.where('Metadata.letterId', 'is not', null)
     }
     if(body.objects === 'works') {
-      console.log('setting where w')
       candidatesQuery = candidatesQuery.where('Metadata.sectionId', 'is not', null)
     }
     if(body.selectedWorks && body.selectedWorks.length > 0) {
-      candidatesQuery = candidatesQuery.leftJoin('Section', 'Section.id', 'Metadata.sectionId')
+      candidatesQuery = candidatesQuery
+        .leftJoin('Section', 'Section.id', 'Metadata.sectionId')
         .where('Section.workId', 'in', body.selectedWorks)
     }
 

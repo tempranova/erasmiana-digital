@@ -87,17 +87,6 @@ export const POST = async (req, route) => {
     ])
     .where("Metadata.id", "in", ids)
     .orderBy('distance')
-    
-  if(body.objects === 'letters') {
-    sub = sub.where('Metadata.letterId', 'is not', null)
-  }
-  if(body.objects === 'works') {
-    sub = sub.where('Metadata.sectionId', 'is not', null)
-  }
-  if(body.selectedWorks && body.selectedWorks.length > 0) {
-    sub = sub.leftJoin('Section', 'Section.id', 'Metadata.sectionId')
-      .where('Section.workId', 'in', body.selectedWorks)
-  }
   
   sub = sub.as('deduped')
 
