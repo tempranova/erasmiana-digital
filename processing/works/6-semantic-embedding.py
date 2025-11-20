@@ -22,7 +22,7 @@ titles = [
     "psalmi","purgatio","querela","ratio","responsio-adversus","responsio-albertum","responsio-annotationes","responsio-apologeticum","responsio-collationes","responsio-petrum","responsio-phimostomum","scarabeus","sileni","spongia","supputatio","testamentum","vidua","virginis-lauretum","virginis-martyris","vita","xenophon"
 ]
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "<open ai key>"
 MODEL = "text-embedding-3-small"
 
 client = OpenAI(api_key=OPENAI_API_KEY)

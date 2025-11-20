@@ -14,7 +14,7 @@ parser.add_argument("--volume", type=int, required=True, help="Volume number to 
 args = parser.parse_args()
 volume = args.volume
 
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = "<open ai key>"
 MODEL = "text-embedding-3-small"
 
 client = OpenAI(api_key=OPENAI_API_KEY)

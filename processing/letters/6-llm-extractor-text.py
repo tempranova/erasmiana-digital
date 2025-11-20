@@ -17,7 +17,7 @@ args = parser.parse_args()
 volume = "9"
 
 client = OpenAI(
-    api_key="sk-8b1d6cab30fa4fd3a5f485c6c85e7358",
+    api_key="<deepseek key>",
     base_url="https://api.deepseek.com/v1"
 )
 

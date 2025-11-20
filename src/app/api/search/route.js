@@ -25,38 +25,45 @@ export const POST = async (req, route) => {
   const pageSize = 10;
 
   if(body.type === 'semantic') {
+    console.time('get query')
     const queryEmbedding = (
       await client.embeddings.create({
         model: "text-embedding-3-small",
         input: body.search,
       })
     ).data[0].embedding;
+    console.timeEnd('get query')
 
     const vectorLiteral = `[${queryEmbedding.join(', ')}]`
 
+    console.log(vectorLiteral)
+
+    console.time('embedding query')
     let candidatesQuery = db.selectFrom("Metadata")
       .select(["Metadata.id", sql`vector_small <=> ${vectorLiteral}::vector`.as("distance")])
       // .where('Metadata.letterId', 'is not', null)
-      // .where('Metadata.sectionId', 'is not', null)
+      .where('Metadata.sectionId', 'is not', null)
       .orderBy(sql`vector_small <=> ${vectorLiteral}::vector`)
       .limit(100)
 
-    if(body.objects === 'letters') {
-      candidatesQuery = candidatesQuery.where('Metadata.letterId', 'is not', null)
-    }
-    if(body.objects === 'works') {
-      candidatesQuery = candidatesQuery.where('Metadata.sectionId', 'is not', null)
-    }
-    if(body.selectedWorks && body.selectedWorks.length > 0) {
-      candidatesQuery = candidatesQuery
-        .leftJoin('Section', 'Section.id', 'Metadata.sectionId')
-        .where('Section.workId', 'in', body.selectedWorks)
-    }
+    // if(body.objects === 'letters') {
+    //   candidatesQuery = candidatesQuery.where('Metadata.letterId', 'is not', null)
+    // }
+    // if(body.objects === 'works') {
+    //   candidatesQuery = candidatesQuery.where('Metadata.sectionId', 'is not', null)
+    // }
+    // if(body.selectedWorks && body.selectedWorks.length > 0) {
+    //   candidatesQuery = candidatesQuery
+    //     .leftJoin('Section', 'Section.id', 'Metadata.sectionId')
+    //     .where('Section.workId', 'in', body.selectedWorks)
+    // }
 
     const candidates = await candidatesQuery.execute()
+    console.timeEnd('embedding query')
 
     const ids = candidates.map((c) => c.id);
 
+    console.time('main query')
     let sub = db
       .selectFrom("Metadata")
       .select((eb) => [
@@ -96,6 +103,7 @@ export const POST = async (req, route) => {
       .limit(pageSize)
       .offset((page - 1) * pageSize)
       .execute()
+    console.timeEnd('main query')
 
     return NextResponse.json({
       searchTerm : body.search,
