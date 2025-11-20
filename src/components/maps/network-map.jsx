@@ -34,6 +34,13 @@ export default function MapContainer({ letters }) {
       zoom: 6, // starting zoom
       attributionControl : false
     });
+        
+    newMap.addControl(new maplibregl.NavigationControl({
+        visualizePitch: true,
+        visualizeRoll: true,
+        showZoom: true,
+        showCompass: true
+    }));
 
     const newPopup = new maplibregl.Popup({ closeButton : false });
     setPopup(newPopup);

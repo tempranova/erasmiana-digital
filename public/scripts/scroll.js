@@ -1,15 +1,19 @@
 window.addEventListener('wheel', (e) => {
   const box = document.querySelector('#scroll-container');
   const boxNav = document.querySelector('#scroll-container-nav');
-  if(box) {
-    box.scrollTop += e.deltaY;
-    e.preventDefault()
-  }
-  if(boxNav) {
-    boxNav.scrollTop += e.deltaY;
-    e.preventDefault()
-  }
-});
+
+  const isInsideBox = box?.contains(e.target);
+  const isInsideNav = boxNav?.contains(e.target);
+
+  // If the user scrolls inside either target, let normal scrolling happen
+  if (isInsideBox || isInsideNav) return;
+
+  // Otherwise, manually scroll them and prevent default browser scroll
+  e.preventDefault();
+
+  if (box) box.scrollTop += e.deltaY;
+  if (boxNav) boxNav.scrollTop += e.deltaY;
+}, { passive: false });
 
 // let touchStartY = 0;
 
