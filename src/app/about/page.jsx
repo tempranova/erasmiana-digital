@@ -75,7 +75,7 @@ export default function Preface() {
               </div>
               
             </div>
-            <div className="order-1 lg:order-2 p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] lg:overflow-y-scroll">
+            <div id="scroll-container" className="order-1 lg:order-2 p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] lg:overflow-y-scroll">
               <div className="text-center">
                 <div className="mt-4 cardo-regular uppercase text-3xl text-[#3b2d2b] leading-none break-all">Erasmiana Digital</div>
               </div>
