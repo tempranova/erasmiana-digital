@@ -3,10 +3,36 @@ import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 
 import LetterContainer from '@/components/letter/letter-container';
 
+export const generateStaticParams = async () => {
+  if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
+    const letters = await db.selectFrom('Letter')
+      .select(['id'])
+      .execute();
+    
+    const entriesToGenerate = [];
+    letters.forEach(letter => {
+      entriesToGenerate.push({
+        locale : 'en',
+        id : letter.id
+      })
+      entriesToGenerate.push({
+        locale : 'nl',
+        id : letter.id
+      })
+    })
+
+    return entriesToGenerate;
+  } else {
+    return [];
+  }
+}
+
 export const dynamic = 'force-static';
 export const revalidate = false;
 
-export default async function Page({ params : { id }}) {
+export default async function Page({ params }) {
+  
+  let { id } = await params;
   
   const letter = await db.selectFrom('Letter')
     .where('id', '=', id)

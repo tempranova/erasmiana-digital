@@ -5,8 +5,9 @@ import Link from 'next/link'
 
 import Logo from '@/components/nav/logo';
 import FakeWaveform from '@/components/audio/waveform'
+import { setLanguageCookie } from '@/lib/intl/cookies'
 
-export default function SideNav({}) {
+export default function SideNav({ dict }) {
 
   const pathname = usePathname()
   const router = useRouter()
@@ -23,7 +24,7 @@ export default function SideNav({}) {
   }
 
   useEffect(() => {
-    if(pathname === "/") {
+    if(pathname === "/en" || pathname === "/nl" ) {
       setMinimized(false)
     } else {
       setMinimized(true)
@@ -31,7 +32,7 @@ export default function SideNav({}) {
   }, [pathname])
 
   const animateLink = (route) => {
-    if(pathname === "/" && !isMobile()) {
+    if((pathname === "/en" || pathname === "/nl") && !isMobile()) {
       setMinimized(true)
       setTimeout(() => {
         router.push(route);
@@ -39,6 +40,13 @@ export default function SideNav({}) {
     } else {
       router.push(route);
     }
+  }
+
+  const setLanguage = async (locale) => {
+    await setLanguageCookie(locale);
+    const revisedPathname = pathname.replace('/en', '/').replace('/nl', '/').replace('//', '/')
+    console.log(revisedPathname)
+    router.push(revisedPathname);
   }
 
   return (
@@ -51,26 +59,27 @@ export default function SideNav({}) {
             </div>
             <div className="mt-10 w-full text-[#3b2d2b] text-3xl im-fell-dw-pica-regular flex flex-col gap-4 items-center">
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onMouseDown={(e) => e.preventDefault()} onClick={() => animateLink("/debate")}>Debate</div>
+                <div onMouseDown={(e) => e.preventDefault()} onClick={() => animateLink("/debate")}>{dict.debate}</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/learn")}>Learn</div>
+                <div onClick={() => animateLink("/learn")}>{dict.learn}</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/search")}>Search</div>
+                <div onClick={() => animateLink("/search")}>{dict.search}</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/works")}>Works</div>
+                <div onClick={() => animateLink("/works")}>{dict.works}</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/letters")}>Letters</div>
+                <div onClick={() => animateLink("/letters")}>{dict.letters}</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/data")}>Data</div>
+                <div onClick={() => animateLink("/data")}>{dict.data}</div>
               </div>
               <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/about")}>About</div>
+                <div onClick={() => animateLink("/about")}>{dict.about}</div>
               </div>
+              <div className="text-center text-[#3b2d2b] text-sm"><span className="cursor-pointer decoration-from-font underline-offset-5 hover:underline" onClick={() => setLanguage('en')}>en</span> / <span className="cursor-pointer decoration-from-font underline-offset-5 hover:underline" onClick={() => setLanguage('nl')}>nl</span></div>
             </div>
             <div className="relative">
               <img className="w-[100px] block m-auto" src="/assets/sig-black.png" />

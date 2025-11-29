@@ -87,6 +87,7 @@ export default function Preface() {
                 <div className="mt-4 cardo-regular uppercase text-3xl text-[#3b2d2b] leading-none break-all">How it's made</div>
               </div>
               <div className="mt-4 cardo-regular text-lg text-[#3b2d2b]">You may view the following presentation to learn more about how the site was created. In brief, texts were gathered from the Rotterdam Library archives, then processed through OCR and various LLM helpers. Afterwards, it was semantic embedded to make it searchable.</div>
+              <iframe className="my-4" width="100%" height="315" src="https://www.youtube.com/embed/Gdi5ylDggVQ?si=DorSQ18nVChVdBe9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               <div className="pb-12 mt-4 cardo-regular text-lg text-[#3b2d2b]"><a className="im-fell-dw-pica-regular-italic text-lg hover:underline underline-offset-4 decoration-2" href="https://github.com/tempranova/erasmiana-digital">Github here.</a></div>
               <div className="text-center">
                 <div className="mt-4 cardo-regular uppercase text-3xl text-[#3b2d2b] leading-none break-all">Thank you</div>

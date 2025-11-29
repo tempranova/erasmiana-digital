@@ -4,8 +4,9 @@ import { sql } from 'kysely'
 
 import WorkBrowse from '@/components/work/work-browse';
 
-export default async function Page({ searchParams, params : { id }}) {
+export default async function Page({ searchParams, params }) {
 
+  let { id } = await params;
   let { page, search, pages } = await searchParams;
   if(!page) {
     page = 1;
@@ -18,6 +19,8 @@ export default async function Page({ searchParams, params : { id }}) {
     pages = pages.map(thisPage => parseInt(thisPage))
   }
   const itemsPerPage = 20;
+
+  console.log(id)
 
   const work = await db.selectFrom('Work')
     .where('id', '=', id)

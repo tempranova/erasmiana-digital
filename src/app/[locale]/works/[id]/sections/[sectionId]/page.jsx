@@ -3,11 +3,39 @@ import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 
 import SectionContainer from '@/components/work/section-container';
 
+export const generateStaticParams = async () => {
+  if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
+    const sections = await db.selectFrom('Section')
+      .select(['id'])
+      .execute();
+    
+    const entriesToGenerate = [];
+    sections.forEach(section => {
+      entriesToGenerate.push({
+        locale : 'en',
+        sectionId : section.id,
+        id : section.workId
+      })
+      entriesToGenerate.push({
+        locale : 'nl',
+        sectionId : section.id,
+        id : section.workId
+      })
+    })
+
+    return entriesToGenerate;
+  } else {
+    return [];
+  }
+}
+
 export const dynamic = 'force-static';
 export const revalidate = false;
 
-export default async function Page({ params : { id, sectionId }}) {
+export default async function Page({ params }) {
   
+  let { id, sectionId } = await params;
+
   const section = await db.selectFrom('Section')
     .where('id', '=', parseInt(sectionId))
     .select((eb) => [

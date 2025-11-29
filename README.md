@@ -30,10 +30,18 @@ Hopefully, these principles are at least related to and draw from Erasmus himsel
 
 Minor
 - Multilingualize
-- Setting up static page generation
 - review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
 - Have more into the back button, maybe some more back buttons to make it easier to return to searches
-- Adding analytics
+- Renaissance studies, philosophy, neo latin, history
+
+Jan notes:
+- Having a different entry point for general users vs specialists
+- One of the books he wrote has a list of websites about Eramus?
+- Biographies
+- Maciej Eder / Paul Botley / 
+- Erasmus and Digital Humanities section angles for people, lists of people contributing
+- NeoLatin Grammar his project; connections between plays and playwrights; looking stuff up
+
 
 Data
 - Adding more edition variations and publications
@@ -151,3 +159,16 @@ Sources:
 - Any museums about Erasmus I can visit?
 - Any DH sites or displays that you find particularly interesting?
 - Who are the users? What's the point of this website? Where is it going to be used? How well are things already digitized?
+
+Suggestions from Raf van Rooy
+
+- https://github.com/ERASMOSPlus/Data/tree/main
+- Places where he quotes someone else
+- Learning Latin with Erasmus; rating passages for Latin usage
+  - Extremely rich vocabulary in Latin
+- Building an open source alternative to Transkribus, Hebrew causing issues; can no longer share models
+  - Playing with this
+- Also a platform for people to do crowdsourcing fixing of text
+  - Transkribus has a method for transcribing this and correcting crowdsourcing
+  - AnnotatedBooks online as well
+  - Another platform (defamit?)
