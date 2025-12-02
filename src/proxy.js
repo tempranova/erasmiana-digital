@@ -25,9 +25,7 @@ export default function proxy(request) {
  
   // Redirect if there is no locale
   const locale = getLocale(request)
-  console.log('local', locale)
   request.nextUrl.pathname = `/${locale}${pathname}`
-  console.log(request.nextUrl.pathname)
   // e.g. incoming request is /products
   // The new URL is now /en-US/products
   return NextResponse.redirect(request.nextUrl)

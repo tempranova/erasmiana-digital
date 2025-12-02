@@ -2,8 +2,12 @@ import { db } from '@/lib/db/kysely'
 import { sql } from 'kysely';
 
 import WorkIndex from '@/components/work/work-index';
+import { getDictionary } from '@/lib/intl/dictionaries'
 
-export default async function Page({ searchParams }) {
+export default async function Page({ params, searchParams }) {
+
+  const { locale } = await params;
+  const dict = await getDictionary(locale);
 
   let { page, search, orderBy } = searchParams;
   if(!page) {
@@ -50,11 +54,12 @@ export default async function Page({ searchParams }) {
     <div id="scroll-container" className="my-4 mx-4 lg:my-auto lg:mx-0 lg:-ml-[20px] w-full max-w-7xl rounded-lg shadow-lg lg:h-[90vh] p-8 bg-repeat lg:bg-no-repeat lg:bg-cover bg-center bg-[url('/assets/bg-parchment.jpg')] overflow-y-auto outline-none">
       <div className="text-left">
         <div className="text-xl cardo-regular">
-          <h1 className="im-fell-dw-pica-regular text-center text-3xl mb-4">Works</h1>
+          <h1 className="im-fell-dw-pica-regular text-center text-3xl mb-4">{dict['works']}</h1>
         </div>
 
         <div className="w-full m-auto pb-16">
           <WorkIndex 
+            dict={dict}
             page={page} 
             allWorks={allWorks} 
             totalCount={parseInt(allWorksCount.totalCount)} 

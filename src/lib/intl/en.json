@@ -43,12 +43,16 @@
   "results" : "results",
   "title" : "Title",
   "blurb" : "Blurb",
+  "select-pages" : "Select pages",
 
   "letters-correspondence" : "Letters & Correspondence",
   "vol" : "Vol",
   "alt-title" : "Alt. title",
   "origin" : "Origin",
   "destination" : "Destination",
+  "letter" : "Letter",
+  "author" : "Author",
+  "recipient" : "Recipient",
   "year" : "Year",
 
   "letter-map" : "Letter Map",
@@ -79,6 +83,12 @@
   "letters-disclaimer" : "Text has not been meticulously cleaned. You will find splits and errors, especially in Greek text. Refer to the originals or other sources for exact wording. Translation is done by AI, so do not regard it as authoritative! See About for more.",
   "commentary-header" : "Commentary",
   "translations-header" : "Translations",
-  "translations-progress" : "We are still working on adding translation links for different works."
-
+  "translations-progress" : "We are still working on adding translation links for different works.",
+  "browse-all" : "Browse all",
+  "excerpted-from" : "Excerpt from page ",
+  "ai-summary-header" : "AI Summary",
+  "next" : "Next",
+  "previous" : "Previous",
+  "commentary-link" : "Link to commentary",
+  "translation-link" : "Link to translation"
 }

@@ -2,6 +2,7 @@ import { db } from '@/lib/db/kysely'
 import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 
 import LetterContainer from '@/components/letter/letter-container';
+import { getDictionary } from '@/lib/intl/dictionaries'
 
 export const generateStaticParams = async () => {
   if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
@@ -32,7 +33,8 @@ export const revalidate = false;
 
 export default async function Page({ params }) {
   
-  let { id } = await params;
+  let { locale, id } = await params;
+  const dict = await getDictionary(locale);
   
   const letter = await db.selectFrom('Letter')
     .where('id', '=', id)
@@ -65,7 +67,7 @@ export default async function Page({ params }) {
     <div className="m-auto flex-1 flex">
       <div className="m-4 lg:m-auto w-full lg:w-2/3 h-full pb-16 lg:pb-0 lg:w-[950px] lg:h-[700px] bg-no-repeat bg-cover lg:bg-contain bg-center lg:bg-[url('/assets/main-paper-bg.png')] bg-[url('/assets/mobile-parchment-bg.png')] ">
         <div className="w-full m-auto">
-          <LetterContainer letter={letter} />
+          <LetterContainer dict={dict} letter={letter} />
         </div>
       </div>
     </div>

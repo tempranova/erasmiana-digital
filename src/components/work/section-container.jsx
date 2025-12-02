@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 
-export default function SectionContainer({ section, prevSection, nextSection, numberOfPages }) {
+export default function SectionContainer({ dict, section, prevSection, nextSection, numberOfPages }) {
 
   return (
     <div id="scroll-container" className="grid lg:grid-cols-2 p-4 gap-4 flex-1 text-left max-h-[700px] overflow-y-scroll text-[#3b2d2b] cardo-regular">
@@ -9,19 +9,19 @@ export default function SectionContainer({ section, prevSection, nextSection, nu
         <div className="text-center">
           <h1 className="capitalize text-2xl font-semibold">{section.work.title.toLowerCase()}</h1>
           <hr className="m-auto my-4 w-1/3 border-[#3b2d2b]" />
-          <h4 className="mt-1 flex-1 m-auto text-md italic">Excerpted from page{section.pages.length > 1 ? 's' : ''} {section.pages.join(', ')}</h4>
+          <h4 className="mt-1 flex-1 m-auto text-md italic">{dict['excerpted-from']} {section.pages.length > 1 ? 's' : ''} {section.pages.join(', ')}</h4>
           <div className="mt-2 flex gap-2 justify-center items-center">
             {prevSection ? 
               <Link href={`/works/${section.work.id}/sections/${prevSection.id}`} className="border rounded-md text-xs px-1 py-1 bg-white/30 cursor-pointer hover:bg-white/20">
-                Previous
+                {dict['previous']}
               </Link>
             : false}
             <Link href={`/works/${section.work.id}/sections`} className="border rounded-md text-xs px-1 py-1 bg-white/30 cursor-pointer hover:bg-white/20">
-              Browse All
+              {dict['browse-all']}
             </Link>
             {nextSection ? 
               <Link href={`/works/${section.work.id}/sections/${nextSection.id}`} className="border rounded-md text-xs px-1 py-1 bg-white/30 cursor-pointer hover:bg-white/20">
-                Next
+                {dict['next']}
               </Link>
             : false}
           </div>
@@ -33,11 +33,14 @@ export default function SectionContainer({ section, prevSection, nextSection, nu
       </div>
       <div className="p-4 mt-4 mb-4 pl-8">
         <div className="text-sm border border-black p-2 rounded-md mb-4">
-          Text has not been meticulously cleaned. You will find errors. Refer to the originals or other sources for exact wording and translations. See <Link href="/about" className="im-fell-dw-pica-regular-italic hover:underline underline-offset-4 decoration-2">About</Link> for more.
+          {dict['works-disclaimer']}
+          <div>
+            <Link href="/about" className="im-fell-dw-pica-regular-italic hover:underline underline-offset-4 decoration-2">{dict['about']}</Link>
+          </div>
         </div>
-        <h2 className="mt-4 text-xl font-semibold">Commentary</h2>
+        <h2 className="mt-4 text-xl font-semibold">{dict['commentary-header']}</h2>
         <details className="mt-2" open={true}>
-          <summary className="cursor-pointer hover:underline underline-offset-2 italic">AI Summary</summary>
+          <summary className="cursor-pointer hover:underline underline-offset-2 italic">{dict['ai-summary-header']}</summary>
           <p className="mt-2">{section.metadata.summary}</p>
         </details>
         {section.pages.length > 0 ? 
@@ -57,10 +60,13 @@ export default function SectionContainer({ section, prevSection, nextSection, nu
           <hr className="m-auto my-4 w-1/3 border-[#3b2d2b]" />
           </>
         : false}
-        <h2 className="mt-4 text-xl font-semibold">Sources</h2>
+        <h2 className="mt-4 text-xl font-semibold">{dict['sources-header']}</h2>
         {section.work.title.indexOf("adagi") === -1 ? 
           <div className="text-sm">
-            This section has been generated from scanned copies of Froben's <em>Opera Omnia</em> (1538-40), and likely contain some errors. See <Link className="im-fell-dw-pica-regular-italic underline underline-offset-2 hover:no-underline" href="/about">About</Link> for more information on how these excerpts were generated.
+            {dict['works-disclaimer-2']}
+            <div>
+              <Link className="im-fell-dw-pica-regular-italic underline underline-offset-2 hover:no-underline" href="/about">{dict['about']}</Link>
+            </div>
           </div>
         : false}
         <div className="mt-4 text-xs">
@@ -98,9 +104,9 @@ export default function SectionContainer({ section, prevSection, nextSection, nu
             )
           })}
         </div>
-        <h2 className="mt-4 text-xl font-semibold">Translations</h2>
+        <h2 className="mt-4 text-xl font-semibold">{dict['translations-header']}</h2>
         <div className="mt-4 text-md">
-          <em>We are still working on adding translation links for different works.</em>
+          <em>{dict['translations-progress']}</em>
         </div>
       </div>
     </div>
