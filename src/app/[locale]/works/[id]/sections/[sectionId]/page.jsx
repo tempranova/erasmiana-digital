@@ -7,20 +7,20 @@ import { getDictionary } from '@/lib/intl/dictionaries'
 export const generateStaticParams = async () => {
   if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
     const sections = await db.selectFrom('Section')
-      .select(['id'])
+      .select(['id', 'workId'])
       .execute();
     
     const entriesToGenerate = [];
     sections.forEach(section => {
       entriesToGenerate.push({
         locale : 'en',
-        sectionId : section.id,
-        id : section.workId
+        sectionId : section.id.toString(),
+        id : section.workId.toString()
       })
       entriesToGenerate.push({
         locale : 'nl',
-        sectionId : section.id,
-        id : section.workId
+        sectionId : section.id.toString(),
+        id : section.workId.toString()
       })
     })
 
