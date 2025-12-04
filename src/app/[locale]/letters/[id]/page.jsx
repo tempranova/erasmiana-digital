@@ -4,29 +4,29 @@ import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 import LetterContainer from '@/components/letter/letter-container';
 import { getDictionary } from '@/lib/intl/dictionaries'
 
-export const generateStaticParams = async () => {
-  if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
-    const letters = await db.selectFrom('Letter')
-      .select(['id'])
-      .execute();
+// export const generateStaticParams = async () => {
+//   if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
+//     const letters = await db.selectFrom('Letter')
+//       .select(['id'])
+//       .execute();
     
-    const entriesToGenerate = [];
-    letters.forEach(letter => {
-      entriesToGenerate.push({
-        locale : 'en',
-        id : letter.id.toString()
-      })
-      entriesToGenerate.push({
-        locale : 'nl',
-        id : letter.id.toString()
-      })
-    })
+//     const entriesToGenerate = [];
+//     letters.forEach(letter => {
+//       entriesToGenerate.push({
+//         locale : 'en',
+//         id : letter.id.toString()
+//       })
+//       entriesToGenerate.push({
+//         locale : 'nl',
+//         id : letter.id.toString()
+//       })
+//     })
 
-    return entriesToGenerate;
-  } else {
-    return [];
-  }
-}
+//     return entriesToGenerate;
+//   } else {
+//     return [];
+//   }
+// }
 
 export const dynamic = 'force-static';
 export const revalidate = false;

@@ -4,31 +4,31 @@ import { jsonObjectFrom, jsonArrayFrom } from 'kysely/helpers/postgres'
 import SectionContainer from '@/components/work/section-container';
 import { getDictionary } from '@/lib/intl/dictionaries'
 
-export const generateStaticParams = async () => {
-  if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
-    const sections = await db.selectFrom('Section')
-      .select(['id', 'workId'])
-      .execute();
+// export const generateStaticParams = async () => {
+//   if(process.env.VERCEL_ENV && process.env.VERCEL_ENV === 'production') {
+//     const sections = await db.selectFrom('Section')
+//       .select(['id', 'workId'])
+//       .execute();
     
-    const entriesToGenerate = [];
-    sections.forEach(section => {
-      entriesToGenerate.push({
-        locale : 'en',
-        sectionId : section.id.toString(),
-        id : section.workId.toString()
-      })
-      entriesToGenerate.push({
-        locale : 'nl',
-        sectionId : section.id.toString(),
-        id : section.workId.toString()
-      })
-    })
+//     const entriesToGenerate = [];
+//     sections.forEach(section => {
+//       entriesToGenerate.push({
+//         locale : 'en',
+//         sectionId : section.id.toString(),
+//         id : section.workId.toString()
+//       })
+//       entriesToGenerate.push({
+//         locale : 'nl',
+//         sectionId : section.id.toString(),
+//         id : section.workId.toString()
+//       })
+//     })
 
-    return entriesToGenerate;
-  } else {
-    return [];
-  }
-}
+//     return entriesToGenerate;
+//   } else {
+//     return [];
+//   }
+// }
 
 export const dynamic = 'force-static';
 export const revalidate = false;
