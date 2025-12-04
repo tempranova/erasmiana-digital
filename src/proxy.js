@@ -11,6 +11,8 @@ function getLocale(request) {
     } else {
       return defaultLocale;
     }
+  } else {
+    return defaultLocale;
   }
 }
 
