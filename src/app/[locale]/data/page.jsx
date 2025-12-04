@@ -72,6 +72,8 @@ export default async function Page({ params }) {
             </div>
             <div className="order-1 lg:order-2 p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] lg:overflow-y-scroll">
               <div className="mt-4 cardo-regular text-lg text-[#3b2d2b] whitespace-pre-line">{dict['data-text']}</div>
+              <div className="mt-4 cardo-regular text-lg text-[#3b2d2b]"><a href="https://d1cmk1mkpb53mi.cloudfront.net/backups/erasmiana-04-12-2025.sql" className="im-fell-dw-pica-regular-italic text-lg hover:underline underline-offset-4 decoration-2">Download raw .sql dataset here.</a></div>
+              <div className="mt-4 cardo-regular text-lg text-[#3b2d2b]"><a href="https://github.com/tempranova/erasmiana-digital/blob/main/prisma/schema.prisma" className="im-fell-dw-pica-regular-italic text-lg hover:underline underline-offset-4 decoration-2">See the current database schema (Github).</a></div>
               <img className="m-auto mt-8 w-1/2" src="/assets/flourish-1.png" />
             </div>
           </div>
