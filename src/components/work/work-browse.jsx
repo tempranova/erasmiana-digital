@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 import Pagination from '@/components/common/pagination';
 
-export default function WorkBrowse({ page, work, lastPage, pages, allSections, totalCount, itemsPerPage, search = "" }) {
+export default function WorkBrowse({ dict, page, work, lastPage, pages, allSections, totalCount, itemsPerPage, search = "" }) {
 
   const pathname = usePathname();
   const router = useRouter();
@@ -72,17 +72,17 @@ export default function WorkBrowse({ page, work, lastPage, pages, allSections, t
               {pageOptions.length > 0 ?
                 <Select 
                   name="pages"
-                  placeholder="Select pages"
+                  placeholder={dict['select-pages']}
                   isMulti
                   value={pageOptions.filter(option => selectedPages.indexOf(option.value) > -1)}
                   onChange={(e) => setSelectedPages(e.map(option => option.value))}
                   options={pageOptions}
                 />
               : false}
-              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="mt-2 lg:mt-0 lg:ml-2 border rounded-md text-sm px-2 py-1 bg-white w-[150px]" placeholder="Table filter..." />
-              <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
+              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="mt-2 lg:mt-0 lg:ml-2 border rounded-md text-sm px-2 py-1 bg-white w-[150px]" placeholder={dict['filter-placeholder']} />
+              <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">{dict['filter']}</button>
             </form>
-            <div className="text-xs ml-2">{totalCount} results</div>
+            <div className="text-xs ml-2">{totalCount} {dict['results']}</div>
 
           </div>
           <div className="ml-auto flex">

@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import Pagination from '@/components/common/pagination';
 
-export default function LetterIndex({ page, orderBy, allLetters, totalCount, itemsPerPage, search = "" }) {
+export default function LetterIndex({ dict, page, orderBy, allLetters, totalCount, itemsPerPage, search = "" }) {
 
   const pathname = usePathname();
   const router = useRouter();
@@ -72,26 +72,26 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
             <div className="flex items-center">
               <div className="mb-2 lg:mb-0 lg:ml-2 text-xs border mr-2 px-2 py-1 rounded-md">
                 <select value={orderBySelect} onChange={(e) => setOrder(e.target.value)} >
-                  <option value="year-asc">Year (asc)</option>
-                  <option value="year-desc">Year (desc)</option>
-                  <option value="reference-asc">Letter # (asc)</option>
-                  <option value="reference-desc">Letter # (desc)</option>
-                  <option value="author-asc">Author (asc)</option>
-                  <option value="author-desc">Author (desc)</option>
-                  <option value="recipient-asc">Recipient (asc)</option>
-                  <option value="recipient-desc">Recipient (desc)</option>
-                  <option value="origin-asc">Origin (asc)</option>
-                  <option value="origin-desc">Origin (desc)</option>
-                  <option value="destination-asc">Destination (asc)</option>
-                  <option value="destination-desc">Destination (desc)</option>
+                  <option value="year-asc">{dict['year']} (asc)</option>
+                  <option value="year-desc">{dict['year']} (desc)</option>
+                  <option value="reference-asc">{dict['letter']} # (asc)</option>
+                  <option value="reference-desc">{dict['letter']} # (desc)</option>
+                  <option value="author-asc">{dict['author']} (asc)</option>
+                  <option value="author-desc">{dict['author']} (desc)</option>
+                  <option value="recipient-asc">{dict['recipient']} (asc)</option>
+                  <option value="recipient-desc">{dict['recipient']} (desc)</option>
+                  <option value="origin-asc">{dict['origin']} (asc)</option>
+                  <option value="origin-desc">{dict['origin']} (desc)</option>
+                  <option value="destination-asc">{dict['destination']} (asc)</option>
+                  <option value="destination-desc">{dict['destination']} (desc)</option>
                 </select>
               </div>
             </div>
             <form className="mb-2 lg:mb-0">
-              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[80px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
-              <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
+              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[80px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder={dict['filter-placeholder']} />
+              <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">{dict['filter']}</button>
             </form>
-            <div className="text-xs ml-2">{totalCount} results</div>
+            <div className="text-xs ml-2">{totalCount} {dict['results']}</div>
 
           </div>
           <div className="ml-2 mt-2 lg:mt-0 lg:ml-auto flex">
@@ -102,11 +102,11 @@ export default function LetterIndex({ page, orderBy, allLetters, totalCount, ite
           <thead className="text-xs text-black uppercase">
             <tr>
               <th className="w-[80px] px-3 py-1"># / Vol.</th>
-              <th className="hidden lg:table-cell px-3 py-1">Title</th>
-              <th className="px-3 py-1">Alt. Title</th>
-              <th className="hidden lg:table-cell px-3 py-1">Origin</th>
-              <th className="hidden lg:table-cell px-3 py-1">Destination</th>
-              <th className="w-[80px] px-3 py-1">Year</th>
+              <th className="hidden lg:table-cell px-3 py-1">{dict['title']}</th>
+              <th className="px-3 py-1">{dict['alt-title']}</th>
+              <th className="hidden lg:table-cell px-3 py-1">{dict['origin']}</th>
+              <th className="hidden lg:table-cell px-3 py-1">{dict['destination']}</th>
+              <th className="w-[80px] px-3 py-1">{dict['year']}</th>
               <th className="w-[20px] px-3 py-1"></th>
             </tr>
           </thead>

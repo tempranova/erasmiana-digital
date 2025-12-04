@@ -2,12 +2,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { marked } from "marked";
 
-export default function AI({ sendForSources, clickedMessage }) {
+export default function AI({ dict, sendForSources, clickedMessage }) {
   
   const returnMessageRef = useRef();
   const [ messages, setMessages ] = useState([{
     type : "bot",
-    message : "Greetings! I'm *Erasmus AI*, meant to help you sharpen your critical thinking using methods of debate Erasmus might have used. Ask me anything or choose from some suggested topics."
+    message : dict['ai-greeting']
   }])
   const [ returningMessage, setReturningMessage ] = useState("");
   const [ input, setInput ] = useState("")
@@ -108,8 +108,8 @@ export default function AI({ sendForSources, clickedMessage }) {
         : false}
         {loading ? "Thinking..." : false}
       </div>
-      <textarea value={input} onKeyUp={(e) => { if(e.keyCode === 13) { sendMessage(input) }}} onChange={(e) => setInput(e.target.value)} className="w-full mt-auto px-2.5 py-1 bg-white/90 rounded-md border border-[#3b2d2b]" placeholder="Type your message here..." />
-      <button onClick={() => sendMessage(input)} className="mt-2 w-full border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Send Message</button>
+      <textarea value={input} onKeyUp={(e) => { if(e.keyCode === 13) { sendMessage(input) }}} onChange={(e) => setInput(e.target.value)} className="w-full mt-auto px-2.5 py-1 bg-white/90 rounded-md border border-[#3b2d2b]" placeholder={dict['type-placeholder']} />
+      <button onClick={() => sendMessage(input)} className="mt-2 w-full border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">{dict['send-message']}</button>
     </div>
   )
 

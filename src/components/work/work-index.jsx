@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import Pagination from '@/components/common/pagination';
 
-export default function WorkIndex({ page, orderBy, allWorks, totalCount, itemsPerPage, search = "" }) {
+export default function WorkIndex({ dict, page, orderBy, allWorks, totalCount, itemsPerPage, search = "" }) {
 
   const pathname = usePathname();
   const router = useRouter();
@@ -57,10 +57,10 @@ export default function WorkIndex({ page, orderBy, allWorks, totalCount, itemsPe
         <div className="w-full mb-4 block lg:flex">
           <div className="mr-auto flex items-center">
             <form>
-              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[100px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder="Table filter..." />
-              <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Filter</button>
+              <input type="text" name="search" value={searchText} onChange={(e) => setSearchText(e.target.value)} className="w-[100px] lg:w-auto border rounded-md text-sm px-2 py-1 bg-white" placeholder={dict['filter-placeholder']} />
+              <button onClick={() => doSearch()} className="ml-2 border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">{dict['filter']}</button>
             </form>
-            <div className="text-xs ml-2">{totalCount} results</div>
+            <div className="text-xs ml-2">{totalCount} {dict['results']}</div>
 
           </div>
           <div className="ml-2 mt-2 lg:mt-0 lg:ml-auto flex">
@@ -70,8 +70,8 @@ export default function WorkIndex({ page, orderBy, allWorks, totalCount, itemsPe
         <table className="w-full text-sm text-left table-fixed">
           <thead className="text-xs text-black uppercase">
             <tr>
-              <th className="table-cell px-3 py-1">Title</th>
-              <th className="w-[700px] hidden lg:table-cell px-3 py-1">Blurb</th>
+              <th className="table-cell px-3 py-1">{dict['title']}</th>
+              <th className="w-[700px] hidden lg:table-cell px-3 py-1">{dict['blurb']}</th>
               <th className="w-[20px] px-3 py-1"></th>
             </tr>
           </thead>

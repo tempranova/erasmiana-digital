@@ -1,6 +1,7 @@
 import Script from 'next/script'
+import { Analytics } from "@vercel/analytics/next"
 
-import BottomNav from '@/components/nav/bottom-nav';
+import { getDictionary } from '@/lib/intl/dictionaries'
 import SideNav from '@/components/nav/side-nav';
 
 import "./globals.css";
@@ -10,7 +11,10 @@ export const metadata = {
   description: "A Digital Collection of the works of Erasmus of Rotterdam",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ params, children }) {
+  const { locale } = await params;
+  const dict = await getDictionary(locale);
+
   return (
     <html lang="en">
       <head>
@@ -19,7 +23,7 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Ovo&family=Cardo:ital,wght@0,400;0,700;1,400&family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet" />
       </head>
       <body className="im-fell-dw-pica-regular m-0 p-0 lg:flex lg:flex-col lg:min-h-screen antialiased bg-cover bg-no-repeat bg-right lg:bg-center bg-[url('/assets/erasmus-bg.jpg')]">
-        <SideNav />
+        <SideNav dict={dict} />
         <div className="h-screen flex">
           <div className="lg:min-w-[170px] h-screen"></div>
           <div className="flex-1 flex">
@@ -31,6 +35,7 @@ export default function RootLayout({ children }) {
           Your browser does not support the audio element.
         </audio>
         <Script src="/scripts/scroll.js" />
+        <Analytics />
       </body>
     </html>
   );

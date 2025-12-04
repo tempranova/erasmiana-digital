@@ -3,8 +3,12 @@ import { db } from '@/lib/db/kysely'
 import { sql } from 'kysely'
 
 import WorkBrowse from '@/components/work/work-browse';
+import { getDictionary } from '@/lib/intl/dictionaries'
 
-export default async function Page({ searchParams, params : { id }}) {
+export default async function Page({ searchParams, params }) {
+
+  let { id, locale } = await params;
+  const dict = await getDictionary(locale);
 
   let { page, search, pages } = await searchParams;
   if(!page) {
@@ -18,6 +22,8 @@ export default async function Page({ searchParams, params : { id }}) {
     pages = pages.map(thisPage => parseInt(thisPage))
   }
   const itemsPerPage = 20;
+
+  console.log(id)
 
   const work = await db.selectFrom('Work')
     .where('id', '=', id)
@@ -80,7 +86,7 @@ export default async function Page({ searchParams, params : { id }}) {
         <div className="text-xl cardo-regular">
           <h1 className="im-fell-dw-pica-regular text-center text-3xl mb-4">{work.title}</h1>
         </div>
-        <WorkBrowse work={work} lastPage={lastPage} pages={pages} allSections={allSections} page={page} totalCount={allSectionsCount.totalCount} itemsPerPage={itemsPerPage} search={search} />
+        <WorkBrowse dict={dict} work={work} lastPage={lastPage} pages={pages} allSections={allSections} page={page} totalCount={allSectionsCount.totalCount} itemsPerPage={itemsPerPage} search={search} />
       </div>
     </div>
   );

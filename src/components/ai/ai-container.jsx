@@ -5,7 +5,7 @@ import Link from 'next/link'
 import AIChat from '@/components/ai/ai-chat';
 import { systemPrompt } from '@/lib/utils/ai';
 
-export default function AIContainer() {
+export default function AIContainer({ dict }) {
 
   const [clickedMessage, setClickedMessage] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -13,11 +13,11 @@ export default function AIContainer() {
   const [suggestedSources, setSuggestedSources] = useState([])
 
   const suggestedTopics = [
-    "The nature of intelligence",
-    "Favorite ice cream",
-    "Climate change",
-    "Belief in God",
-    "War and violence"
+    dict['topic-intelligence'],
+    dict['topic-ice-cream'],
+    dict['topic-climate'],
+    dict['topic-god'],
+    dict['topic-war']
   ]
 
   const sendForSources = async (latestMessages) => {
@@ -42,10 +42,10 @@ export default function AIContainer() {
         <div className="lg:hidden text-center">
           <div className="my-4 cardo-regular text-2xl text-[#3b2d2b] leading-none break-all">Debate AI</div>
         </div>
-        <AIChat sendForSources={sendForSources} clickedMessage={clickedMessage} />
+        <AIChat dict={dict} sendForSources={sendForSources} clickedMessage={clickedMessage} />
       </div>
       <div id="scroll-container" className="p-4 mt-4 mb-4 pl-8 lg:max-h-[700px] overflow-y-scroll cardo-regular">
-        <h2 className="text-xl font-semibold">A Few Possible Topics</h2>
+        <h2 className="text-xl font-semibold">{dict['topics-header']}</h2>
         <div className="mt-2 flex flex-wrap gap-2 items-center text-sm">
           {suggestedTopics.map((topic, i) => {
             return (
@@ -53,10 +53,10 @@ export default function AIContainer() {
             )
           })}
         </div>
-        <h2 className="mt-4 text-xl font-semibold">Associated Sources</h2>
+        <h2 className="mt-4 text-xl font-semibold">{dict['sources-header']}</h2>
         <div className="mt-2">
           {suggestedSources.length === 0 && !loading ? 
-            <p className="mt-2">As you start chatting, the ErasmusAI bot will try to find some passages by Erasmus that might relate in some way to your conversation. Check them out for more about what Erasmus himself might have thought!</p>
+            <p className="mt-2">{dict['sources-text']}</p>
           : false}
           {loading ? 
             <div className="flex items-center ">
@@ -154,9 +154,9 @@ export default function AIContainer() {
         </div>
         <hr className="m-auto my-4 w-1/3 border-[#3b2d2b]" />
         <details className="mt-2 pb-8">
-          <summary className="cursor-pointer hover:underline underline-offset-2 italic">How ErasmusAI Works</summary>
+          <summary className="cursor-pointer hover:underline underline-offset-2 italic">{dict['how-header']}</summary>
           <div className="mt-2">
-            <p>This "ErasmusAI" is an experiment in creating a tool to help chatters think more critically about their opinions. Just what might be considered an "Erasmian method" isn't entirely defined, but here is the system prompt:</p>
+            <p>{dict['how-text']}</p>
             <div className="code text-[10px] whitespace-pre-line">
               {systemPrompt}
             </div>
