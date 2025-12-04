@@ -14,11 +14,11 @@ export const generateStaticParams = async () => {
     letters.forEach(letter => {
       entriesToGenerate.push({
         locale : 'en',
-        id : letter.id
+        id : letter.id.toString()
       })
       entriesToGenerate.push({
         locale : 'nl',
-        id : letter.id
+        id : letter.id.toString()
       })
     })
 
