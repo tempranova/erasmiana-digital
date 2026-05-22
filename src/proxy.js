@@ -36,7 +36,7 @@ export default function proxy(request) {
 export const config = {
   matcher: [
     // Skip all internal paths (_next)
-    '/((?!_next|assets|audio|scripts).*)',
+    '/((?!_next|assets|audio|scripts|video|osd).*)',
     // Optional: only run on root (/) URL
     // '/'
   ],

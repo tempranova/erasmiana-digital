@@ -15,6 +15,8 @@ export default async function RootLayout({ params, children }) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
 
+  // console.log(pathname)
+
   return (
     <html lang="en">
       <head>
