@@ -39,6 +39,7 @@
     "react-markdown": "^10.1.0",
     "react-range-slider-input": "^3.3.2",
     "react-select": "^5.10.2",
+    "react-simple-keyboard": "^3.8.216",
     "react-toastify": "^11.0.5",
     "stream-json": "^1.9.1"
   },
