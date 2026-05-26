@@ -8,10 +8,8 @@ import { systemPrompt } from '@/lib/utils/ai';
 export default function AIContainer() {
 
   return (
-    <div className="relative z-10 -mt-30 w-full flex-1 text-left">
-      <div className="p-8">
-        <AIChat />
-      </div>
+    <div className="relative z-10 w-full flex-1 text-left">
+      <AIChat />
     </div>
   )
 

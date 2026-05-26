@@ -8,10 +8,8 @@ export default async function Page({ params }) {
 
   return (
     <div className="m-auto flex-1 flex flex-col">
-      <div className="h-[200px]">
-      </div>
       <div className="relative bg-[url('/assets/bibliotheek/erasmus-chat-bg.png')] bg-repeat bg-[length:400px_400px] w-full min-h-screen">
-        <img className="fixed -z-0 -mt-30" src="/assets/bibliotheek/erasmus-head.png" />
+        <img className="fixed -z-0" src="/assets/bibliotheek/erasmus-head.png" />
         <BibliotheekAIContainer />
       </div>
     </div>

@@ -1,23 +1,34 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { marked } from "marked";
+import Keyboard from 'react-simple-keyboard';
+import 'react-simple-keyboard/build/css/index.css';
 
 export default function AI() {
 
   const returnMessageRef = useRef();
+  const inputMessageRef = useRef();
+  const keyboard = useRef();
   const [ messages, setMessages ] = useState([{
     type : "bot",
-    message : "Greetings"
+    message : "Salutem Plurimam Dicit. Welkom, vriend. Wat zoekt u? Stel uw vraag vrijelijk — geen vraag is te gering voor een open geest."
   }])
   const [ returningMessage, setReturningMessage ] = useState("");
   const [ input, setInput ] = useState("")
-  const [ loading, setLoading ] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if(inputMessageRef.current) {
+      inputMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [input]);
 
   const sendMessage = async (thisInput) => {
     const newMessages = [...messages];
     newMessages.push({ type : "user", message : thisInput })
     setMessages(newMessages)
     setInput("")
+    keyboard.current.clearInput();
     setLoading(true)
     const response = await fetch(`/api/ai/bibliotheek`, {
       method : "POST",
@@ -69,9 +80,15 @@ export default function AI() {
     }
   }
 
+  const pressButton = (key) => {
+    if (key === "{send}") {
+      sendMessage(input)
+    }
+  }
+
   return (
-    <div className="text-black cardo-regular min-h-[400px] lg:h-[630px] w-full flex flex-col">
-      <div className="flex-1 overflow-y-auto">
+    <div className="text-black cardo-regular h-screen w-full flex flex-col">
+      <div className="flex-1 overflow-y-auto p-8 messages">
         {messages.map((message, i) => {
           if(message.type === 'user') {
             return (
@@ -95,8 +112,16 @@ export default function AI() {
             )
           }
         })}
+        {input !== "" ?
+          <div ref={inputMessageRef} className="flex">
+            <div className="text-right ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-1/2">
+              {input}
+            </div>
+          </div>
+        : false}
         {returningMessage !== "" ?
           <div ref={returnMessageRef} className={`bg-white text-[#27184f] rounded-md shadow-xl mb-4 px-4 py-3 max-w-1/2`}>
+            <div className="text-[#00b1ff] font-bold mb-2">Erasmus</div>
             <span dangerouslySetInnerHTML={{ __html : marked.parse(returningMessage) }} />
           </div>
         : false}
@@ -106,8 +131,34 @@ export default function AI() {
           </div>
         : false}
       </div>
-      <textarea value={input} onKeyUp={(e) => { if(e.keyCode === 13) { sendMessage(input) }}} onChange={(e) => setInput(e.target.value)} className="w-full mt-auto px-2.5 py-1 bg-white/90 rounded-md border border-[#3b2d2b]" placeholder={"Placeholder"} />
-      <button onClick={() => sendMessage(input)} className="mt-2 w-full border rounded-md text-sm px-2 py-1 bg-white/30 cursor-pointer hover:bg-white/20">Send Message</button>
+      <Keyboard
+        keyboardRef={r => (keyboard.current = r)}
+        layout={{
+          'default': [
+            '1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+            'q w e r t y u i o p',
+            'a s d f g h j k l ;',
+            'z x c v b n m , . ! ?',
+            '{space} {send}'
+          ],
+          'shift': [
+            '! @ # $ % ^ & * ( ) _ + {bksp}',
+            'Q W E R T Y U I O P',
+            'A S D F G H J K L :',
+            'Z X C V B N M ! ?',
+            '{space} {send}'
+          ]
+        }}
+        display={{
+          '{bksp}': "Backspace",
+          '{shift}': "Shift",
+          '{space}': "Space",
+          '{send}': "Bericht verzenden"
+        }}
+        theme="hg-theme-default"
+        onChange={(val) => setInput(val)}
+        onKeyPress={(key) => pressButton(key)}
+      />
     </div>
   )
 
