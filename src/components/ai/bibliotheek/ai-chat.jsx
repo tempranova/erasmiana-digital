@@ -1,8 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { marked } from "marked";
-import Keyboard from 'react-simple-keyboard';
-import 'react-simple-keyboard/build/css/index.css';
+import Keyboard from '@/components/ai/bibliotheek/keyboard';
 
 export default function AI() {
 
@@ -80,12 +79,6 @@ export default function AI() {
     }
   }
 
-  const pressButton = (key) => {
-    if (key === "{send}") {
-      sendMessage(input)
-    }
-  }
-
   return (
     <div className="text-black cardo-regular h-screen w-full flex flex-col">
       <div className="flex-1 overflow-y-auto p-8 messages">
@@ -131,34 +124,7 @@ export default function AI() {
           </div>
         : false}
       </div>
-      <Keyboard
-        keyboardRef={r => (keyboard.current = r)}
-        layout={{
-          'default': [
-            '1 2 3 4 5 6 7 8 9 0 - = {bksp}',
-            'q w e r t y u i o p',
-            'a s d f g h j k l ;',
-            'z x c v b n m , . ! ?',
-            '{space} {send}'
-          ],
-          'shift': [
-            '! @ # $ % ^ & * ( ) _ + {bksp}',
-            'Q W E R T Y U I O P',
-            'A S D F G H J K L :',
-            'Z X C V B N M ! ?',
-            '{space} {send}'
-          ]
-        }}
-        display={{
-          '{bksp}': "Backspace",
-          '{shift}': "Shift",
-          '{space}': "Space",
-          '{send}': "Bericht verzenden"
-        }}
-        theme="hg-theme-default"
-        onChange={(val) => setInput(val)}
-        onKeyPress={(key) => pressButton(key)}
-      />
+      <Keyboard value={input} onChange={setInput} send={() => sendMessage(input)} />
     </div>
   )
 
