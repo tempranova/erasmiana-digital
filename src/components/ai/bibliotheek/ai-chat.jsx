@@ -7,7 +7,6 @@ export default function AI() {
 
   const returnMessageRef = useRef();
   const inputMessageRef = useRef();
-  const keyboard = useRef();
   const [ messages, setMessages ] = useState([{
     type : "bot",
     message : "Salutem Plurimam Dicit. Welkom, vriend. Wat zoekt u? Stel uw vraag vrijelijk — geen vraag is te gering voor een open geest."
@@ -27,7 +26,6 @@ export default function AI() {
     newMessages.push({ type : "user", message : thisInput })
     setMessages(newMessages)
     setInput("")
-    keyboard.current.clearInput();
     setLoading(true)
     const response = await fetch(`/api/ai/bibliotheek`, {
       method : "POST",
