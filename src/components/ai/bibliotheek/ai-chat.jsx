@@ -78,49 +78,51 @@ export default function AI() {
   }
 
   return (
-    <div className="text-black cardo-regular h-screen w-full flex flex-col">
+    <div className="text-black cardo-regular h-screen flex flex-col">
       <div className="flex-1 overflow-y-auto p-8 messages">
-        {messages.map((message, i) => {
-          if(message.type === 'user') {
-            return (
-              <div key={`message-${i}`} className="flex">
-                <div className="text-right ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-1/2">
-                  {message.message}
+        <div className="w-1/2 m-auto">
+          {messages.map((message, i) => {
+            if(message.type === 'user') {
+              return (
+                <div key={`message-${i}`} className="flex">
+                  <div className="text-right ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-6/7">
+                    {message.message}
+                  </div>
                 </div>
-              </div>
-            )
-          } else {
-            const html = marked.parse(message.message);
-            return (
-              <div key={`message-${i}`}>
-                <div
-                  className={`bg-white text-[#27184f] rounded-md shadow-xl mb-4 px-4 py-3 max-w-1/2`}
-                >
-                  <div className="text-[#00b1ff] font-bold mb-2">Erasmus</div>
-                  <span dangerouslySetInnerHTML={{ __html : html }} />
+              )
+            } else {
+              const html = marked.parse(message.message);
+              return (
+                <div key={`message-${i}`}>
+                  <div
+                    className={`bg-white text-[#27184f] rounded-md shadow-xl mb-4 px-4 py-3 max-w-6/7`}
+                  >
+                    <div className="text-[#00b1ff] font-bold mb-2">Erasmus</div>
+                    <span dangerouslySetInnerHTML={{ __html : html }} />
+                  </div>
                 </div>
+              )
+            }
+          })}
+          {input !== "" ?
+            <div ref={inputMessageRef} className="flex">
+              <div className="text-right ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-6/7">
+                {input}
               </div>
-            )
-          }
-        })}
-        {input !== "" ?
-          <div ref={inputMessageRef} className="flex">
-            <div className="text-right ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-1/2">
-              {input}
             </div>
-          </div>
-        : false}
-        {returningMessage !== "" ?
-          <div ref={returnMessageRef} className={`bg-white text-[#27184f] rounded-md shadow-xl mb-4 px-4 py-3 max-w-1/2`}>
-            <div className="text-[#00b1ff] font-bold mb-2">Erasmus</div>
-            <span dangerouslySetInnerHTML={{ __html : marked.parse(returningMessage) }} />
-          </div>
-        : false}
-        {loading ?
-          <div className="bg-white rounded-md shadow-xl mb-4 px-4 py-3 max-w-1/2">
-            <div className="italic">Erasmus is typing ...</div>
-          </div>
-        : false}
+          : false}
+          {returningMessage !== "" ?
+            <div ref={returnMessageRef} className={`bg-white text-[#27184f] rounded-md shadow-xl mb-4 px-4 py-3 max-w-6/7`}>
+              <div className="text-[#00b1ff] font-bold mb-2">Erasmus</div>
+              <span dangerouslySetInnerHTML={{ __html : marked.parse(returningMessage) }} />
+            </div>
+          : false}
+          {loading ?
+            <div className="bg-white rounded-md shadow-xl mb-4 px-4 py-3 max-w-6/7">
+              <div className="italic">Erasmus is typing ...</div>
+            </div>
+            : false}
+        </div>
       </div>
       <Keyboard value={input} onChange={setInput} send={() => sendMessage(input)} />
     </div>
