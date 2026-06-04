@@ -71,16 +71,16 @@ export default function KioskKeyboard({ value = "", onChange, send }) {
     [value, onChange]
   );
 
-  const handleAt = useCallback(() => {
-    onChange(value + "@");
+  const handleExclamation = useCallback(() => {
+    onChange(value + "!");
   }, [value, onChange]);
 
   const handleSpace = useCallback(() => {
     onChange(value + " ");
   }, [value, onChange]);
 
-  const handleDash = useCallback(() => {
-    onChange(value + "-");
+  const handleQuestion = useCallback(() => {
+    onChange(value + "?");
   }, [value, onChange]);
 
   const displayChar = (k) => {
@@ -125,18 +125,18 @@ export default function KioskKeyboard({ value = "", onChange, send }) {
         {/* Bottom row: @ spacebar - */}
         <div className="flex gap-2 justify-center">
           <Key
-            label="@"
-            onPress={handleAt}
-            className="h-14 w-14 text-xl"
-          />
-          <Key
             label=""
             onPress={handleSpace}
             className="h-14 flex-1 max-w-md"
           />
           <Key
-            label="_"
-            onPress={handleDash}
+            label="!"
+            onPress={handleExclamation}
+            className="h-14 w-14 text-xl"
+          />
+          <Key
+            label="?"
+            onPress={handleQuestion}
             className="h-14 w-14 text-xl"
           />
         </div>
