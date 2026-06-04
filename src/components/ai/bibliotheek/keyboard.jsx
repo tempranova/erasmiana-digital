@@ -89,89 +89,91 @@ export default function KioskKeyboard({ value = "", onChange, send }) {
   };
 
   return (
-    <div className="flex gap-3 p-4 bg-[#DDEEF5] select-none w-full">
-      {/* Main keyboard */}
-      <div className="flex flex-col gap-2 flex-1">
-        {/* Alpha rows */}
-        {ROWS.map((row, ri) => (
-          <div key={ri} className="flex gap-2 justify-center">
-            {row.map((key) => {
-              if (key === "{bksp}") {
+    <div className="flex justify-center bg-[#DDEEF5] p-4">
+      <div className="flex gap-3 select-none w-fit">
+        {/* Main keyboard */}
+        <div className="flex flex-col gap-2">
+          {/* Alpha rows */}
+          {ROWS.map((row, ri) => (
+            <div key={ri} className="flex gap-2 justify-center">
+              {row.map((key) => {
+                if (key === "{bksp}") {
+                  return (
+                    <Key
+                      key="bksp"
+                      label={
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white">
+                          <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3.59 13L16 13.41 13.59 16 12 14.41 14.41 12 12 9.59 13.59 8 16 10.41 18.41 8 20 9.59 17.59 12 20 14.41 18.41 16z" />
+                        </svg>
+                      }
+                      onPress={() => handleKey("{bksp}")}
+                      className="h-14 w-16 text-lg"
+                    />
+                  );
+                }
                 return (
                   <Key
-                    key="bksp"
-                    label={
-                      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white">
-                        <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3.59 13L16 13.41 13.59 16 12 14.41 14.41 12 12 9.59 13.59 8 16 10.41 18.41 8 20 9.59 17.59 12 20 14.41 18.41 16z" />
-                      </svg>
-                    }
-                    onPress={() => handleKey("{bksp}")}
-                    className="h-14 w-16 text-lg"
+                    key={key}
+                    label={displayChar(key)}
+                    onPress={() => handleKey(key)}
+                    className="h-14 w-14 text-xl"
                   />
                 );
-              }
-              return (
-                <Key
-                  key={key}
-                  label={displayChar(key)}
-                  onPress={() => handleKey(key)}
-                  className="h-14 w-14 text-xl"
-                />
-              );
-            })}
-          </div>
-        ))}
+              })}
+            </div>
+          ))}
 
-        {/* Bottom row: @ spacebar - */}
-        <div className="flex gap-2 justify-center">
-          <Key
-            label=""
-            onPress={handleSpace}
-            className="h-14 flex-1 max-w-md"
-          />
-          <Key
-            label="!"
-            onPress={handleExclamation}
-            className="h-14 w-14 text-xl"
-          />
-          <Key
-            label="?"
-            onPress={handleQuestion}
-            className="h-14 w-14 text-xl"
-          />
+          {/* Bottom row: @ spacebar - */}
+          <div className="flex gap-2 justify-center">
+            <Key
+              label=""
+              onPress={handleSpace}
+              className="h-14 flex-1 max-w-md"
+            />
+            <Key
+              label="!"
+              onPress={handleExclamation}
+              className="h-14 w-14 text-xl"
+            />
+            <Key
+              label="?"
+              onPress={handleQuestion}
+              className="h-14 w-14 text-xl"
+            />
+          </div>
         </div>
-      </div>
 
-      {/* Numpad */}
-      <div className="flex flex-col gap-2">
-        {NUMPAD.map((row, ri) => (
-          <div key={ri} className="flex gap-2">
-            {row.map((key) => {
-              if (key === "{num0}") {
+        {/* Numpad */}
+        <div className="ml-16 flex flex-col gap-2">
+          {NUMPAD.map((row, ri) => (
+            <div key={ri} className="flex gap-2">
+              {row.map((key) => {
+                if (key === "{num0}") {
+                  return (
+                    <Key
+                      key="num0"
+                      label="0"
+                      onPress={() => handleNumpad("{num0}")}
+                      className="h-14 w-[7.5rem] text-xl"
+                    />
+                  );
+                }
                 return (
                   <Key
-                    key="num0"
-                    label="0"
-                    onPress={() => handleNumpad("{num0}")}
-                    className="h-14 w-[7.5rem] text-xl"
+                    key={key}
+                    label={key}
+                    onPress={() => handleNumpad(key)}
+                    className="h-14 w-14 text-xl"
                   />
                 );
-              }
-              return (
-                <Key
-                  key={key}
-                  label={key}
-                  onPress={() => handleNumpad(key)}
-                  className="h-14 w-14 text-xl"
-                />
-              );
-            })}
+              })}
+            </div>
+          ))}
+        </div>
+        <div className="ml-16 flex gap-2 items-center justify-center">
+          <div onClick={() => send()} className="bg-[#781115] h-48 w-48 flex text-center items-center justify-center text-2xl font-semibold text-white p-8 rounded-xl">
+            Bericht <br />verzenden
           </div>
-        ))}
-      </div>
-      <div className="ml-16 flex gap-2 items-center justify-center">
-        <div onClick={() => send()} className="bg-[#781115] h-48 w-48 flex text-center items-center justify-center text-2xl font-semibold text-white p-8 rounded-xl">
-          Bericht <br />verzenden
         </div>
       </div>
     </div>
