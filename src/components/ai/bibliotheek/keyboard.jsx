@@ -171,7 +171,7 @@ export default function KioskKeyboard({ value = "", onChange, send }) {
           ))}
         </div>
         <div className="ml-16 flex gap-2 items-center justify-center">
-          <div onClick={() => send()} className="bg-[#781115] h-48 w-48 flex text-center items-center justify-center text-2xl font-semibold text-white p-8 rounded-xl">
+          <div onClick={() => send()} className="bg-[#781115] h-full w-48 flex text-center items-center justify-center text-2xl font-semibold text-white p-8 rounded-xl">
             Bericht <br />verzenden
           </div>
         </div>
