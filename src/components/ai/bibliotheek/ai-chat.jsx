@@ -111,6 +111,13 @@ export default function AI() {
               </div>
             </div>
           : false}
+          {input === "" && messages.length > 1 ?
+            <div className="flex">
+              <div className="text-right italic ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-6/7">
+                Typ je antwoord...
+              </div>
+            </div>
+          : false}
           {input !== "" ?
             <div ref={inputMessageRef} className="flex">
               <div className="text-right ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-6/7">
