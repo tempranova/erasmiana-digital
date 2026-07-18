@@ -14,7 +14,7 @@ export default function SideNav({ dict }) {
 
   const [ openMenu, setOpenMenu ] = useState(false)
   const [ minimized, setMinimized ] = useState(pathname === "/" ? false : true);
-  
+
   const isMobile = () => {
     let isMobile = false;
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -58,28 +58,51 @@ export default function SideNav({ dict }) {
               <Logo minimized={minimized} />
             </div>
             <div className="mt-10 w-full text-[#3b2d2b] text-3xl im-fell-dw-pica-regular flex flex-col gap-4 items-center">
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onMouseDown={(e) => e.preventDefault()} onClick={() => animateLink("/debate")}>{dict.debate}</div>
+              <div className="cursor-pointer text-center">
+                <div className="decoration-from-font underline-offset-5 hover:underline" onClick={() => animateLink("/explore")}>{dict.explore}</div>
+                {!minimized ?
+                  <div className="text-sm cardo-regular-italic">An interactive introduction to Erasmus.</div>
+                : false}
+                {minimized ?
+                  <div>
+                    {/* <Link href="/life">
+                      <div className="mt-2 text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Life</div>
+                    </Link>*/}
+                    <Link href="/debate">
+                      <div className="mt-1 text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Debate</div>
+                    </Link>
+                    <Link href="/learn">
+                      <div className="text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Links</div>
+                    </Link>
+                  </div>
+                : false}
               </div>
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/learn")}>{dict.learn}</div>
+              <div className="cursor-pointer text-center">
+                <div className="decoration-from-font underline-offset-5 hover:underline" onClick={() => animateLink("/research")}>{dict.research}</div>
+                {!minimized ?
+                  <div className="text-sm cardo-regular-italic">Dive deep into our sources and resources.</div>
+                : false}
+                {minimized ?
+                  <div>
+                    <Link href="/search">
+                      <div className="mt-1 text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Search</div>
+                    </Link>
+                    <Link href="/works">
+                      <div className="text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Works</div>
+                    </Link>
+                    <Link href="/letters">
+                      <div className="text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Letters</div>
+                    </Link>
+                    <Link href="/data">
+                      <div className="text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">Data</div>
+                    </Link>
+                    <Link href="/about">
+                      <div className="text-[#3b2d2b] opacity-80 im-fell-dw-pica-regular-italic text-lg cursor-pointer hover:underline underline-offset-4 decoration-2">About</div>
+                    </Link>
+                  </div>
+                : false}
               </div>
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/search")}>{dict.search}</div>
-              </div>
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/works")}>{dict.works}</div>
-              </div>
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/letters")}>{dict.letters}</div>
-              </div>
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/data")}>{dict.data}</div>
-              </div>
-              <div className="cursor-pointer decoration-from-font underline-offset-5 hover:underline">
-                <div onClick={() => animateLink("/about")}>{dict.about}</div>
-              </div>
-              <div className="text-center text-[#3b2d2b] text-sm"><span className="cursor-pointer decoration-from-font underline-offset-5 hover:underline" onClick={() => setLanguage('en')}>en</span> / <span className="cursor-pointer decoration-from-font underline-offset-5 hover:underline" onClick={() => setLanguage('nl')}>nl</span></div>
+              <div className="text-center text-[#3b2d2b] text-lg mt-4"><span className="cursor-pointer decoration-from-font underline-offset-5 hover:underline" onClick={() => setLanguage('en')}>en</span> / <span className="cursor-pointer decoration-from-font underline-offset-5 hover:underline" onClick={() => setLanguage('nl')}>nl</span></div>
             </div>
             <div className="relative">
               <img className="w-[100px] block m-auto" src="/assets/sig-black.png" />
@@ -101,7 +124,7 @@ export default function SideNav({ dict }) {
             </svg>
           </div>
         </div>
-        {openMenu ? 
+        {openMenu ?
           <div onClick={() => setOpenMenu(false)} className="fixed top-0 left-0 m-8 mt-18 bg-[#d2c9b8] p-4 rounded-md shadow-lg border text-3xl border-[#3b2d2b] z-99">
             <Link className="ml-auto" href="/debate">
               <div className="text-[#3b2d2b] cursor-pointer hover:underline underline-offset-4 decoration-2">Debate</div>

@@ -38,10 +38,19 @@ WITH (m = 16, ef_construction = 64);
 
 ## To Do:
 
+Major:
+- For General Public vs Academic split
+  - Right now too many menu items; need to simplify for entry
+  - Specialists can jump into essentially current site
+  - Public should just have Debate, Learn sections, and a general search/about Erasmus thing
+- Data download of SQL
+- Invitation for collaboration page
+- Beautiful map of Erasmus's life (like Witcher have some serious fun with it, integrate AI for animations?)
+
 Minor
+- Emailing following Raf van Rooy Leiden editions
 - review ChatGPT interface suggestoins, like the candle flare or slight gradient rubbing
 - Have more into the back button, maybe some more back buttons to make it easier to return to searches
-- Renaissance studies, philosophy, neo latin, history
 
 Jan notes:
 - Having a different entry point for general users vs specialists
@@ -89,6 +98,10 @@ Stuff we didn't add that we'd like to:
 - Inviting direct community editing
 
 ## Sources not yet noted
+
+Globe
+https://objektkatalog.gnm.de/wisski/navigate/66915/view
+
 
 - Some English translations (out of copyright!) (https://archive.org/details/epistlesoferasm01eras/page/n91/mode/2up?utm_source=chatgpt.com) - by dates
   - https://archive.org/details/01919866.1690.emory.edu/page/41/mode/2up
