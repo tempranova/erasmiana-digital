@@ -13,18 +13,22 @@ export default async function Page({ params }) {
           <div className="text-[#192a57] text-6xl font-extrabold uppercase tracking-wide">Chat Met <br />Erasmus</div>
           <div className="text-[#00b1fe] text-5xl font-bold uppercase tracking-wide mt-16">Chat With <br />Erasmus</div>
           <div>
-            <div className="bg-[#192a57] w-50 px-6 py-4 text-white font-semibold uppercase inline-block shadow-[0_25px_25px_rgba(0,0,0,0.25)] mt-40">
-              <a href="/nl/bibliotheek/ai" className="flex w-full justify-center">
-                Nederlands
-              </a>
-            </div>
+            <a href="/nl/bibliotheek/ai">
+              <div className="bg-[#192a57] w-50 px-6 py-4 text-white font-semibold uppercase inline-block shadow-[0_25px_25px_rgba(0,0,0,0.25)] mt-40">
+                <div className="flex w-full justify-center">
+                  Nederlands
+                </div>
+              </div>
+            </a>
           </div>
           <div>
-            <div className="bg-[#192a57] w-50 px-6 py-4 text-white font-semibold uppercase inline-block shadow-[0_25px_25px_rgba(0,0,0,0.25)] mt-6">
-              <a href="/en/bibliotheek/ai" className="flex w-full justify-center">
-                English
-              </a>
-            </div>
+            <a href="/en/bibliotheek/ai">
+              <div className="bg-[#192a57] w-50 px-6 py-4 text-white font-semibold uppercase inline-block shadow-[0_25px_25px_rgba(0,0,0,0.25)] mt-6">
+                <div className="flex w-full justify-center">
+                  English
+                </div>
+              </div>
+            </a>
           </div>
         </div>
         <img className="fixed -z-0 -scale-x-100 !scale-y-100 right-0 -mr-30 mt-30" src="/assets/bibliotheek/user-figure.png" />
