@@ -40,7 +40,7 @@ function Key({ label, onPress, className = "" }) {
   );
 }
 
-export default function KioskKeyboard({ value = "", onChange, send }) {
+export default function KioskKeyboard({ value = "", onChange, send, dict }) {
   const [capsLock, setCapsLock] = useState(false);
 
   const handleKey = useCallback(
@@ -172,8 +172,13 @@ export default function KioskKeyboard({ value = "", onChange, send }) {
         </div>
         <div className="ml-16 flex gap-2 items-center justify-center">
           <div onClick={() => send()} className="bg-[#781115] h-full w-48 flex text-center items-center justify-center text-2xl font-semibold text-white p-8 rounded-xl">
-            Bericht <br />verzenden
+            {dict['send-message']}
           </div>
+        </div>
+        <div className="m-4 absolute right-0 bottom-0">
+          <a href="/en/bibliotheek" className="bg-[#192a57] flex text-center items-center justify-center text-xl uppercase font-semibold text-white px-8 py-3 rounded-xl">
+            {dict.restart}
+          </a>
         </div>
       </div>
     </div>

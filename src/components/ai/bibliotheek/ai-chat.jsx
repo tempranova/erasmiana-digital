@@ -3,13 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 import { marked } from "marked";
 import Keyboard from '@/components/ai/bibliotheek/keyboard';
 
-export default function AI() {
+export default function AI({ dict }) {
 
   const returnMessageRef = useRef();
   const inputMessageRef = useRef();
   const [ messages, setMessages ] = useState([{
     type : "bot",
-    message : "Salutem Plurimam Dicit. Welkom, vriend. Wat zoekt u? Stel uw vraag vrijelijk — geen vraag is te gering voor een open geest."
+    message : dict.welcome
   }])
   const [ returningMessage, setReturningMessage ] = useState("");
   const [ input, setInput ] = useState("")
@@ -107,14 +107,14 @@ export default function AI() {
           {input === "" && messages.length === 1 ?
             <div className="flex">
               <div className="text-right italic ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-6/7">
-                Waar denk je aan vandaag? Typ hier een vraag of gedachte die je bezighoudt en laten we dit onderwerp samen verder ontdekken. Of begin over een van Erasmus' favoriete onderwerpen, zoals vrede, onderwijs of onderzoek.
+                {dict.followup}
               </div>
             </div>
           : false}
           {input === "" && messages.length > 1 ?
             <div className="flex">
               <div className="text-right italic ml-auto bg-[#00b1ff] text-white rounded-md shadow-xl mb-4 px-4 py-3 inline-block max-w-6/7">
-                Typ je antwoord...
+                {dict.type}...
               </div>
             </div>
           : false}
@@ -133,12 +133,12 @@ export default function AI() {
           : false}
           {loading ?
             <div className="bg-white rounded-md shadow-xl mb-4 px-4 py-3 max-w-6/7">
-              <div className="italic">Erasmus is typing ...</div>
+              <div className="italic">{dict.typing} ...</div>
             </div>
             : false}
         </div>
       </div>
-      <Keyboard value={input} onChange={setInput} send={() => sendMessage(input)} />
+      <Keyboard dict={dict} value={input} onChange={setInput} send={() => sendMessage(input)} />
     </div>
   )
 
