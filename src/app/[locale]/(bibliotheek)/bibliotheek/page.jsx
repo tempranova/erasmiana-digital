@@ -8,7 +8,7 @@ export default async function Page({ params }) {
 
   return (
     <div className="m-auto flex-1 flex flex-col">
-      <div className="relative bg-[url('/assets/bibliotheek/landing-bg.png')] bg-cover w-full min-h-screen">
+      <div className="relative bg-[url('/assets/bibliotheek/landing-bg.png')] bg-cover w-full h-screen overflow-hidden">
         <div className="absolute w-full h-full justify-center text-center mt-20">
           <div className="text-[#192a57] text-6xl font-extrabold uppercase tracking-wide">Chat Met <br />Erasmus</div>
           <div className="text-[#00b1fe] text-5xl font-bold uppercase tracking-wide mt-16">Chat With <br />Erasmus</div>
@@ -31,7 +31,7 @@ export default async function Page({ params }) {
             </a>
           </div>
         </div>
-        <img className="fixed -z-0 -scale-x-100 !scale-y-100 right-0 -mr-30 mt-30" src="/assets/bibliotheek/user-figure.png" />
+        <img className="fixed -z-0 right-0 mt-30" src="/assets/bibliotheek/figure.png" />
         <img className="fixed -z-0 mt-30" src="/assets/bibliotheek/erasmus-head.png" />
       </div>
     </div>
