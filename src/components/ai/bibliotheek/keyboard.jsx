@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useRouter } from 'next/navigation'
 
 const ROWS = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "{bksp}"],
-  ["a", "s", "d", "f", "g", "h", "j", "k", "l", "-"],
+  ["a", "s", "d", "f", "g", "h", "j", "k", "l", "-", "‘"],
   ["z", "x", "c", "v", "b", "n", "m", ",", "."],
 ];
 
@@ -41,7 +42,25 @@ function Key({ label, onPress, className = "" }) {
 }
 
 export default function KioskKeyboard({ value = "", onChange, send, dict }) {
+
+  const router = useRouter()
+
   const [capsLock, setCapsLock] = useState(false);
+  const [runningTimeout, setRunningTimeout] = useState(false)
+
+  useEffect(() => {
+    createTimeout();
+  }, [value]);
+
+  const createTimeout = () => {
+    if (runningTimeout) {
+      clearTimeout(runningTimeout);
+    }
+    const thisTimeout = setTimeout(() => {
+      router.push("/en/bibliotheek");
+    }, 90000);
+    setRunningTimeout(thisTimeout);
+  }
 
   const handleKey = useCallback(
     (key) => {
