@@ -30,6 +30,25 @@ export default async function Page({ params }) {
               </div>
             </a>
           </div>
+          <div className="mx-auto mt-10 max-w-sm rounded-xl bg-white/80 px-6 py-4 shadow-[0_10px_25px_rgba(0,0,0,0.12)] backdrop-blur-sm">
+            <div className="flex items-start justify-center gap-2">
+              <svg className="mt-0.5 h-4 w-4 shrink-0 text-[#00b1fe]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 9v4" />
+                <path d="M12 17h.01" />
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+              </svg>
+              <div className="text-left text-[#192a57]">
+                <p className="text-xs font-semibold leading-snug">
+                  Let op: dit is AI en het kan fouten bevatten<br />
+                  Gebruik geen persoonsgegevens
+                </p>
+                <p className="mt-1 text-xs italic leading-snug text-[#192a57]/70">
+                  Please note: this is AI and it could include mistakes<br />
+                  Don&apos;t use personal data
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
         <img className="fixed -z-0 right-0 mt-30" src="/assets/bibliotheek/figure.png" />
         <img className="fixed -z-0 mt-30" src="/assets/bibliotheek/erasmus-head.png" />
