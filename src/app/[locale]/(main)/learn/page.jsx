@@ -24,7 +24,7 @@ export default async function Preface({ params }) {
                 <p className="mt-2 ml-4 cardo-regular text-sm text-[#3b2d2b] opacity-80">Rijksmuseum Amsterdam.</p>
               </div>
               <div className="mt-8">
-                <a href="https://new.express.adobe.com/webpage/GRZWXlVeLgqyC">
+                <a href="https://new.express.adobe.com/webpage/YZz19aPDLbjBJ">
                   <div className="im-fell-dw-pica-regular-italic text-3xl text-[#3b2d2b] leading-none flex items-center cursor-pointer hover:underline underline-offset-4 decoration-2">
                     Erasmus: The Man, The Myth, The Legend, The University
                     <svg className="ml-2 min-w-[15px]" width="15" height="15" viewBox="0 0 20 20" strokeWidth="0.5" stroke="#3b2d2b" xmlns="http://www.w3.org/2000/svg">

@@ -8,7 +8,7 @@ export default async function Page({ params, searchParams }) {
 
   let { locale } = await params;
   const dict = await getDictionary(locale);
-  let { page, search, orderBy } = searchParams;
+  let { page, search, orderBy } = await searchParams;
   if(!page) {
     page = 1;
   } else {
