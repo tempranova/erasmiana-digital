@@ -11,10 +11,11 @@ if(!process || !process.env || !process.env.DATABASE_URL) {
 const dialect = new PostgresDialect({
   pool: new Pool({
     connectionString : process.env.DATABASE_URL.replace('sslmode=require&', ''),
-    ssl : process.env.DATABASE_CERT ? {
-      require : true,
-      ca : process.env.DATABASE_CERT
-    } : false
+    ssl : /sslmode=require/.test(process.env.DATABASE_URL) ? { rejectUnauthorized: false } : false
+    // ssl : process.env.DATABASE_CERT ? {
+    //   require : true,
+    //   ca : process.env.DATABASE_CERT
+    // } : false
   })
 })
 
